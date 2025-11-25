@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "chickens",
+  "version": "${version}",
+  "name": "Chickens",
+  "description": "",
+  "authors": [
+    "CreeperHost"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/creeperhost-presents-chickens",
+    "sources": "https://github.com/CreeperHost/Chickens"
+  },
+  "license": "MIT License",
+  "icon": "assets/chickens/logo.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.creeperhost.chickens.fabric.ChickensModFabric"
+    ],
+    "jei_mod_plugin": [
+      "net.creeperhost.chickens.compat.jei.ChickensJeiPlugin"
+    ],
+    "fabric-datagen": [
+      "net.creeperhost.chickens.fabric.datagen.DataGen"
+    ]
+  },
+  "mixins": [
+    "chickens.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.17.2",
+    "fabric": "*",
+    "minecraft": "~1.21.6",
+    "architectury": ">=17.0.6",
+    "polylib": ">=2105.0.4-build.163"
+  }
+}

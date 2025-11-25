@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "chickens",
+  "key": {
+    "E": "#chickens:mod_eggs",
+    "G": "minecraft:glass_pane",
+    "H": "minecraft:hay_block",
+    "L": "minecraft:redstone_lamp",
+    "P": "#minecraft:planks"
+  },
+  "pattern": [
+    "PLP",
+    "GEG",
+    "HHH"
+  ],
+  "result": {
+    "count": 1,
+    "id": "chickens:incubator"
+  }
+}

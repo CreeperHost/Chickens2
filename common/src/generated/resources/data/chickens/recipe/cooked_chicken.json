@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.35,
+  "group": "chickens",
+  "ingredient": "chickens:chicken_item",
+  "result": {
+    "id": "minecraft:cooked_chicken"
+  }
+}
