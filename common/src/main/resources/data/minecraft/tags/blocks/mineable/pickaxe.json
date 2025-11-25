@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "chickens:breeder",
+    "chickens:incubator"
+  ]
+}
