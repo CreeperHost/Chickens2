@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "chickens",
+  "key": {
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "E": {
+      "tag": "chickens:mod_eggs"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "GEG",
+    "PCP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "chickens:ovoscope"
+  }
+}
