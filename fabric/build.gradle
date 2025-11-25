@@ -1,0 +1,138 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "me.shedaniel.unified-publishing"
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+loom {
+    runs {
+        datagenClient {
+            client()
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            //This will be ignored but is needed for now to load Fabrics datagen
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+
+            vmArg "-Dpolylib.datagen.output-dir-common=${project(":common").file("src/generated/resources")}"
+            vmArg "-Dpolylib.datagen.output-dir-forge=${project(":neoforge").file("src/generated/resources")}"
+            vmArg "-Dpolylib.datagen.output-dir-fabric=${project(":fabric").file("src/generated/resources")}"
+
+            ideConfigGenerated = true
+            runDir "build/datagen"
+        }
+    }
+
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+}
+
+configurations {
+    common
+    shadowLib
+    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    shadowCommon.extendsFrom shadowLib
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+    implementation.extendsFrom shadowLib
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+    // Remove the next line if you don't want to depend on the API
+    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+    modApi("net.creeperhost:polylib-fabric:${rootProject.polylib_version}")
+    modApi "curse.maven:jade-324717:6838516"
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+
+    include modApi('teamreborn:energy:4.1.0') {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    //    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-fabric-api:${rootProject.jei_version}"
+//    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+shadowJar {
+    exclude "architectury.common.json"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "dev-shadow"
+}
+
+remapJar {
+    injectAccessWidener = true
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveBaseName.set "${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}"
+    archiveClassifier = null
+}
+
+jar {
+    archiveClassifier = "dev"
+}
+
+sourcesJar {
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+publishing {
+    publications {
+        mavenFabric(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-" + project.name
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+    }
+}
+
+unifiedPublishing {
+    project {
+        displayName = "$rootProject.mod_version [Fabric]"
+        releaseType = "$rootProject.artifact_type"
+        changelog = ""
+        gameVersions = []
+        gameLoaders = ["fabric"]
+        mainPublication tasks.remapJar
+        relations {
+            depends {
+                curseforge = "polylib"
+            }
+        }
+
+        var CURSE_API_KEY = project.findProperty("CURSE_API_KEY") ?: System.getenv("CURSE_API_KEY")
+        if (CURSE_API_KEY != null) {
+            curseforge {
+                token = CURSE_API_KEY
+                id = rootProject.curseforge_id
+                gameVersions.addAll rootProject.minecraft_version
+            }
+        }
+    }
+}
