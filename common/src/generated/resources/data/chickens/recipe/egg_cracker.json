@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "chickens",
+  "key": {
+    "C": "minecraft:chest",
+    "E": "#chickens:eggs",
+    "I": "minecraft:iron_ingot",
+    "P": "minecraft:piston"
+  },
+  "pattern": [
+    "IPI",
+    "IEI",
+    "ICI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "chickens:egg_cracker"
+  }
+}

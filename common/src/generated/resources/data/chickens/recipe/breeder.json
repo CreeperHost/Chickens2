@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "chickens",
+  "key": {
+    "H": "minecraft:hay_block",
+    "P": "#minecraft:planks",
+    "S": "minecraft:wheat_seeds"
+  },
+  "pattern": [
+    "PPP",
+    "PSP",
+    "HHH"
+  ],
+  "result": {
+    "count": 1,
+    "id": "chickens:breeder"
+  }
+}
