@@ -5,11 +5,14 @@ import dev.architectury.platform.Platform;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.Holder;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
 import java.nio.file.Path;
+import java.util.Map;
 
 public class ChickensPlatform
 {
@@ -51,6 +54,11 @@ public class ChickensPlatform
 
     @ExpectPlatform
     public static void registerBlockRenderType(Block block, ChunkSectionLayer layer) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static EntityDataSerializer<Map<ResourceLocation, Double>> getTraitSerializer() {
         throw new AssertionError();
     }
 }

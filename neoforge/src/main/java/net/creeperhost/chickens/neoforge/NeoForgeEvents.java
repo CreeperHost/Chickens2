@@ -20,13 +20,13 @@ public class NeoForgeEvents
     @SubscribeEvent
     public static void registerRenderEvent(EntityRenderersEvent.RegisterRenderers event)
     {
-        ModEntities.CHICKENS.forEach((chickensRegistryItem, entityTypeSupplier) ->
-        {
-            Chickens.LOGGER.info("Registering render for " + entityTypeSupplier.get().getDescriptionId());
-            event.registerEntityRenderer(entityTypeSupplier.get(), RenderChickens::new);
-        });
+//        ModEntities.CHICKENS.forEach((chickensRegistryItem, entityTypeSupplier) ->
+//        {
+//            Chickens.LOGGER.info("Registering render for " + entityTypeSupplier.get().getDescriptionId());
+//            event.registerEntityRenderer(entityTypeSupplier.get(), RenderChickens::new);
+//        });
 
-        event.registerEntityRenderer(ModEntities.ROOSTER.get(), RenderChickens::new);
+//        event.registerEntityRenderer(ModEntities.ROOSTER.get(), RenderChickens::new);
         event.registerEntityRenderer(ModEntities.CHICKEN.get(), RenderChickens::new);
     }
 
@@ -38,12 +38,12 @@ public class NeoForgeEvents
 
     @SubscribeEvent
     public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
-        ModEntities.CHICKENS.forEach((item, typeSupplier) -> {
-            if (item.isEnabled()) {
-                event.register(typeSupplier.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ModEntities::checkChickenSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
-            }
-        });
-        event.register(ModEntities.ROOSTER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ModEntities::checkChickenSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+//        ModEntities.CHICKENS.forEach((item, typeSupplier) -> {
+//            if (item.isEnabled()) {
+//                event.register(typeSupplier.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ModEntities::checkChickenSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+//            }
+//        });
+        event.register(ModEntities.CHICKEN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ModEntities::checkChickenSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
     @SubscribeEvent

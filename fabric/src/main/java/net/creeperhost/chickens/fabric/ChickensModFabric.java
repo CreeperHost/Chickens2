@@ -2,35 +2,43 @@ package net.creeperhost.chickens.fabric;
 
 import dev.architectury.platform.Platform;
 import net.creeperhost.chickens.Chickens;
-import net.creeperhost.chickens.client.ChickenGuiTextures;
-import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.data.ChickenDataManager;
-import net.creeperhost.polylib.fabric.client.ResourceReloadListenerWrapper;
+import net.creeperhost.chickens.init.ModEntities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricTrackedDataRegistry;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.tags.TagKey;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.levelgen.Heightmap;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class ChickensModFabric implements ModInitializer {
+    public static final EntityDataSerializer<Map<ResourceLocation, Double>> TRAIT_SERIALIZER = EntityDataSerializer.forValueType(ByteBufCodecs.map(HashMap::new, ResourceLocation.STREAM_CODEC, ByteBufCodecs.DOUBLE));
+
     @Override
     public void onInitialize() {
         Chickens.init();
         if(Platform.getEnv() == EnvType.CLIENT) {
             FabricClient.init();
         }
+
+        FabricTrackedDataRegistry.register(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "trait_serializer"), TRAIT_SERIALIZER);
 
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new IdentifiableResourceReloadListener() {
             @Override
@@ -44,10 +52,19 @@ public class ChickensModFabric implements ModInitializer {
             }
         });
 
-        for (Config.FabricSpawn spawn : Config.INSTANCE.fabricSpawns) {
-            List<TagKey<Biome>> tags = spawn.biomeTags().stream().map(e -> TagKey.create(Registries.BIOME, ResourceLocation.parse(e))).toList();
-            BiomeModifications.addSpawn(e -> tags.stream().anyMatch(e::hasTag), MobCategory.CREATURE, BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocation.parse(spawn.type())), spawn.weight(), spawn.minCluster(), spawn.maxCluster());
-        }
+//        for (Config.FabricSpawn spawn : Config.INSTANCE.fabricSpawns) {
+//            List<TagKey<Biome>> tags = spawn.biomeTags().stream().map(e -> TagKey.create(Registries.BIOME, ResourceLocation.parse(e))).toList();
+//            BiomeModifications.addSpawn(e -> tags.stream().anyMatch(e::hasTag), MobCategory.CREATURE, BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocation.parse(spawn.type())), spawn.weight(), spawn.minCluster(), spawn.maxCluster());
+//        }
+
+        BiomeModifications.addSpawn(e -> e.hasTag(BiomeTags.IS_OVERWORLD), MobCategory.CREATURE, ModEntities.CHICKEN.get(), 10, 6, 6);
+        BiomeModifications.addSpawn(e -> e.hasTag(BiomeTags.IS_NETHER), MobCategory.CREATURE, ModEntities.CHICKEN.get(), 60, 10, 10);
+
+        SpawnPlacements.register(ModEntities.CHICKEN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ModEntities::checkChickenSpawnRules);
+
+//            ModEntities.CHICKENS.forEach((chickensRegistryItem, entityTypeSupplier) -> ModEntities.registerSpawnFabric(entityTypeSupplier.get(), chickensRegistryItem));
+//            SpawnPlacements.register(ModEntities.ROOSTER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ModEntities::checkChickenSpawnRules);
+
     }
 }
 

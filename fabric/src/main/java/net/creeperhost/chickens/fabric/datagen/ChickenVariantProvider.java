@@ -2,6 +2,7 @@ package net.creeperhost.chickens.fabric.datagen;
 
 import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.data.ChickenProduct;
+import net.creeperhost.chickens.data.ChickenSpawn;
 import net.creeperhost.chickens.data.ChickenVariant;
 import net.creeperhost.chickens.data.TraitConfig;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -10,6 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluid;
@@ -78,6 +80,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         simple(provider, "ender", "Ender", Items.ENDER_PEARL)
                 .build(consumer);
         simple(provider, "flint", "Flint", Items.FLINT)
+                .spawn(new ChickenSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD), 10))
                 .build(consumer);
         simple(provider, "ghast", "Ghast", Items.GHAST_TEAR)
                 .build(consumer);
@@ -100,6 +103,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         simple(provider, "leather", "Leather", Items.LEATHER)
                 .build(consumer);
         simple(provider, "log", "Log", Items.OAK_LOG)
+                .spawn(new ChickenSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD), 10))
                 .build(consumer);
         simple(provider, "magma", "Magma", Items.MAGMA_CREAM)
                 .build(consumer);
@@ -114,10 +118,12 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         simple(provider, "pshard", "Prismarine Shard", Items.PRISMARINE_SHARD)
                 .build(consumer);
         simple(provider, "quartz", "Quartz", Items.QUARTZ)
+                .spawn(new ChickenSpawn(Collections.singletonList(BiomeTags.IS_NETHER), 10))
                 .build(consumer);
         simple(provider, "redstone", "Redstone", Items.REDSTONE)
                 .build(consumer);
         simple(provider, "sand", "Sand", Items.SAND)
+                .spawn(new ChickenSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD), 10))
                 .build(consumer);
         simple(provider, "slime", "Slime", Items.SLIME_BALL)
                 .build(consumer);
@@ -126,6 +132,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         simple(provider, "snowball", "Snowball", Items.SNOWBALL)
                 .build(consumer);
         simple(provider, "soulsand", "Soulsand", Items.SOUL_SAND)
+                .spawn(new ChickenSpawn(Collections.singletonList(BiomeTags.IS_NETHER), 10))
                 .build(consumer);
         simple(provider, "string", "String", Items.STRING)
                 .build(consumer);
@@ -197,6 +204,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         private final List<TraitConfig> traits = new ArrayList<>();
         private String parent1 = null;
         private String parent2 = null;
+        private ChickenSpawn spawn = null;
 
         public Builder(HolderLookup.Provider provider, String id, String name) {
             this.provider = provider;
@@ -213,6 +221,11 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
 
         public Builder texture(ResourceLocation texture) {
             this.texture = texture;
+            return this;
+        }
+
+        public Builder spawn(ChickenSpawn spawn) {
+            this.spawn = spawn;
             return this;
         }
 
@@ -240,7 +253,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         }
 
         public void build(BiConsumer<ResourceLocation, ChickenVariant> consumer) {
-            consumer.accept(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, id), new ChickenVariant(id, name, texture, product, colour, traits, Optional.ofNullable(parent1), Optional.ofNullable(parent2)));
+            consumer.accept(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, id), new ChickenVariant(id, name, texture, product, colour, traits, Optional.ofNullable(parent1), Optional.ofNullable(parent2), Optional.ofNullable(spawn)));
         }
     }
 }

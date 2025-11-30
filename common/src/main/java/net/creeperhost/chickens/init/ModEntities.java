@@ -18,6 +18,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,30 +27,32 @@ import java.util.function.Supplier;
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Chickens.MOD_ID, Registries.ENTITY_TYPE);
 
-    public static final Supplier<EntityType<EntityRooster>> ROOSTER = ENTITIES.register("rooster", () -> EntityType.Builder.of(EntityRooster::new, MobCategory.CREATURE)
-            .sized(0.6F, 1.7F)
-            .clientTrackingRange(8)
-            .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "rooster"))));
+//    public static final Supplier<EntityType<EntityRooster>> ROOSTER = ENTITIES.register("rooster", () -> EntityType.Builder.of(EntityRooster::new, MobCategory.CREATURE)
+//            .sized(0.6F, 1.7F)
+//            .clientTrackingRange(8)
+//            .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "rooster"))));
 
     public static final Supplier<EntityType<ChickensChicken>> CHICKEN = ENTITIES.register("chicken", () -> EntityType.Builder.of(ChickensChicken::new, MobCategory.CREATURE)
-            .sized(0.6F, 1.7F)
-            .clientTrackingRange(8)
+            .sized(0.4F, 0.7F)
+            .eyeHeight(0.644F)
+            .passengerAttachments(new Vec3(0.0, 0.7, -0.1))
+            .clientTrackingRange(10)
             .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "chicken"))));
 
-    public static final Map<ChickensRegistryItem, Supplier<EntityType<EntityChickensChicken>>> CHICKENS = Util.make(new LinkedHashMap<>(), map ->
-    {
-        for (ChickensRegistryItem item : ChickensRegistry.getItems())
-        {
-            if(!item.equals(ModChickens.ROOSTER))
-            {
-                map.put(item, ENTITIES.register(item.getEntityName(), () -> EntityType.Builder.of(EntityChickensChicken::new, MobCategory.CREATURE)
-                        .sized(0.6F, 1.7F)
-                        .clientTrackingRange(8)
-                        .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, item.getEntityName())))
-                ));
-            }
-        }
-    });
+//    public static final Map<ChickensRegistryItem, Supplier<EntityType<EntityChickensChicken>>> CHICKENS = Util.make(new LinkedHashMap<>(), map ->
+//    {
+//        for (ChickensRegistryItem item : ChickensRegistry.getItems())
+//        {
+//            if(!item.equals(ModChickens.ROOSTER))
+//            {
+//                map.put(item, ENTITIES.register(item.getEntityName(), () -> EntityType.Builder.of(EntityChickensChicken::new, MobCategory.CREATURE)
+//                        .sized(0.6F, 1.7F)
+//                        .clientTrackingRange(8)
+//                        .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, item.getEntityName())))
+//                ));
+//            }
+//        }
+//    });
 
     @Deprecated //TODO Neo now handles this neo side, still need to check if fabric works
     public static <T extends Animal> void registerSpawnFabric(EntityType<T> entityType, ChickensRegistryItem chickensRegistryItem) {

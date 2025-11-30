@@ -8,11 +8,14 @@ import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.Holder;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
 import java.nio.file.Path;
+import java.util.Map;
 
 public class ChickensPlatformImpl
 {
@@ -50,5 +53,9 @@ public class ChickensPlatformImpl
 
     public static void registerBlockRenderType(Block block, ChunkSectionLayer layer) {
         BlockRenderLayerMap.putBlocks(layer, block);
+    }
+
+    public static EntityDataSerializer<Map<ResourceLocation, Double>> getTraitSerializer() {
+        return ChickensModFabric.TRAIT_SERIALIZER;
     }
 }

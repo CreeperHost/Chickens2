@@ -4,6 +4,8 @@ import net.creeperhost.chickens.ChickensPlatform;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.Holder;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -11,6 +13,7 @@ import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.Tags;
 
 import java.nio.file.Path;
+import java.util.Map;
 
 public class ChickensPlatformImpl
 {
@@ -48,5 +51,9 @@ public class ChickensPlatformImpl
 
     public static void registerBlockRenderType(Block block, ChunkSectionLayer layer) {
         ItemBlockRenderTypes.setRenderLayer(block, layer);
+    }
+
+    public static EntityDataSerializer<Map<ResourceLocation, Double>> getTraitSerializer() {
+        return ChickensModNeoForge.TRAIT_SERIALIZER.get();
     }
 }

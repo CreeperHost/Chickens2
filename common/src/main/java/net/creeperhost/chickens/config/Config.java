@@ -37,29 +37,29 @@ public class Config {
     public double maxChickensInChunk = 10;
     public int lifespanReductionOnLay = 2;
 
-    public List<ChickenConfig> chickens = new ArrayList<>();
-    public List<FabricSpawn> fabricSpawns = new ArrayList<>();
+//    public List<ChickenConfig> chickens = new ArrayList<>();
+//    public List<FabricSpawn> fabricSpawns = new ArrayList<>();
 
     public Config() {}
 
-    private void generateDefaults() {
-        chickens.clear();
-        fabricSpawns.clear();
-        for (ChickensRegistryItem chickensRegistryItem : ModChickens.generateDefaultChickens()) {
-            chickens.add(ChickenConfig.of(chickensRegistryItem));
-        }
-        if (Platform.isFabric()) {
-            fabricSpawns.add(new FabricSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD.location().toString()), "chickens:flint_chicken", 10, 2, 4));
-            fabricSpawns.add(new FabricSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD.location().toString()), "chickens:log_chicken", 10, 2, 4));
-            fabricSpawns.add(new FabricSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD.location().toString()), "chickens:sand_chicken", 10, 2, 4));
-            fabricSpawns.add(new FabricSpawn(Collections.singletonList(BiomeTags.IS_NETHER.location().toString()), "chickens:quartz_chicken", 60, 12, 12));
-            fabricSpawns.add(new FabricSpawn(Collections.singletonList(BiomeTags.IS_NETHER.location().toString()), "chickens:soulsand_chicken", 60, 12, 12));
-        }
-    }
+//    private void generateDefaults() {
+//        chickens.clear();
+//        fabricSpawns.clear();
+//        for (ChickensRegistryItem chickensRegistryItem : ModChickens.generateDefaultChickens()) {
+//            chickens.add(ChickenConfig.of(chickensRegistryItem));
+//        }
+//        if (Platform.isFabric()) {
+//            fabricSpawns.add(new FabricSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD.location().toString()), "chickens:flint_chicken", 10, 2, 4));
+//            fabricSpawns.add(new FabricSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD.location().toString()), "chickens:log_chicken", 10, 2, 4));
+//            fabricSpawns.add(new FabricSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD.location().toString()), "chickens:sand_chicken", 10, 2, 4));
+//            fabricSpawns.add(new FabricSpawn(Collections.singletonList(BiomeTags.IS_NETHER.location().toString()), "chickens:quartz_chicken", 60, 12, 12));
+//            fabricSpawns.add(new FabricSpawn(Collections.singletonList(BiomeTags.IS_NETHER.location().toString()), "chickens:soulsand_chicken", 60, 12, 12));
+//        }
+//    }
 
     public static void init() {
         if (!Chickens.CONFIG_FILE.exists()) {
-            INSTANCE.generateDefaults();
+//            INSTANCE.generateDefaults();
             saveConfig();
         }
         loadConfig();
@@ -71,7 +71,7 @@ public class Config {
         } catch (IOException e) {
             Chickens.LOGGER.error("Failed to load config file, Will restore default config", e);
             INSTANCE = new Config();
-            INSTANCE.generateDefaults();
+//            INSTANCE.generateDefaults();
             saveConfig();
         }
     }
