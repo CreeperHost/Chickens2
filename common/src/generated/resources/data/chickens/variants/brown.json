@@ -6,9 +6,9 @@
     "type": "ITEM",
     "id": "minecraft:brown_dye",
     "max": 1,
-    "maxLayTime": 1,
+    "maxLayTime": 12000,
     "min": 1,
-    "minLayTime": 1
+    "minLayTime": 6000
   },
   "texture": "chickens:textures/entity/brown_chicken.png",
   "traitConfigs": [

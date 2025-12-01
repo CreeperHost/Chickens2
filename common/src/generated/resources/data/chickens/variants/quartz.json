@@ -6,9 +6,9 @@
     "type": "ITEM",
     "id": "minecraft:quartz",
     "max": 1,
-    "maxLayTime": 1,
+    "maxLayTime": 12000,
     "min": 1,
-    "minLayTime": 1
+    "minLayTime": 6000
   },
   "spawn": {
     "biomes": [

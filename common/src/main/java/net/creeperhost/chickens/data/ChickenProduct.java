@@ -32,8 +32,8 @@ public record ChickenProduct(ResourceLocation id, Type type, int min, int max, i
             Type.CODEC.fieldOf("type").forGetter(ChickenProduct::type),
             Codec.INT.fieldOf("min").forGetter(ChickenProduct::min),
             Codec.INT.fieldOf("max").forGetter(ChickenProduct::max),
-            Codec.INT.fieldOf("minLayTime").forGetter(ChickenProduct::max),
-            Codec.INT.fieldOf("maxLayTime").forGetter(ChickenProduct::max)
+            Codec.INT.fieldOf("minLayTime").forGetter(ChickenProduct::minLayTime),
+            Codec.INT.fieldOf("maxLayTime").forGetter(ChickenProduct::maxLayTime)
     ).apply(builder, ChickenProduct::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChickenProduct> STREAM_CODEC = StreamCodec.composite(
