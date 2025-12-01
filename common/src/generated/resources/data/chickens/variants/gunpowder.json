@@ -6,7 +6,9 @@
     "type": "ITEM",
     "id": "minecraft:gunpowder",
     "max": 1,
-    "min": 1
+    "maxLayTime": 1,
+    "min": 1,
+    "minLayTime": 1
   },
   "texture": "chickens:textures/entity/gunpowder_chicken.png",
   "traitConfigs": [

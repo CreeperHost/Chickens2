@@ -170,13 +170,13 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
     //TODO this is just a quick helper for the initial data gen. Once we start balancing things, this method will likely go away.
     private Builder simple(HolderLookup.Provider provider, String id, String name, Item item) {
         return builder(provider, id, name)
-                .itemProduct(item, 1, 1)
+                .itemProduct(item, 1, 1, 6000, 12000)
                 .trait("speed", 0.25, 1, 1, 10, 1);
     }
 
     private Builder simple(HolderLookup.Provider provider, String id, String name, Fluid fluid) {
         return builder(provider, id, name)
-                .fluidProduct(fluid, 1000, 1000)//TODO, this is not going to work with fabric... Maybe I should use mb for this even on fabric?
+                .fluidProduct(fluid, 1000, 1000, 6000, 12000)//TODO, this is not going to work with fabric... Maybe I should use mb for this even on fabric?
                 .trait("speed", 0.25, 1, 1, 10, 1);
     }
 
@@ -229,13 +229,13 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
             return this;
         }
 
-        public Builder itemProduct(Item item, int min, int max) {
-            this.product = new ChickenProduct(item.builtInRegistryHolder().key().location(), ChickenProduct.Type.ITEM, min, max);
+        public Builder itemProduct(Item item, int min, int max, int minLayTime, int maxLayTime) {
+            this.product = new ChickenProduct(item.builtInRegistryHolder().key().location(), ChickenProduct.Type.ITEM, min, max, minLayTime, maxLayTime);
             return this;
         }
 
-        public Builder fluidProduct(Fluid fluid, int min, int max) {
-            this.product = new ChickenProduct(fluid.builtInRegistryHolder().key().location(), ChickenProduct.Type.FLUID, min, max);
+        public Builder fluidProduct(Fluid fluid, int min, int max, int minLayTime, int maxLayTime) {
+            this.product = new ChickenProduct(fluid.builtInRegistryHolder().key().location(), ChickenProduct.Type.FLUID, min, max, minLayTime, maxLayTime);
             return this;
         }
 

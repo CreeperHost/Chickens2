@@ -104,17 +104,17 @@ public class Chickens
     private static EventResult onEntityInteract(Player player, Entity entity, InteractionHand interactionHand)
     {
         Level level = player.level();
-        if (!level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND) {
-            for (ChickenVariant variant : ChickenDataManager.getVariants()) {
-                for (int i = 0; i < 2; i++) {
-                    ChickensChicken chicken = new ChickensChicken(ModEntities.CHICKEN.get(), player.level());
-                    chicken.setChickenVariant(variant);
-                    chicken.setRooster(i == 1);
-                    chicken.setPos(player.getX() - 3 + level.random.nextInt(6), player.getY(), player.getZ() - 3 + level.random.nextInt(6));
-                    player.level().addFreshEntity(chicken);
-                }
-            }
-        }
+//        if (!level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND) {
+//            for (ChickenVariant variant : ChickenDataManager.getVariants()) {
+//                for (int i = 0; i < 2; i++) {
+//                    ChickensChicken chicken = new ChickensChicken(ModEntities.CHICKEN.get(), player.level());
+//                    chicken.setChickenVariant(variant);
+//                    chicken.setRooster(i == 1);
+//                    chicken.setPos(player.getX() - 3 + level.random.nextInt(6), player.getY(), player.getZ() - 3 + level.random.nextInt(6));
+//                    player.level().addFreshEntity(chicken);
+//                }
+//            }
+//        }
         if(!player.getItemInHand(interactionHand).isEmpty())
         {
             for (ChickenTransformationRecipe transformationRecipe : ChickenAPI.TRANSFORMATION_RECIPES)

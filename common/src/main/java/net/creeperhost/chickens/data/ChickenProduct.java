@@ -8,7 +8,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ByIdMap;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 
 import java.util.function.IntFunction;
@@ -16,21 +15,25 @@ import java.util.function.IntFunction;
 /**
  * Created by brandon3055 on 10/11/2025
  *
- * @param id   Item or Fluid registry name
- * @param type (ITEM, FLUID)
- * @param min  Minimum amount that can be obtained from an egg (Integer stack size / millibuckets)
- * @param max  Maximum amount that can be obtained from an egg (Integer stack size / millibuckets)
- *             Amount obtained will be a random value between min and max
+ * @param id         Item or Fluid registry name
+ * @param type       (ITEM, FLUID)
+ * @param min        Minimum amount that can be obtained from an egg (Integer stack size / millibuckets)
+ * @param max        Maximum amount that can be obtained from an egg (Integer stack size / millibuckets)
+ *                   Amount obtained will be a random value between min and max
+ * @param minLayTime The minimum lay time before traits are applied.
+ * @param maxLayTime The maximum lay time before traits are applied.
  */
-public record ChickenProduct(ResourceLocation id, Type type, int min, int max) {
+public record ChickenProduct(ResourceLocation id, Type type, int min, int max, int minLayTime, int maxLayTime) {
 
-    public static final ChickenProduct EMPTY = new ChickenProduct(ResourceLocation.withDefaultNamespace("air"), Type.ITEM, 0, 0);
+    public static final ChickenProduct EMPTY = new ChickenProduct(ResourceLocation.withDefaultNamespace("air"), Type.ITEM, 0, 0, 0, 0);
 
     public static final Codec<ChickenProduct> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(ChickenProduct::id),
             Type.CODEC.fieldOf("type").forGetter(ChickenProduct::type),
             Codec.INT.fieldOf("min").forGetter(ChickenProduct::min),
-            Codec.INT.fieldOf("max").forGetter(ChickenProduct::max)
+            Codec.INT.fieldOf("max").forGetter(ChickenProduct::max),
+            Codec.INT.fieldOf("minLayTime").forGetter(ChickenProduct::max),
+            Codec.INT.fieldOf("maxLayTime").forGetter(ChickenProduct::max)
     ).apply(builder, ChickenProduct::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChickenProduct> STREAM_CODEC = StreamCodec.composite(
@@ -38,6 +41,8 @@ public record ChickenProduct(ResourceLocation id, Type type, int min, int max) {
             Type.STREAM_CODEC, ChickenProduct::type,
             ByteBufCodecs.INT, ChickenProduct::min,
             ByteBufCodecs.INT, ChickenProduct::max,
+            ByteBufCodecs.INT, ChickenProduct::minLayTime,
+            ByteBufCodecs.INT, ChickenProduct::maxLayTime,
             ChickenProduct::new
     );
 

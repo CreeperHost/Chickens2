@@ -5,6 +5,7 @@
   "client": [
   ],
   "mixins": [
+    "ChickenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

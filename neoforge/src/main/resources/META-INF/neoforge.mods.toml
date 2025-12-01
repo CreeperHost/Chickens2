@@ -39,3 +39,6 @@ type="required"
 versionRange = "[2106.1.0,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[mixins]]
+config = "chickens-common.mixins.json"

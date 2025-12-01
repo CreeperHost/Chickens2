@@ -1,8 +1,11 @@
 package net.creeperhost.chickens.entity;
 
+import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.ChickensPlatform;
 import net.creeperhost.chickens.data.ChickenDataManager;
+import net.creeperhost.chickens.data.ChickenProduct;
 import net.creeperhost.chickens.data.ChickenVariant;
+import net.creeperhost.chickens.init.ModEntities;
 import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -43,12 +46,6 @@ public class ChickensChicken extends Chicken {
         builder.define(CHICKEN_VARIANT, ChickenVariant.MISSING.id());//TODO, would like to pick a random naturally spawned chicken, but need to figure out spawning first.
         builder.define(IS_ROOSTER, false);
         builder.define(TRAITS, new HashMap<>());
-    }
-
-    @Override
-    public void aiStep() {
-        if (isRooster()) eggTime = 2;
-        super.aiStep();
     }
 
     public void setRooster(boolean isRooster) {
@@ -99,7 +96,15 @@ public class ChickensChicken extends Chicken {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, EntitySpawnReason entitySpawnReason, @Nullable SpawnGroupData spawnGroupData) {
-        //TODO Set spawn variant based on biome/dimension etc.
+        ChickenVariant variant = ChickenDataManager.getVariantForSpawn(serverLevelAccessor, blockPosition());
+        if (variant == null) {
+            remove(RemovalReason.DISCARDED);
+            Chickens.LOGGER.warn("No valid chicken variant found for spawn biome {}, chicken will be discarded.", serverLevelAccessor.getBiome(blockPosition()));
+        } else {
+            setChickenVariant(variant);
+            //TODO setup initial traits
+        }
+        setRooster(serverLevelAccessor.getRandom().nextBoolean());
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, entitySpawnReason, spawnGroupData);
     }
 
@@ -142,4 +147,34 @@ public class ChickensChicken extends Chicken {
         });
         setTraits(traitMap);
     }
+
+    //=== Custom Chicken Logic ===//
+
+    @Override
+    public void aiStep() {
+        super.aiStep(); //Default egg logic is disabled via mixin
+
+        ChickenVariant variant = getChickenVariant();
+        ChickenProduct product = variant.product();
+        if (isRooster() || variant == ChickenVariant.MISSING || product == ChickenProduct.EMPTY) {
+            eggTime = 0;
+        } else if (eggTime-- <= 0) {
+            eggTime = product.minLayTime() + random.nextInt(Math.max(product.maxLayTime() - product.minLayTime(), 1));
+
+            getTraits().forEach((location, value) -> {
+                Trait trait = Trait.fromId(location);
+                if (trait != null) {
+                    eggTime = (int) (eggTime * trait.getLaySpeedModifier(value));
+                }
+            });
+
+
+
+        }
+    }
+
+
+
+
+
 }

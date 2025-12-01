@@ -6,7 +6,9 @@
     "type": "ITEM",
     "id": "minecraft:emerald",
     "max": 1,
-    "min": 1
+    "maxLayTime": 1,
+    "min": 1,
+    "minLayTime": 1
   },
   "texture": "chickens:textures/entity/emerald_chicken.png",
   "traitConfigs": [

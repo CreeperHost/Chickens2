@@ -2,6 +2,7 @@ package net.creeperhost.chickens.init;
 
 import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.trait.SimpleTrait;
+import net.creeperhost.chickens.trait.SpeedTrait;
 import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +20,7 @@ public class ChickenTraits {
     private static final Map<ResourceLocation, Trait> TRAITS = new HashMap<>();
 
 
-    public static final Trait SPEED         = register("speed", SimpleTrait::new);
+    public static final Trait SPEED         = register("speed", SpeedTrait::new);
     public static final Trait PRODUCTION    = register("production", SimpleTrait::new);
     public static final Trait GROWTH        = register("growth", SimpleTrait::new);
     public static final Trait LIFESPAN      = register("lifespan", SimpleTrait::new);

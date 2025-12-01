@@ -6,7 +6,9 @@
     "type": "ITEM",
     "id": "minecraft:iron_ingot",
     "max": 1,
-    "min": 1
+    "maxLayTime": 1,
+    "min": 1,
+    "minLayTime": 1
   },
   "texture": "chickens:textures/entity/iron_chicken.png",
   "traitConfigs": [

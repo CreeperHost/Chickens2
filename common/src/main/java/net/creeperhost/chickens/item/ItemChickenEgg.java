@@ -3,6 +3,7 @@ package net.creeperhost.chickens.item;
 import net.creeperhost.chickens.api.ChickenStats;
 import net.creeperhost.chickens.api.ChickensRegistry;
 import net.creeperhost.chickens.api.ChickensRegistryItem;
+import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.init.ModComponentTypes;
 import net.creeperhost.chickens.init.ModItems;
 import net.minecraft.ChatFormatting;
@@ -28,23 +29,21 @@ public class ItemChickenEgg extends Item
     }
 
     @Override
-    public @NotNull Component getName(@NotNull ItemStack itemStack)
-    {
-        ChickensRegistryItem item = getType(itemStack);
-        if (item == null) {
-            return Component.translatable("item.chickens.egg.name");
+    public @NotNull Component getName(ItemStack stack) {
+        ChickenData data = ChickenData.fromItem(stack);
+        if (data == null) {
+            return super.getName(stack);
         }
-        String name = item.getEntityName().replace("_", " ") + " egg";
-        String first = name.substring(0, 1).toUpperCase();
-        String formatted = first + name.substring(1);
-        return Component.literal(formatted);
+        return Component.translatable("item.chickens.egg.name", data.variant().name());
     }
 
+    @Deprecated
     public static ItemStack of(ChickensRegistryItem chickensRegistryItem)
     {
         return of(chickensRegistryItem, true);
     }
 
+    @Deprecated
     public static ItemStack of(ChickensRegistryItem chickensRegistryItem, boolean viable)
     {
         ItemStack stack = new ItemStack(ModItems.CHICKEN_EGG.get());
@@ -55,6 +54,7 @@ public class ItemChickenEgg extends Item
         return stack;
     }
 
+    @Deprecated
     @Nullable
     public ChickensRegistryItem getType(ItemStack stack)
     {
@@ -74,32 +74,38 @@ public class ItemChickenEgg extends Item
         return value.get();
     }
 
+    @Deprecated
     public int getProgress(ItemStack stack)
     {
         return stack.getOrDefault(ModComponentTypes.EGG_PROGRESS.get(), 0);
     }
 
+    @Deprecated
     public void setProgress(ItemStack stack, int amount)
     {
         stack.set(ModComponentTypes.EGG_PROGRESS.get(), amount);
     }
 
+    @Deprecated
     public void incrementMissed(ItemStack stack)
     {
         int value = stack.getOrDefault(ModComponentTypes.EGG_MISSED.get(), 0) + 1;
         stack.set(ModComponentTypes.EGG_MISSED.get(), value);
     }
 
+    @Deprecated
     public int getMissedCycles(ItemStack stack)
     {
         return stack.getOrDefault(ModComponentTypes.EGG_MISSED.get(), 0);
     }
 
+    @Deprecated
     public void setNotViable(ItemStack stack)
     {
         stack.set(ModComponentTypes.EGG_VIABLE.get(), false);
     }
 
+    @Deprecated
     public boolean isViable(ItemStack stack)
     {
         return stack.getOrDefault(ModComponentTypes.EGG_VIABLE.get(), false);
