@@ -7,13 +7,13 @@ import net.creeperhost.chickens.init.ModEntities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricTrackedDataRegistry;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -33,6 +33,10 @@ public class ChickensModFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        Chickens.TRAIT_REGISTRY = FabricRegistryBuilder.createSimple(Chickens.TRAIT_KEY)
+                .attribute(RegistryAttribute.SYNCED)
+                .buildAndRegister();
+
         Chickens.init();
         if(Platform.getEnv() == EnvType.CLIENT) {
             FabricClient.init();
@@ -64,7 +68,6 @@ public class ChickensModFabric implements ModInitializer {
 
 //            ModEntities.CHICKENS.forEach((chickensRegistryItem, entityTypeSupplier) -> ModEntities.registerSpawnFabric(entityTypeSupplier.get(), chickensRegistryItem));
 //            SpawnPlacements.register(ModEntities.ROOSTER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ModEntities::checkChickenSpawnRules);
-
     }
 }
 

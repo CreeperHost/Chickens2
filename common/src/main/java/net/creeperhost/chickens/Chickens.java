@@ -9,41 +9,36 @@ import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import net.creeperhost.chickens.api.ChickenAPI;
 import net.creeperhost.chickens.api.ChickenTransformationRecipe;
 import net.creeperhost.chickens.api.ChickensRegistry;
-import net.creeperhost.chickens.api.ChickensRegistryItem;
-import net.creeperhost.chickens.config.ChickenConfig;
 import net.creeperhost.chickens.config.Config;
-import net.creeperhost.chickens.data.ChickenDataManager;
-import net.creeperhost.chickens.data.ChickenVariant;
-import net.creeperhost.chickens.entity.ChickensChicken;
 import net.creeperhost.chickens.entity.EggTimer;
-import net.creeperhost.chickens.entity.EntityChickensChicken;
 import net.creeperhost.chickens.init.*;
 import net.creeperhost.chickens.network.PacketHandler;
-import net.creeperhost.chickens.polylib.ItemHolder;
+import net.creeperhost.chickens.trait.Trait;
 import net.creeperhost.polylib.PolyLib;
 import net.fabricmc.api.EnvType;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
-public class Chickens
-{
+public class Chickens {
     public static final String MOD_ID = "chickens";
     public static final Logger LOGGER = LogManager.getLogger();
     public static final File CONFIG_DIR = new File("config/chickens");
     public static final File CONFIG_FILE = new File(CONFIG_DIR, "chickens.json");
+
+    public static final ResourceKey<Registry<Trait>> TRAIT_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "trait"));
+    public static Registry<Trait> TRAIT_REGISTRY;
 
     public static void init()
     {
@@ -78,6 +73,7 @@ public class Chickens
         ModBlocks.TILES_ENTITIES.register();
         ModItems.ITEMS.register();
         ModItems.TABS.register();
+        ChickenTraits.TRAITS.register();
         ModContainers.CONTAINERS.register();
         ModSounds.SOUNDS.register();
         ModComponentTypes.COMPONENTS.register();

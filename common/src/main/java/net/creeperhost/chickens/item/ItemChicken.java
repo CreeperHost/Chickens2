@@ -78,13 +78,11 @@ public class ItemChicken extends Item {
 
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
-        super.appendHoverText(itemStack, tooltipContext, tooltipDisplay, consumer, tooltipFlag);
         ChickenData data = ChickenData.fromItem(itemStack);
+        if (data == null) return;
         if (Screen.hasShiftDown()) {
-            for (Trait.State state : data.traits()) {
-                Trait trait = Trait.fromId(state.id());
-                if (trait == null) continue;
-                trait.appendHoverText(consumer, state.value());
+            for (Trait.StateValue state : data.traits()) {
+                state.trait().appendHoverText(consumer, state.value());
             }
         } else {
             consumer.accept(Component.translatable("screen.shift.tooltip"));

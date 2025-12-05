@@ -9,9 +9,7 @@ import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -24,34 +22,34 @@ import java.util.Map;
  * <p>
  * Created by brandon3055 on 01/12/2025
  */
-public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.State> traits, EntityData entityData) {
+public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.StateValue> traits, EntityData entityData) {
 
     public static final Codec<ChickenData> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             ChickenVariant.CODEC.fieldOf("variant").forGetter(ChickenData::variant),
             Codec.BOOL.fieldOf("isRooster").forGetter(ChickenData::isRooster),
-            Trait.State.CODEC.listOf().fieldOf("traits").forGetter(ChickenData::traits),
+            Trait.StateValue.CODEC.listOf().fieldOf("traits").forGetter(ChickenData::traits),
             EntityData.CODEC.fieldOf("entityData").forGetter(ChickenData::entityData)
     ).apply(builder, ChickenData::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChickenData> STREAM_CODEC = StreamCodec.composite(
             ChickenVariant.STREAM_CODEC, ChickenData::variant,
             ByteBufCodecs.BOOL, ChickenData::isRooster,
-            Trait.State.STREAM_CODEC.apply(ByteBufCodecs.list()), ChickenData::traits,
+            Trait.StateValue.STREAM_CODEC.apply(ByteBufCodecs.list()), ChickenData::traits,
             EntityData.STREAM_CODEC, ChickenData::entityData,
             ChickenData::new
     );
 
     public static ChickenData fromEntity(ChickensChicken chicken) {
-        List<Trait.State> traits = new ArrayList<>();
-        chicken.getTraits().forEach((location, value) -> traits.add(new Trait.State(location, value)));
+        List<Trait.StateValue> traits = new ArrayList<>();
+        chicken.getTraits().forEach((trait, value) -> traits.add(new Trait.StateValue(trait, value)));
         return new ChickenData(chicken.getChickenVariant(), chicken.isRooster(), traits, EntityData.fromChicken(chicken));
     }
 
     public void apply(ChickensChicken chicken) {
         chicken.setChickenVariant(variant);
         chicken.setRooster(isRooster);
-        Map<ResourceLocation, Double> traitMap = new HashMap<>();
-        traits.forEach(state -> traitMap.put(state.id(), state.value()));
+        Map<Trait, Double> traitMap = new HashMap<>();
+        traits.forEach(state -> traitMap.put(state.trait(), state.value()));
         chicken.setTraits(traitMap);
         entityData.apply(chicken);
     }

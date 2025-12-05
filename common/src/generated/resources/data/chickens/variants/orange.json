@@ -16,9 +16,9 @@
       "evoExpo": 1.0,
       "evoLimit": 10.0,
       "evoRate": 1.0,
-      "id": "speed",
       "spawnMax": 1.0,
-      "spawnMin": 0.25
+      "spawnMin": 0.25,
+      "trait": "chickens:speed"
     }
   ]
 }

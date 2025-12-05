@@ -20,7 +20,7 @@ import java.util.Optional;
  * @param texture      Texture resource location
  * @param product      Product this chicken creates (Will need a product class that can handle items and fluids and stuff)
  * @param eggColour    Egg colour rgb
- * @param traitConfigs List of trait configs
+ * @param traitConfigs List of holder configs
  * @param parent1      First parent variant required to breed this chicken.
  * @param parent2      Second parent variant required to breed this chicken.
  */

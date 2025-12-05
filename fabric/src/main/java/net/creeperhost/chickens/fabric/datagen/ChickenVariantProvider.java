@@ -5,6 +5,8 @@ import net.creeperhost.chickens.data.ChickenProduct;
 import net.creeperhost.chickens.data.ChickenSpawn;
 import net.creeperhost.chickens.data.ChickenVariant;
 import net.creeperhost.chickens.data.TraitConfig;
+import net.creeperhost.chickens.init.ChickenTraits;
+import net.creeperhost.chickens.trait.Trait;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderLookup;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.material.Fluids;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 /**
  * This is based on Fabric's FabricCodecDataProvider
@@ -171,13 +174,13 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
     private Builder simple(HolderLookup.Provider provider, String id, String name, Item item) {
         return builder(provider, id, name)
                 .itemProduct(item, 1, 1, 6000, 12000)
-                .trait("speed", 0.25, 1, 1, 10, 1);
+                .trait(ChickenTraits.SPEED, 0.25, 1, 1, 10, 1);
     }
 
     private Builder simple(HolderLookup.Provider provider, String id, String name, Fluid fluid) {
         return builder(provider, id, name)
                 .fluidProduct(fluid, 1000, 1000, 6000, 12000)//TODO, this is not going to work with fabric... Maybe I should use mb for this even on fabric?
-                .trait("speed", 0.25, 1, 1, 10, 1);
+                .trait(ChickenTraits.SPEED, 0.25, 1, 1, 10, 1);
     }
 
     @Override
@@ -244,11 +247,15 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
             return this;
         }
 
-        public Builder trait(String id, double spawnMin, double spawnMax, double evoRate, double evoLimit, double evoExpo) {
+        public Builder trait(Supplier<Trait> trait, double spawnMin, double spawnMax, double evoRate, double evoLimit, double evoExpo) {
+            return trait(trait.get(), spawnMin, spawnMax, evoRate, evoLimit, evoExpo);
+        }
+
+        public Builder trait(Trait trait, double spawnMin, double spawnMax, double evoRate, double evoLimit, double evoExpo) {
             traits.forEach(e -> {
-                if (e.id().endsWith(id)) throw new IllegalArgumentException("Duplicate trait for chicken " + Builder.this.id + ", trait: " + id);
+                if (e.trait() == trait) throw new IllegalArgumentException("Duplicate holder for chicken " + Builder.this.id + ", holder: " + id);
             });
-            traits.add(new TraitConfig(id, spawnMin, spawnMax, evoRate, evoLimit, evoExpo));
+            traits.add(new TraitConfig(trait, spawnMin, spawnMax, evoRate, evoLimit, evoExpo));
             return this;
         }
 

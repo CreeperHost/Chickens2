@@ -2,6 +2,7 @@ package net.creeperhost.chickens;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
+import net.creeperhost.chickens.trait.Trait;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.Holder;
@@ -58,7 +59,7 @@ public class ChickensPlatform
     }
 
     @ExpectPlatform
-    public static EntityDataSerializer<Map<ResourceLocation, Double>> getTraitSerializer() {
+    public static EntityDataSerializer<Map<Trait, Double>> getTraitSerializer() {
         throw new AssertionError();
     }
 }

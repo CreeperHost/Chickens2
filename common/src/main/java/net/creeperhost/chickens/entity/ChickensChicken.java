@@ -5,12 +5,10 @@ import net.creeperhost.chickens.ChickensPlatform;
 import net.creeperhost.chickens.data.ChickenDataManager;
 import net.creeperhost.chickens.data.ChickenProduct;
 import net.creeperhost.chickens.data.ChickenVariant;
-import net.creeperhost.chickens.init.ModEntities;
 import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -34,7 +32,7 @@ public class ChickensChicken extends Chicken {
 
     private static final EntityDataAccessor<String> CHICKEN_VARIANT = SynchedEntityData.defineId(ChickensChicken.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Boolean> IS_ROOSTER = SynchedEntityData.defineId(ChickensChicken.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Map<ResourceLocation, Double>> TRAITS = SynchedEntityData.defineId(ChickensChicken.class, ChickensPlatform.getTraitSerializer());
+    private static final EntityDataAccessor<Map<Trait, Double>> TRAITS = SynchedEntityData.defineId(ChickensChicken.class, ChickensPlatform.getTraitSerializer());
 
     public ChickensChicken(EntityType<? extends Chicken> entityType, Level level) {
         super(entityType, level);
@@ -72,25 +70,25 @@ public class ChickensChicken extends Chicken {
         return this.entityData.get(CHICKEN_VARIANT);
     }
 
-    public Map<ResourceLocation, Double> getTraits() {
+    public Map<Trait, Double> getTraits() {
         return this.entityData.get(TRAITS);
     }
 
-    public void setTraits(Map<ResourceLocation, Double> traits) {
+    public void setTraits(Map<Trait, Double> traits) {
         this.entityData.set(TRAITS, traits);
     }
 
     public boolean hasTrait(Trait trait) {
-        return getTraits().containsKey(trait.getId());
+        return getTraits().containsKey(trait);
     }
 
     public double getTraitValue(Trait trait) {
-        return getTraits().getOrDefault(trait.getId(), -1D);
+        return getTraits().getOrDefault(trait, -1D);
     }
 
     public void setTrait(Trait trait, double value) {
-        Map<ResourceLocation, Double> traits = getTraits();
-        traits.put(trait.getId(), value);
+        Map<Trait, Double> traits = getTraits();
+        traits.put(trait, value);
         setTraits(traits);
     }
 
@@ -123,9 +121,9 @@ public class ChickensChicken extends Chicken {
         output.putBoolean("is_rooster", isRooster());
 
         ValueOutput.ValueOutputList traits = output.childrenList("traits");
-        getTraits().forEach((name, value) -> {
+        getTraits().forEach((trait, value) -> {
             ValueOutput entry = traits.addChild();
-            entry.putString("name", name.toString());
+            entry.store("trait", Chickens.TRAIT_REGISTRY.byNameCodec(), trait);
             entry.putDouble("value", value);
         });
     }
@@ -136,14 +134,15 @@ public class ChickensChicken extends Chicken {
         setVariantString(input.getStringOr("chicken_variant", ChickenVariant.MISSING.id()));
         setRooster(input.getBooleanOr("is_rooster", false));
 
-        Map<ResourceLocation, Double> traitMap = new HashMap<>();
+        Map<Trait, Double> traitMap = new HashMap<>();
         ValueInput.ValueInputList traits = input.childrenListOrEmpty("traits");
         traits.forEach(entry -> {
-            entry.getString("name").ifPresent(s -> {
-                ResourceLocation name = ResourceLocation.parse(s);
-                double value = entry.getDoubleOr("value", 0);
-                traitMap.put(name, value);
-            });
+            entry.read("trait", Chickens.TRAIT_REGISTRY.holderByNameCodec())
+                    .ifPresent(holder -> {
+                        Trait trait = holder.value();
+                        double value = entry.getDoubleOr("value", 0);
+                        traitMap.put(trait, value);
+                    });
         });
         setTraits(traitMap);
     }
@@ -161,20 +160,11 @@ public class ChickensChicken extends Chicken {
         } else if (eggTime-- <= 0) {
             eggTime = product.minLayTime() + random.nextInt(Math.max(product.maxLayTime() - product.minLayTime(), 1));
 
-            getTraits().forEach((location, value) -> {
-                Trait trait = Trait.fromId(location);
-                if (trait != null) {
-                    eggTime = (int) (eggTime * trait.getLaySpeedModifier(value));
-                }
+            getTraits().forEach((trait, value) -> {
+                eggTime = (int) (eggTime * trait.getLaySpeedModifier(value));
             });
-
-
-
         }
     }
-
-
-
 
 
 }
