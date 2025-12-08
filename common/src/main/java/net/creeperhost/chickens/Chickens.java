@@ -44,47 +44,20 @@ public class Chickens {
     {
         PolyLib.initPolyItemData();
         Config.init();
-//        for (ChickenConfig chickenConfig : Config.INSTANCE.chickens)
-//        {
-//            ResourceLocation texture = ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/" + ResourceLocation.parse(chickenConfig.name).getPath() + ".png");
-//            //Special case for the vanilla chicken as we don't want to ship this texture
-//            if(chickenConfig.name.equalsIgnoreCase(ChickensRegistry.VANILLA_CHICKEN.toString()))
-//            {
-//                texture = ResourceLocation.withDefaultNamespace("textures/entity/chicken.png");
-//            }
-//
-//            ChickensRegistryItem chickensRegistryItem = new ChickensRegistryItem(
-//                    ResourceLocation.parse(chickenConfig.name),
-//                    ResourceLocation.parse(chickenConfig.name).getPath(),
-//                    texture,
-//                    new ItemHolder(chickenConfig.lay_item.getType(), chickenConfig.lay_item.getId(), chickenConfig.lay_item.getNbt(), chickenConfig.lay_item.getQuantity()),
-//                    chickenConfig.colour,
-//                    chickenConfig.lay_coefficient,
-//                    chickenConfig.breed_speed_multiplier,
-//                    ChickensRegistry.getByResourceLocation(ResourceLocation.parse(chickenConfig.parent_1)),
-//                    ChickensRegistry.getByResourceLocation(ResourceLocation.parse(chickenConfig.parent_2))
-//            );
-//            ChickensRegistry.register(chickensRegistryItem);
-//        }
-        ChickensRegistry.register(ModChickens.ROOSTER);
 
         ModBlocks.BLOCKS.register();
         ModEntities.ENTITIES.register();
         ModBlocks.TILES_ENTITIES.register();
         ModItems.ITEMS.register();
         ModItems.TABS.register();
-        ChickenTraits.TRAITS.register();
         ModContainers.CONTAINERS.register();
         ModSounds.SOUNDS.register();
         ModComponentTypes.COMPONENTS.register();
-
 
         if (Platform.getEnv() == EnvType.CLIENT) {
             ClientLifecycleEvent.CLIENT_SETUP.register(ChickensClient::clientSetup);
         }
 
-//        ModEntities.CHICKENS.forEach((chickensRegistryItem, entityTypeSupplier) -> EntityAttributeRegistry.register(entityTypeSupplier, EntityChickensChicken::prepareAttributes));
-//        EntityAttributeRegistry.register(ModEntities.ROOSTER, EntityChickensChicken::prepareAttributes);
         EntityAttributeRegistry.register(ModEntities.CHICKEN, Chicken::createAttributes);
 
         InteractionEvent.INTERACT_ENTITY.register(Chickens::onEntityInteract);
@@ -95,6 +68,9 @@ public class Chickens {
         LifecycleEvent.SETUP.register(ModRecipes::init);
     }
 
+    public static void register() {
+        ChickenTraits.TRAITS.register();
+    }
 
 
     private static EventResult onEntityInteract(Player player, Entity entity, InteractionHand interactionHand)

@@ -3,6 +3,7 @@ package net.creeperhost.chickens.fabric;
 import net.creeperhost.chickens.ChickensPlatform;
 import net.creeperhost.chickens.init.ModBlocks;
 import net.creeperhost.chickens.item.ItemChicken;
+import net.creeperhost.chickens.trait.Trait;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.fabricmc.loader.api.FabricLoader;
@@ -55,7 +56,7 @@ public class ChickensPlatformImpl
         BlockRenderLayerMap.putBlocks(layer, block);
     }
 
-    public static EntityDataSerializer<Map<ResourceLocation, Double>> getTraitSerializer() {
+    public static EntityDataSerializer<Map<Trait, Double>> getTraitSerializer() {
         return ChickensModFabric.TRAIT_SERIALIZER;
     }
 }

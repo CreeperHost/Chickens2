@@ -5,6 +5,7 @@ import net.creeperhost.chickens.ChickensPlatform;
 import net.creeperhost.chickens.data.ChickenDataManager;
 import net.creeperhost.chickens.data.ChickenProduct;
 import net.creeperhost.chickens.data.ChickenVariant;
+import net.creeperhost.chickens.data.TraitConfig;
 import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -93,17 +94,20 @@ public class ChickensChicken extends Chicken {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, EntitySpawnReason entitySpawnReason, @Nullable SpawnGroupData spawnGroupData) {
-        ChickenVariant variant = ChickenDataManager.getVariantForSpawn(serverLevelAccessor, blockPosition());
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficultyInstance, EntitySpawnReason entitySpawnReason, @Nullable SpawnGroupData spawnGroupData) {
+        ChickenVariant variant = ChickenDataManager.getVariantForSpawn(level, blockPosition());
         if (variant == null) {
             remove(RemovalReason.DISCARDED);
-            Chickens.LOGGER.warn("No valid chicken variant found for spawn biome {}, chicken will be discarded.", serverLevelAccessor.getBiome(blockPosition()));
+            Chickens.LOGGER.warn("No valid chicken variant found for spawn biome {}, chicken will be discarded.", level.getBiome(blockPosition()));
         } else {
             setChickenVariant(variant);
-            //TODO setup initial traits
+            for (TraitConfig config : variant.traitConfigs()) {
+                double value = config.spawnMin() + ((config.spawnMax() - config.spawnMin()) * level.getRandom().nextDouble());
+                setTrait(config.trait(), value);
+            }
         }
-        setRooster(serverLevelAccessor.getRandom().nextBoolean());
-        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, entitySpawnReason, spawnGroupData);
+        setRooster(level.getRandom().nextBoolean());
+        return super.finalizeSpawn(level, difficultyInstance, entitySpawnReason, spawnGroupData);
     }
 
     @Override

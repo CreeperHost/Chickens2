@@ -4,6 +4,7 @@ import dev.architectury.platform.Platform;
 import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.data.ChickenDataManager;
 import net.creeperhost.chickens.init.ModEntities;
+import net.creeperhost.chickens.trait.Trait;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -29,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class ChickensModFabric implements ModInitializer {
-    public static final EntityDataSerializer<Map<ResourceLocation, Double>> TRAIT_SERIALIZER = EntityDataSerializer.forValueType(ByteBufCodecs.map(HashMap::new, ResourceLocation.STREAM_CODEC, ByteBufCodecs.DOUBLE));
+    public static final EntityDataSerializer<Map<Trait, Double>> TRAIT_SERIALIZER = EntityDataSerializer.forValueType(ByteBufCodecs.map(HashMap::new, ByteBufCodecs.registry(Chickens.TRAIT_KEY), ByteBufCodecs.DOUBLE));
 
     @Override
     public void onInitialize() {
@@ -38,6 +39,7 @@ public class ChickensModFabric implements ModInitializer {
                 .buildAndRegister();
 
         Chickens.init();
+        Chickens.register();
         if(Platform.getEnv() == EnvType.CLIENT) {
             FabricClient.init();
         }

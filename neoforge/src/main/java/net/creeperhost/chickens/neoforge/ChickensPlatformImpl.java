@@ -1,6 +1,7 @@
 package net.creeperhost.chickens.neoforge;
 
 import net.creeperhost.chickens.ChickensPlatform;
+import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.Holder;
@@ -53,7 +54,7 @@ public class ChickensPlatformImpl
         ItemBlockRenderTypes.setRenderLayer(block, layer);
     }
 
-    public static EntityDataSerializer<Map<ResourceLocation, Double>> getTraitSerializer() {
+    public static EntityDataSerializer<Map<Trait, Double>> getTraitSerializer() {
         return ChickensModNeoForge.TRAIT_SERIALIZER.get();
     }
 }
