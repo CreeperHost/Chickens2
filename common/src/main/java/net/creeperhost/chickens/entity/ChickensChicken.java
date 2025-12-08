@@ -66,6 +66,14 @@ public class ChickensChicken extends Chicken {
         }
     }
 
+    public static boolean checkSpawnRules(EntityType<? extends Animal> entityType, LevelAccessor levelAccessor, EntitySpawnReason spawnReason, BlockPos blockPos, RandomSource randomSource) {
+        if (!ChickenDataManager.isValidSpawnBiome(levelAccessor.getBiome(blockPos))) {
+            return false;
+        }
+        BlockPos spawnOn = blockPos.below();
+        return levelAccessor.getBlockState(spawnOn).isFaceSturdy(levelAccessor, spawnOn, Direction.UP);
+    }
+
     public void setRooster(boolean isRooster) {
         this.entityData.set(IS_ROOSTER, isRooster);
     }

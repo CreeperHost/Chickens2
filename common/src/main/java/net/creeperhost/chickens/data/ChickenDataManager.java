@@ -25,6 +25,7 @@ public class ChickenDataManager extends SimpleJsonResourceReloadListener<Chicken
     public static final ChickenDataManager INSTANCE = new ChickenDataManager();
     private final Map<String, ChickenVariant> variants = new HashMap<>();
     private final List<SpawnData> spawns = new ArrayList<>();
+    private final Set<TagKey<Biome>> biomes = new HashSet<>();
 
     public ChickenDataManager() {
         super(ChickenVariant.CODEC, FileToIdConverter.json("variants"));
@@ -63,7 +64,20 @@ public class ChickenDataManager extends SimpleJsonResourceReloadListener<Chicken
             variants.put(variant.id(), variant);
             variant.spawn().ifPresent(e -> spawns.add(new SpawnData(variant, e)));
         });
+        for (SpawnData data : spawns) {
+            biomes.addAll(data.spawn().biomes());
+        }
+
         Chickens.LOGGER.info("Loaded {} entity chicken variants", variants.size());
+    }
+
+    public static boolean isValidSpawnBiome(Holder<Biome> biome) {
+        for (TagKey<Biome> biomeTag : INSTANCE.biomes) {
+            if (biome.is(biomeTag)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private record SpawnData(ChickenVariant variant, ChickenSpawn spawn) {

@@ -12,7 +12,8 @@
   },
   "spawn": {
     "biomes": [
-      "minecraft:is_overworld"
+      "minecraft:is_forest",
+      "c:is_forest"
     ],
     "weight": 10
   },

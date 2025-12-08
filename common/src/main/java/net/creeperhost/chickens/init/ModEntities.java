@@ -53,18 +53,4 @@ public class ModEntities {
 //            }
 //        }
 //    });
-
-    @Deprecated //TODO Neo now handles this neo side, still need to check if fabric works
-    public static <T extends Animal> void registerSpawnFabric(EntityType<T> entityType, ChickensRegistryItem chickensRegistryItem) {
-        if (chickensRegistryItem.isEnabled()) {
-            SpawnPlacements.register(entityType, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ModEntities::checkChickenSpawnRules);
-        }
-    }
-
-    public static boolean checkChickenSpawnRules(EntityType<? extends Animal> entityType, LevelAccessor levelAccessor, EntitySpawnReason spawnReason, BlockPos blockPos, RandomSource randomSource) {
-        if (!levelAccessor.getBiome(blockPos).is(BiomeTags.IS_OVERWORLD)) {
-            return true;
-        }
-        return Animal.checkAnimalSpawnRules(entityType, levelAccessor, spawnReason, blockPos, randomSource);
-    }
 }

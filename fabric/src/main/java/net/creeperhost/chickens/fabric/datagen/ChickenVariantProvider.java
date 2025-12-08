@@ -9,6 +9,7 @@ import net.creeperhost.chickens.init.ChickenTraits;
 import net.creeperhost.chickens.trait.Trait;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
@@ -83,7 +84,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         simple(provider, "ender", "Ender", Items.ENDER_PEARL)
                 .build(consumer);
         simple(provider, "flint", "Flint", Items.FLINT)
-                .spawn(new ChickenSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD), 10))
+                .spawn(new ChickenSpawn(List.of(BiomeTags.IS_MOUNTAIN, ConventionalBiomeTags.IS_STONY_SHORES, ConventionalBiomeTags.IS_MOUNTAIN), 10))
                 .build(consumer);
         simple(provider, "ghast", "Ghast", Items.GHAST_TEAR)
                 .build(consumer);
@@ -106,7 +107,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         simple(provider, "leather", "Leather", Items.LEATHER)
                 .build(consumer);
         simple(provider, "log", "Log", Items.OAK_LOG)
-                .spawn(new ChickenSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD), 10))
+                .spawn(new ChickenSpawn(List.of(BiomeTags.IS_FOREST, ConventionalBiomeTags.IS_FOREST), 10))
                 .build(consumer);
         simple(provider, "magma", "Magma", Items.MAGMA_CREAM)
                 .build(consumer);
@@ -121,12 +122,12 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         simple(provider, "pshard", "Prismarine Shard", Items.PRISMARINE_SHARD)
                 .build(consumer);
         simple(provider, "quartz", "Quartz", Items.QUARTZ)
-                .spawn(new ChickenSpawn(Collections.singletonList(BiomeTags.IS_NETHER), 10))
+                .spawn(new ChickenSpawn(List.of(BiomeTags.IS_NETHER, ConventionalBiomeTags.IS_NETHER), 10))
                 .build(consumer);
         simple(provider, "redstone", "Redstone", Items.REDSTONE)
                 .build(consumer);
         simple(provider, "sand", "Sand", Items.SAND)
-                .spawn(new ChickenSpawn(Collections.singletonList(BiomeTags.IS_OVERWORLD), 10))
+                .spawn(new ChickenSpawn(List.of(BiomeTags.HAS_VILLAGE_DESERT, BiomeTags.HAS_DESERT_PYRAMID, BiomeTags.IS_BEACH, ConventionalBiomeTags.IS_DESERT), 10))
                 .build(consumer);
         simple(provider, "slime", "Slime", Items.SLIME_BALL)
                 .build(consumer);
@@ -135,7 +136,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         simple(provider, "snowball", "Snowball", Items.SNOWBALL)
                 .build(consumer);
         simple(provider, "soulsand", "Soulsand", Items.SOUL_SAND)
-                .spawn(new ChickenSpawn(Collections.singletonList(BiomeTags.IS_NETHER), 10))
+                .spawn(new ChickenSpawn(List.of(BiomeTags.IS_NETHER, ConventionalBiomeTags.IS_NETHER), 10))
                 .build(consumer);
         simple(provider, "string", "String", Items.STRING)
                 .build(consumer);

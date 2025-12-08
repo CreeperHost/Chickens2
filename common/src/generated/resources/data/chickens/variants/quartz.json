@@ -12,7 +12,8 @@
   },
   "spawn": {
     "biomes": [
-      "minecraft:is_nether"
+      "minecraft:is_nether",
+      "c:is_nether"
     ],
     "weight": 10
   },

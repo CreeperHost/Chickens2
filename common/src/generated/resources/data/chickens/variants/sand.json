@@ -12,7 +12,10 @@
   },
   "spawn": {
     "biomes": [
-      "minecraft:is_overworld"
+      "minecraft:has_structure/village_desert",
+      "minecraft:has_structure/desert_pyramid",
+      "minecraft:is_beach",
+      "c:is_desert"
     ],
     "weight": 10
   },

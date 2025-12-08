@@ -10,7 +10,7 @@ ea5750e56b674c42b00724b9d5146830e1463ad0 data/chickens/variants/coal.json
 9721656efead1a9a45758ac8b768c1749d58c428 data/chickens/variants/diamond.json
 7d4e01e8c4f87cc658f875a1a998e3c837920728 data/chickens/variants/emerald.json
 e4d643f8b11b7c6120419dbb55118566f931259b data/chickens/variants/ender.json
-6a4c63f6e83dafcc1fb3542557a875ab5b76f831 data/chickens/variants/flint.json
+aeb0bc7a49f733867640d8c9b321e370916daa6d data/chickens/variants/flint.json
 226a25ab74975adf8b8aba61bb1984e48b407662 data/chickens/variants/ghast.json
 882c24b12cc5e84c2f3de42bb555d56b8a1db982 data/chickens/variants/glass.json
 2c061e2c212503453d13e91a8af5a86d78419486 data/chickens/variants/glowstone.json
@@ -25,7 +25,7 @@ d9c3d624cbbe5f70497c6b97f7054ac5cd0d4e40 data/chickens/variants/leather.json
 66ba7986d7c834b8c4f582b8ba4d559f3f5e59d0 data/chickens/variants/light_blue.json
 5cde8c43871ea43232bad8127d8def620f72db26 data/chickens/variants/light_gray.json
 aa3fcf7c6c6885a43eac7a166c6d6f3707888357 data/chickens/variants/lime.json
-ac1f246e13a2d6081872ae28e963eceaed5e5b9a data/chickens/variants/log.json
+ec14d0c97d1ba7ff8204978c09ea6443892b57ea data/chickens/variants/log.json
 e9d2eb1742076acaac42ca3ce17b56f0dfcb5d3b data/chickens/variants/magenta.json
 9ace80d29ea3c3fd6200e740a5b5c9d8fdb3e4a3 data/chickens/variants/magma.json
 e3dbb2f08b4b5667fdbac692caac831732b9aa07 data/chickens/variants/netherite.json
@@ -36,14 +36,14 @@ cc04a3555251dcd27b729f7a224fe502116c3b8a data/chickens/variants/pcrystal.json
 d8b6f7742c152b15c89d927880c2d82268cf0d26 data/chickens/variants/pink.json
 bc3230129ada202d47f6aa723ceda6743b5a5350 data/chickens/variants/pshard.json
 90caf22d52440708dbee0e75b80f5204253581ee data/chickens/variants/purple.json
-75a92499c531b0007f7d93a8e6a296316f7b7145 data/chickens/variants/quartz.json
+6eedfb323143c8e431f50cac15be6548805b7d06 data/chickens/variants/quartz.json
 c3c06140312705e332d1ca88cad0263ebcddda14 data/chickens/variants/red.json
 0447973da0e0b5b3f6bd078e9541e71c54dfe910 data/chickens/variants/redstone.json
-5fc0de173a053877100f04093db78709d2d50635 data/chickens/variants/sand.json
+d03c4d8b964a95341ff0b6593a5ad188039724a5 data/chickens/variants/sand.json
 51f9f63c0833d82378a4b9e22f24857942cefdce data/chickens/variants/slime.json
 bc2696db62e7242f6ba568e41c66ef74f42661ca data/chickens/variants/smart.json
 0a251c0c01274070b1081fb735d934688e27495f data/chickens/variants/snowball.json
-9396c8399f8a1623a9699b02dc6d4a1455763e5e data/chickens/variants/soulsand.json
+d755392b0cb22253a9f8b357c67c40a14a1c2ad4 data/chickens/variants/soulsand.json
 0a5b6e6692f8dc564eb7ae95571b3e45c4e2ac42 data/chickens/variants/string.json
 2cb2e35b15f9cdb5ce693e82264d3c9018dd4c17 data/chickens/variants/water.json
 5d32abcafd4828943070eef9fd87e63ba6b19573 data/chickens/variants/white.json

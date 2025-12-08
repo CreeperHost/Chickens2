@@ -12,7 +12,9 @@
   },
   "spawn": {
     "biomes": [
-      "minecraft:is_overworld"
+      "minecraft:is_mountain",
+      "c:is_stony_shores",
+      "c:is_mountain"
     ],
     "weight": 10
   },
