@@ -28,7 +28,7 @@ public class EggTimer {
     private static EventResult entitySpawn(Entity entity, Level level) {
         if (entity instanceof ItemEntity item) {
             ItemStack stack = item.getItem();
-            if (stack.getItem() instanceof ItemChickenEgg egg && egg.isViable(stack)) {
+            if (stack.getItem() instanceof ItemChickenEgg egg && egg.isFertilized(stack)) {
                 EGGS.put(item, System.currentTimeMillis());
             }
         }

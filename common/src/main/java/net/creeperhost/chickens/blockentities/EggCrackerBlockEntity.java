@@ -17,9 +17,6 @@ import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -30,7 +27,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class EggCrackerBlockEntity extends PolyBlockEntity implements PolyInventoryBlock, MenuProvider, PolyFluidBlock, PolyEnergyBlock, RedstoneActivatedBlock {
@@ -86,7 +82,7 @@ public class EggCrackerBlockEntity extends PolyBlockEntity implements PolyInvent
         ChickensRegistryItem type = eggItem.getType(input);
         ItemStack drop = type.getLayItemHolder().getStack();
         if (!drop.isEmpty()) {
-            if (eggItem.isViable(input)) {
+            if (eggItem.isFertilized(input)) {
                 int remaining = ContainerUtil.insertStack(drop, inventory, true);
                 if (remaining == 0) {
                     ContainerUtil.insertStack(drop, inventory);

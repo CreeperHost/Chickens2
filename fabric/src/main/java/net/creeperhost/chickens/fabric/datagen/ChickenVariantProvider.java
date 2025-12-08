@@ -174,14 +174,19 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
     private Builder simple(HolderLookup.Provider provider, String id, String name, Item item) {
         return builder(provider, id, name)
                 .itemProduct(item, 1, 1, 6000, 12000)
-                .trait(ChickenTraits.SPEED, 0.25, 1, 1, 10, 1);
+                .trait(ChickenTraits.SPEED, 0.25, 1, 0.1, 10, 1)
+                .trait(ChickenTraits.PRODUCTION, 0.25, 1, 0.1, 10, 1)
+                .trait(ChickenTraits.MATURATION, 0.25, 1, 0.1, 10, 1)
+                .trait(ChickenTraits.LIFESPAN, 0.25, 1, 0.1, 10, 1);
     }
 
     private Builder simple(HolderLookup.Provider provider, String id, String name, Fluid fluid) {
         return builder(provider, id, name)
                 .fluidProduct(fluid, 1000, 1000, 6000, 12000)//TODO, this is not going to work with fabric... Maybe I should use mb for this even on fabric?
-                .trait(ChickenTraits.SPEED, 0.25, 1, 1, 10, 1);
-    }
+                .trait(ChickenTraits.SPEED, 0.25, 1, 0.1, 10, 1)
+                .trait(ChickenTraits.PRODUCTION, 0.25, 1, 0.1, 10, 1)
+                .trait(ChickenTraits.MATURATION, 0.25, 1, 0.1, 10, 1)
+                .trait(ChickenTraits.LIFESPAN, 0.25, 1, 0.1, 10, 1);    }
 
     @Override
     public String getName() {
@@ -208,6 +213,8 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         private String parent1 = null;
         private String parent2 = null;
         private ChickenSpawn spawn = null;
+        private double inheritChance = 1;
+        private double singleInheritChance = 0.25;
 
         public Builder(HolderLookup.Provider provider, String id, String name) {
             this.provider = provider;
@@ -224,6 +231,12 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
 
         public Builder texture(ResourceLocation texture) {
             this.texture = texture;
+            return this;
+        }
+
+        public Builder setInheritChance(double inheritChance, double singleInheritChance) {
+            this.inheritChance = inheritChance;
+            this.singleInheritChance = singleInheritChance;
             return this;
         }
 
@@ -255,7 +268,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
             traits.forEach(e -> {
                 if (e.trait() == trait) throw new IllegalArgumentException("Duplicate holder for chicken " + Builder.this.id + ", holder: " + id);
             });
-            traits.add(new TraitConfig(trait, spawnMin, spawnMax, evoRate, evoLimit, evoExpo));
+            traits.add(new TraitConfig(trait, spawnMin, spawnMax, evoRate, evoLimit, evoExpo, inheritChance, singleInheritChance));
             return this;
         }
 

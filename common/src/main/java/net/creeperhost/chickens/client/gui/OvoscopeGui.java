@@ -139,7 +139,7 @@ public class OvoscopeGui extends ContainerGuiProvider<OvoscopeMenu> {
             int colour = type.getBgColor();
             randy.setSeed(menu.scanCount.get());
             int pIndex = randy.nextInt(1, 4);
-            boolean viable = eggItem.isViable(stack);
+            boolean viable = eggItem.isFertilized(stack);
 //            float progress = Math.max(0, -1F + ((System.currentTimeMillis() % 2000) / 1000F));
             float progress = menu.progress.get() / (float) Config.INSTANCE.ovoscopeProcessTime;
 

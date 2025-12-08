@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+@Deprecated
 public class ChickensRegistry
 {
     private static final Map<ResourceLocation, ChickensRegistryItem> items = new HashMap<ResourceLocation, ChickensRegistryItem>();

@@ -1,16 +1,16 @@
 package net.creeperhost.chickens.data;
 
+import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.creeperhost.chickens.Chickens;
+import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by brandon3055 on 10/11/2025
@@ -20,7 +20,7 @@ import java.util.Optional;
  * @param texture      Texture resource location
  * @param product      Product this chicken creates (Will need a product class that can handle items and fluids and stuff)
  * @param eggColour    Egg colour rgb
- * @param traitConfigs List of holder configs
+ * @param traitConfigs List of trait configs
  * @param parent1      First parent variant required to breed this chicken.
  * @param parent2      Second parent variant required to breed this chicken.
  */
@@ -53,4 +53,16 @@ public record ChickenVariant(String id, String name, ResourceLocation texture, C
             ChickenVariant::new
     );
 
+    public List<String> parents() {
+        if (parent1().isPresent() && parent2().isPresent()) {
+            return Lists.newArrayList(parent1().get(), parent2().get());
+        }
+        return Collections.emptyList();
+    }
+
+    public Map<Trait, TraitConfig> traitMap() {
+        Map<Trait, TraitConfig> map = new HashMap<>();
+        traitConfigs().forEach(e -> map.put(e.trait(), e));
+        return map;
+    }
 }

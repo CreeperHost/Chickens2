@@ -21,9 +21,6 @@ import net.creeperhost.polylib.inventory.power.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -36,7 +33,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBlock, PolyInventoryBlock, MenuProvider, PolyEnergyBlock, RedstoneActivatedBlock {
@@ -165,7 +161,7 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
 
         for (int slot = 0; slot < 9; slot++) {
             ItemStack stack = inventory.getItem(slot);
-            if (!(stack.getItem() instanceof ItemChickenEgg eggItem) || !eggItem.isViable(stack)) {
+            if (!(stack.getItem() instanceof ItemChickenEgg eggItem) || !eggItem.isFertilized(stack)) {
                 continue;
             }
 
@@ -248,7 +244,7 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
                         if (!(stack.getItem() instanceof ItemChickenEgg eggItem)) {
                             return true;
                         }
-                        return !eggItem.isViable(stack);
+                        return !eggItem.isFertilized(stack);
                     } else if (slot == 9) {
                         PolyFluidHandlerItem handler = FluidManager.getHandler(stack);
                         if (handler == null) return true;

@@ -30,8 +30,8 @@ public class RenderChickenItem {
 
         ChickenData data = ChickenData.fromItem(itemStack);
         if (data == null) {
-            ChickenVariant variant = Iterables.get(ChickenDataManager.getVariants(), (int) ((System.currentTimeMillis() / 1000) % ChickensRegistry.getItems().size()));
-            data = new ChickenData(variant, false, Collections.emptyList(), new ChickenData.EntityData(0, 0));
+            ChickenVariant variant = Iterables.get(ChickenDataManager.getVariants(), (int) ((System.currentTimeMillis() / 1000) % ChickenDataManager.getVariants().size()));
+            data = new ChickenData(variant, false, Collections.emptyList(), new ChickenData.EntityData(0, 0, 0));
         }
 
         ChickensChicken chicken = ModEntities.CHICKEN.get().create(mc.level, EntitySpawnReason.SPAWNER);

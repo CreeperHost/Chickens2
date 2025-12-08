@@ -21,9 +21,7 @@ import net.creeperhost.polylib.inventory.items.ContainerAccessControl;
 import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -112,12 +110,12 @@ public class BreederBlockEntity extends PolyBlockEntity implements PolyInventory
             ChickensRegistryItem roosterItem = ChickensRegistry.getByRegistryName(ItemChicken.getTypeFromStack(chicken2));
             if(roosterItem == ModChickens.ROOSTER)
             {
-                chickenStack.set(ModComponentTypes.EGG_VIABLE.get(), true);
+                chickenStack.set(ModComponentTypes.EGG_FERTILIZED.get(), true);
             }
         }
         else
         {
-            chickenStack.set(ModComponentTypes.EGG_VIABLE.get(), false);
+            chickenStack.set(ModComponentTypes.EGG_FERTILIZED.get(), false);
         }
 
         ChickenStats chickenStats = new ChickenStats(chicken1);

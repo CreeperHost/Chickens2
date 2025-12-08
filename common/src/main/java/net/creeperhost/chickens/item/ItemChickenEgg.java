@@ -1,13 +1,13 @@
 package net.creeperhost.chickens.item;
 
-import net.creeperhost.chickens.api.ChickenStats;
 import net.creeperhost.chickens.api.ChickensRegistry;
 import net.creeperhost.chickens.api.ChickensRegistryItem;
 import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.init.ModComponentTypes;
 import net.creeperhost.chickens.init.ModItems;
+import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -17,7 +17,6 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -50,7 +49,7 @@ public class ItemChickenEgg extends Item
         stack.set(ModComponentTypes.EGG_CHICKEN_TYPE.get(), chickensRegistryItem.getRegistryName().toString());
         stack.set(ModComponentTypes.EGG_PROGRESS.get(), 0);
         stack.set(ModComponentTypes.EGG_MISSED.get(), 0);
-        stack.set(ModComponentTypes.EGG_VIABLE.get(), viable);
+        stack.set(ModComponentTypes.EGG_FERTILIZED.get(), viable);
         return stack;
     }
 
@@ -102,42 +101,60 @@ public class ItemChickenEgg extends Item
     @Deprecated
     public void setNotViable(ItemStack stack)
     {
-        stack.set(ModComponentTypes.EGG_VIABLE.get(), false);
+        stack.set(ModComponentTypes.EGG_FERTILIZED.get(), false);
     }
 
-    @Deprecated
-    public boolean isViable(ItemStack stack)
-    {
-        return stack.getOrDefault(ModComponentTypes.EGG_VIABLE.get(), false);
+    public void setFertilized(ItemStack stack, boolean fertilized) {
+        stack.set(ModComponentTypes.EGG_FERTILIZED.get(), fertilized);
+    }
+
+    public boolean isFertilized(ItemStack stack) {
+        return stack.getOrDefault(ModComponentTypes.EGG_FERTILIZED.get(), false);
     }
 
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
-        super.appendHoverText(itemStack, tooltipContext, tooltipDisplay, consumer, tooltipFlag);
-        ChickensRegistryItem item = getType(itemStack);
-        if(item != null && tooltipFlag.isAdvanced())
-        {
-            consumer.accept(Component.literal(ChatFormatting.AQUA + "Registry name: " + ChatFormatting.WHITE + item.getRegistryName().toString()));
-            if(item.getLayItemHolder().getItem() != null)
-            {
-                if(item.getLayItemHolder().getType().equals("item"))
-                {
-                    consumer.accept(Component.literal(ChatFormatting.GOLD + "Item: " + ChatFormatting.WHITE + BuiltInRegistries.ITEM.getKey(item.getLayItemHolder().getItem())));
-                }
-                else
-                {
-                    consumer.accept(Component.literal(ChatFormatting.GOLD + "Fluid: " + ChatFormatting.WHITE + BuiltInRegistries.FLUID.getKey(item.getLayItemHolder().getFluid())));
-                }
+        ChickenData data = ChickenData.fromItem(itemStack);
+        if (data == null) return;
+        if (Screen.hasShiftDown()) {
+            for (Trait.StateValue state : data.traits()) {
+                state.trait().appendHoverText(consumer, state.value());
             }
-            consumer.accept(Component.literal(ChatFormatting.BLUE + "ChickenType: " + ChatFormatting.WHITE + item.getEntityName()));
-            consumer.accept(Component.literal(ChatFormatting.LIGHT_PURPLE + "Progress: " + ChatFormatting.WHITE + getProgress(itemStack)));
-//            list.add(Component.literal("Missed: " + getMissedCycles(itemStack)));
-            consumer.accept(Component.literal("Viable: " + isViable(itemStack)));
+        } else {
+            consumer.accept(Component.translatable("screen.shift.tooltip"));
         }
 
-        ChickenStats chickenStats = new ChickenStats(itemStack);
-        consumer.accept(Component.translatable("entity.ChickensChicken.growth").append(" " + chickenStats.getGrowth()).withStyle(ChatFormatting.DARK_PURPLE));
-        consumer.accept(Component.translatable("entity.ChickensChicken.gain").append(" " + chickenStats.getGain()).withStyle(ChatFormatting.DARK_PURPLE));
-        consumer.accept(Component.translatable("entity.ChickensChicken.strength").append(" " + chickenStats.getStrength()).withStyle(ChatFormatting.DARK_PURPLE));
+        if (tooltipFlag.isAdvanced()) {
+            //TODO clean this up
+//            consumer.accept(Component.literal(ChatFormatting.BLUE + "ChickenType: " + ChatFormatting.WHITE + data.variant().name()));
+            consumer.accept(Component.literal(ChatFormatting.LIGHT_PURPLE + "Progress: " + ChatFormatting.WHITE + getProgress(itemStack)));
+            consumer.accept(Component.literal("Viable: " + isFertilized(itemStack)));
+        }
+
+//        ChickensRegistryItem item = getType(itemStack);
+//        if(item != null && tooltipFlag.isAdvanced())
+//        {
+//            consumer.accept(Component.literal(ChatFormatting.AQUA + "Registry name: " + ChatFormatting.WHITE + item.getRegistryName().toString()));
+//            if(item.getLayItemHolder().getItem() != null)
+//            {
+//                if(item.getLayItemHolder().getType().equals("item"))
+//                {
+//                    consumer.accept(Component.literal(ChatFormatting.GOLD + "Item: " + ChatFormatting.WHITE + BuiltInRegistries.ITEM.getKey(item.getLayItemHolder().getItem())));
+//                }
+//                else
+//                {
+//                    consumer.accept(Component.literal(ChatFormatting.GOLD + "Fluid: " + ChatFormatting.WHITE + BuiltInRegistries.FLUID.getKey(item.getLayItemHolder().getFluid())));
+//                }
+//            }
+//            consumer.accept(Component.literal(ChatFormatting.BLUE + "ChickenType: " + ChatFormatting.WHITE + item.getEntityName()));
+//            consumer.accept(Component.literal(ChatFormatting.LIGHT_PURPLE + "Progress: " + ChatFormatting.WHITE + getProgress(itemStack)));
+////            list.add(Component.literal("Missed: " + getMissedCycles(itemStack)));
+//            consumer.accept(Component.literal("Viable: " + isViable(itemStack)));
+//        }
+//
+//        ChickenStats chickenStats = new ChickenStats(itemStack);
+//        consumer.accept(Component.translatable("entity.ChickensChicken.growth").append(" " + chickenStats.getGrowth()).withStyle(ChatFormatting.DARK_PURPLE));
+//        consumer.accept(Component.translatable("entity.ChickensChicken.gain").append(" " + chickenStats.getGain()).withStyle(ChatFormatting.DARK_PURPLE));
+//        consumer.accept(Component.translatable("entity.ChickensChicken.strength").append(" " + chickenStats.getStrength()).withStyle(ChatFormatting.DARK_PURPLE));
     }
 }

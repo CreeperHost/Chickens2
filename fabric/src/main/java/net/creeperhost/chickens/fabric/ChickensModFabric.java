@@ -3,6 +3,7 @@ package net.creeperhost.chickens.fabric;
 import dev.architectury.platform.Platform;
 import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.data.ChickenDataManager;
+import net.creeperhost.chickens.entity.ChickensChicken;
 import net.creeperhost.chickens.init.ModEntities;
 import net.creeperhost.chickens.trait.Trait;
 import net.fabricmc.api.EnvType;
@@ -66,7 +67,7 @@ public class ChickensModFabric implements ModInitializer {
         BiomeModifications.addSpawn(e -> e.hasTag(BiomeTags.IS_OVERWORLD), MobCategory.CREATURE, ModEntities.CHICKEN.get(), 10, 6, 6);
         BiomeModifications.addSpawn(e -> e.hasTag(BiomeTags.IS_NETHER), MobCategory.CREATURE, ModEntities.CHICKEN.get(), 60, 10, 10);
 
-        SpawnPlacements.register(ModEntities.CHICKEN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ModEntities::checkChickenSpawnRules);
+        SpawnPlacements.register(ModEntities.CHICKEN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ChickensChicken::checkSpawnRules);
 
 //            ModEntities.CHICKENS.forEach((chickensRegistryItem, entityTypeSupplier) -> ModEntities.registerSpawnFabric(entityTypeSupplier.get(), chickensRegistryItem));
 //            SpawnPlacements.register(ModEntities.ROOSTER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ModEntities::checkChickenSpawnRules);
