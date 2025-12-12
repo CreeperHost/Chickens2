@@ -34,7 +34,8 @@ public class NeoForgeEvents
     @SubscribeEvent
     public static void registerModelLayerEvent(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
-        event.registerLayerDefinition(ChickensModel.LAYER_LOCATION, ChickensModel::createBodyLayer);
+        event.registerLayerDefinition(ChickensModel.LAYER_LOCATION, () -> ChickensModel.createBodyLayer(false));
+        event.registerLayerDefinition(ChickensModel.BABY_LAYER_LOCATION, () -> ChickensModel.createBodyLayer(true));
     }
 
     @SubscribeEvent

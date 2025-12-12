@@ -3,6 +3,7 @@ package net.creeperhost.chickens.entity;
 import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.ChickensPlatform;
 import net.creeperhost.chickens.data.*;
+import net.creeperhost.chickens.init.ModEntities;
 import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,6 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -215,5 +217,29 @@ public class ChickensChicken extends Chicken {
         }
     }
 
+    //TODO Vanilla Chicken Support?
+    @Override
+    public boolean canMate(Animal animal) {
+        if (!(animal instanceof ChickensChicken other) || other.isRooster() == isRooster()) {
+            return false;
+        }
+        return super.canMate(animal);
+    }
 
+    @Override
+    public @Nullable Chicken getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
+        if (!(ageableMob instanceof ChickensChicken other)) {
+            return null;
+        }
+        ChickenData thisData = ChickenData.fromEntity(this);
+        ChickenData otherData = ChickenData.fromEntity(other);
+        ChickenData childData = ChickenData.fromParents(thisData, otherData, serverLevel.random);
+
+        ChickensChicken chicken = ModEntities.CHICKEN.get().create(serverLevel, EntitySpawnReason.BREEDING);
+        if (chicken instanceof ChickensChicken child) {
+            childData.apply(child);
+        }
+
+        return chicken;
+    }
 }

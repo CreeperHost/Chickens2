@@ -1,20 +1,22 @@
 package net.creeperhost.chickens.client;
 
 import net.creeperhost.chickens.Chickens;
+import net.minecraft.client.model.BabyModelTransform;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+
+import java.util.Set;
 
 public class ChickensModel extends EntityModel<RenderChickens.ChickensRenderState> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "chicken"), "main");
+    public static final ModelLayerLocation BABY_LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "baby_chicken"), "main");
+    public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 5.0F, 2.0F, 2.0F, 1.99F, 24.0F, Set.of("head", "beak", "red_thing"));
     private final ModelPart head;
     private final ModelPart wattle;
     private final ModelPart wattleLarge;
@@ -40,7 +42,7 @@ public class ChickensModel extends EntityModel<RenderChickens.ChickensRenderStat
         this.wing1 = root.getChild("wing1");
     }
 
-    public static LayerDefinition createBodyLayer() {
+    public static LayerDefinition createBodyLayer(boolean baby) {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -56,6 +58,9 @@ public class ChickensModel extends EntityModel<RenderChickens.ChickensRenderStat
         PartDefinition wing0 = partdefinition.addOrReplaceChild("wing0", CubeListBuilder.create().texOffs(24, 13).addBox(-1.0F, 0.0F, -3.0F, 1.0F, 4.0F, 6.0F), PartPose.offset(-3.0F, 13.0F, 0.0F));
         PartDefinition wing1 = partdefinition.addOrReplaceChild("wing1", CubeListBuilder.create().texOffs(24, 13).addBox(0.0F, 0.0F, -3.0F, 1.0F, 4.0F, 6.0F), PartPose.offset(3.0F, 13.0F, 0.0F));
 
+        if (baby) {
+            meshdefinition = BABY_TRANSFORMER.apply(meshdefinition);
+        }
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
@@ -72,9 +77,10 @@ public class ChickensModel extends EntityModel<RenderChickens.ChickensRenderStat
         this.wing1.zRot = f;
         this.wing0.zRot = -f;
 
-        this.tail.visible = state.isRooster;
-        this.comb.visible = state.isRooster;
-        this.wattle.visible = !state.isRooster;
-        this.wattleLarge.visible = state.isRooster;
+        boolean rooster = state.isRooster && !state.isBaby;
+        this.tail.visible = rooster;
+        this.comb.visible = rooster;
+        this.wattle.visible = !rooster;
+        this.wattleLarge.visible = rooster;
     }
 }

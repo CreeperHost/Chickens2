@@ -22,7 +22,8 @@ public class ChickensClient
         if (Platform.isFabric())
         {
 //            ModEntities.CHICKENS.forEach((chickensRegistryItem, entityTypeSupplier) -> EntityRendererRegistry.register(entityTypeSupplier, RenderChickens::new));
-            EntityModelLayerRegistry.register(ChickensModel.LAYER_LOCATION, ChickensModel::createBodyLayer);
+            EntityModelLayerRegistry.register(ChickensModel.LAYER_LOCATION, () -> ChickensModel.createBodyLayer(false));
+            EntityModelLayerRegistry.register(ChickensModel.BABY_LAYER_LOCATION, () -> ChickensModel.createBodyLayer(true));
 //            EntityRendererRegistry.register(ModEntities.ROOSTER, RenderChickens::new);
             EntityRendererRegistry.register(ModEntities.CHICKEN, RenderChickens::new);
         }
