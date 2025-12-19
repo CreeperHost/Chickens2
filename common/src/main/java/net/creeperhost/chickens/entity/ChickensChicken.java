@@ -2,6 +2,7 @@ package net.creeperhost.chickens.entity;
 
 import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.ChickensPlatform;
+import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.data.*;
 import net.creeperhost.chickens.init.ModEntities;
 import net.creeperhost.chickens.trait.Trait;
@@ -16,12 +17,15 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Ocelot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -29,11 +33,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Created by brandon3055 on 17/11/2025
@@ -43,10 +46,21 @@ public class ChickensChicken extends Chicken {
     private static final EntityDataAccessor<String> CHICKEN_VARIANT = SynchedEntityData.defineId(ChickensChicken.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Boolean> IS_ROOSTER = SynchedEntityData.defineId(ChickensChicken.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Map<Trait, Double>> TRAITS = SynchedEntityData.defineId(ChickensChicken.class, ChickensPlatform.getTraitSerializer());
+
     private static final EntityDataAccessor<Float> TAMING_MODIFIER = SynchedEntityData.defineId(ChickensChicken.class, EntityDataSerializers.FLOAT);
+
+    private UUID hostilePlayer = null;
+    private int playerTime = 0;
+    private int tick = 0;
 
     public ChickensChicken(EntityType<? extends Chicken> entityType, Level level) {
         super(entityType, level);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(4, new ChickenAvoidEntityGoal<>(this, Player.class, 16.0F, 0.8, 1.33));
     }
 
     @Override
@@ -161,6 +175,7 @@ public class ChickensChicken extends Chicken {
         super.addAdditionalSaveData(output);
         output.putString("chicken_variant", getVariantString());
         output.putBoolean("is_rooster", isRooster());
+        output.putDouble("taming_mod", getTamingModifier());
 
         ValueOutput.ValueOutputList traits = output.childrenList("traits");
         getTraits().forEach((trait, value) -> {
@@ -175,6 +190,7 @@ public class ChickensChicken extends Chicken {
         super.readAdditionalSaveData(input);
         setVariantString(input.getStringOr("chicken_variant", ChickenVariant.MISSING.id()));
         setRooster(input.getBooleanOr("is_rooster", false));
+        setTamingModifier(input.getDoubleOr("taming_mod", 0));
 
         Map<Trait, Double> traitMap = new HashMap<>();
         ValueInput.ValueInputList traits = input.childrenListOrEmpty("traits");
@@ -196,6 +212,43 @@ public class ChickensChicken extends Chicken {
 
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
+        }
+
+        if (tick++ % 20 == 0) {
+            //Handle taming modifier inheritance from nearby chickens
+            if (isBaby()) {
+                List<ChickensChicken> chickens = serverLevel.getNearbyEntities(ChickensChicken.class, TargetingConditions.forNonCombat(), this, getBoundingBox().inflate(Config.INSTANCE.tamingInheritanceRange));
+                double averageMod = chickens.stream()
+                        .filter(chicken -> !chicken.isBaby())
+                        .mapToDouble(ChickensChicken::getTamingModifier)
+                        .average()
+                        .orElse(0);
+                averageMod *= Config.INSTANCE.tamingInheritanceLimit;
+                double mod = getTamingModifier();
+                double diff = averageMod - mod;
+                setTamingModifier(mod + (diff * Config.INSTANCE.tamingInheritanceRate));
+            } else {
+                List<Player> players = serverLevel.getNearbyPlayers(TargetingConditions.forNonCombat(), this, getBoundingBox().inflate(Config.INSTANCE.passiveTamingRange));
+                //Handle taming reduction due to nearby hostile players.
+                if (hostilePlayer != null) {
+                    if (playerTime-- <= 0) {
+                        hostilePlayer = null;
+                    } else {
+                        if (players.stream().anyMatch(player -> player.getUUID().equals(hostilePlayer))) {
+                            addTamingModifier(-0.1);
+                        }
+                    }
+                //Handle passive taming.
+                } else if (!players.isEmpty()) {
+                    playerTime += players.size();
+                    if (playerTime >= Config.INSTANCE.passiveTamingTime) {
+                        playerTime = 0;
+                        addTamingModifier(Config.INSTANCE.passiveTamingAmount);
+                    }
+                } else if (playerTime > 0) {
+                    playerTime--;
+                }
+            }
         }
 
         ChickenVariant variant = getChickenVariant();
@@ -241,5 +294,57 @@ public class ChickensChicken extends Chicken {
         }
 
         return chicken;
+    }
+
+    @Override
+    public void setInLove(@Nullable Player player) {
+        super.setInLove(player);
+        if (player != null) {
+            if (hostilePlayer != null && player.getUUID().equals(hostilePlayer)) {
+                hostilePlayer = null;
+                playerTime = 0;
+            } else {
+                addTamingModifier(0.5);
+            }
+        }
+    }
+
+    //Taming modifier uses a similar scaling system to trait evolution. The greater the absolute value, the less the value is effected.
+    //The limit and expo values are configurable via mod config.
+    public void addTamingModifier(double amount) {
+        double modifier = getTamingModifier();
+        double scale = 1D - Math.pow(Math.abs(modifier) / Config.INSTANCE.tamingModifierLimit, Config.INSTANCE.tamingModifierExpo);
+        setTamingModifier(modifier + (amount * scale));
+    }
+
+    @Override
+    protected void actuallyHurt(ServerLevel level, DamageSource source, float damage) {
+        if (source.getEntity() instanceof Player player) {
+            hostilePlayer = player.getUUID();
+            playerTime = Config.INSTANCE.playerHostileTime;
+            if (damage < 0.5) {
+                addTamingModifier(-0.5);
+            } else {
+                addTamingModifier(-damage);
+            }
+        }
+        super.actuallyHurt(level, source, damage);
+    }
+
+    private static class ChickenAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<T> {
+        private final ChickensChicken chicken;
+
+        public ChickenAvoidEntityGoal(ChickensChicken chicken, Class<T> targetClass, float maxDist, double walkSpeedModifier, double sprintSpeedModifier) {
+            super(chicken, targetClass, maxDist, walkSpeedModifier, sprintSpeedModifier, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
+            this.chicken = chicken;
+        }
+
+        public boolean canUse() {
+            return chicken.getTamingModifier() < 0 && super.canUse();
+        }
+
+        public boolean canContinueToUse() {
+            return chicken.getTamingModifier() < 0 && super.canContinueToUse();
+        }
     }
 }

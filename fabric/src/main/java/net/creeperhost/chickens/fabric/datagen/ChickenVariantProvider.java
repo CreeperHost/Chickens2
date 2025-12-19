@@ -176,7 +176,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         return builder(provider, id, name)
                 .itemProduct(item, 1, 1, 6000, 12000)
                 .trait(ChickenTraits.SPEED, 0.25, 1, 0.1, 10, 1)
-                .trait(ChickenTraits.PRODUCTION, 0.25, 1, 0.1, 10, 1)
+//                .trait(ChickenTraits.PRODUCTION, 0.25, 1, 0.1, 10, 1)
                 .trait(ChickenTraits.MATURATION, 0.25, 1, 0.1, 10, 1)
                 .trait(ChickenTraits.LIFESPAN, 0.25, 1, 0.1, 10, 1);
     }
@@ -185,9 +185,10 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         return builder(provider, id, name)
                 .fluidProduct(fluid, 1000, 1000, 6000, 12000)//TODO, this is not going to work with fabric... Maybe I should use mb for this even on fabric?
                 .trait(ChickenTraits.SPEED, 0.25, 1, 0.1, 10, 1)
-                .trait(ChickenTraits.PRODUCTION, 0.25, 1, 0.1, 10, 1)
+//                .trait(ChickenTraits.PRODUCTION, 0.25, 1, 0.1, 10, 1)
                 .trait(ChickenTraits.MATURATION, 0.25, 1, 0.1, 10, 1)
-                .trait(ChickenTraits.LIFESPAN, 0.25, 1, 0.1, 10, 1);    }
+                .trait(ChickenTraits.LIFESPAN, 0.25, 1, 0.1, 10, 1);
+    }
 
     @Override
     public String getName() {

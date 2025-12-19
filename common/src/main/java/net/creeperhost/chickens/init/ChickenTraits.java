@@ -17,7 +17,7 @@ public class ChickenTraits {
     public static final DeferredRegister<Trait> TRAITS = DeferredRegister.create(Chickens.MOD_ID, Chickens.TRAIT_KEY);
 
     public static final RegistrySupplier<Trait> SPEED       = TRAITS.register("speed", SpeedTrait::new);
-    public static final RegistrySupplier<Trait> PRODUCTION  = TRAITS.register("production", Trait::new);
+//    public static final RegistrySupplier<Trait> PRODUCTION  = TRAITS.register("production", Trait::new);
     public static final RegistrySupplier<Trait> MATURATION = TRAITS.register("maturation", Trait::new);
     public static final RegistrySupplier<Trait> LIFESPAN    = TRAITS.register("lifespan", Trait::new);
 

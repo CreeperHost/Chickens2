@@ -33,7 +33,7 @@ public class Trait {
     }
 
     public void appendHoverText(Consumer<Component> consumer, double traitValue) {
-        consumer.accept(Component.translatable(getDescriptionId()).append(": " + Math.round(traitValue * 100) / 100D));
+        consumer.accept(Component.translatable(getDescriptionId()).append(": " + String.format("%.3f", traitValue)));
     }
 
     public record StateValue(Trait trait, double value) {

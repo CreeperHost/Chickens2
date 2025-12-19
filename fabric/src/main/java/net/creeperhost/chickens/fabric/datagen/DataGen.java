@@ -71,7 +71,7 @@ public class DataGen implements DataGeneratorEntrypoint
             provider.add("item.chickens.egg.name", "%s Chicken Egg", ModuleType.COMMON);
 
             provider.add(ChickenTraits.SPEED.get().getDescriptionId(), "Lay Speed", ModuleType.COMMON);
-            provider.add(ChickenTraits.PRODUCTION.get().getDescriptionId(), "Production", ModuleType.COMMON);
+//            provider.add(ChickenTraits.PRODUCTION.get().getDescriptionId(), "Production", ModuleType.COMMON);
             provider.add(ChickenTraits.MATURATION.get().getDescriptionId(), "Maturation", ModuleType.COMMON);
             provider.add(ChickenTraits.LIFESPAN.get().getDescriptionId(), "Lifespan", ModuleType.COMMON);
 

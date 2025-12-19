@@ -60,7 +60,7 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
 
     public ItemStack toChickenEgg(boolean fertilized) {
         ItemStack stack = new ItemStack(ModItems.CHICKEN_EGG);
-        stack.set(ModComponentTypes.EGG_DATA.get(), this);
+        stack.set(ModComponentTypes.EGG_DATA.get(), new ChickenData(variant, isRooster, traits, new EntityData(0, entityData().age(), 0)));
         stack.set(ModComponentTypes.EGG_FERTILIZED.get(), fertilized);
         return stack;
     }

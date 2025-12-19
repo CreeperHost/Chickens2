@@ -7,6 +7,7 @@ import net.creeperhost.chickens.init.ModComponentTypes;
 import net.creeperhost.chickens.init.ModEntities;
 import net.creeperhost.chickens.init.ModItems;
 import net.creeperhost.chickens.trait.Trait;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -84,6 +85,7 @@ public class ItemChicken extends Item {
             for (Trait.StateValue state : data.traits()) {
                 state.trait().appendHoverText(consumer, state.value());
             }
+            consumer.accept(Component.literal("Taming Modifier: ").append(Component.literal(String.format("%.3f", data.tamingModifier())).withStyle(ChatFormatting.WHITE)));
         } else {
             consumer.accept(Component.translatable("screen.shift.tooltip"));
         }

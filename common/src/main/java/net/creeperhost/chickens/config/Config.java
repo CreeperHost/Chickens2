@@ -2,17 +2,11 @@ package net.creeperhost.chickens.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.architectury.platform.Platform;
 import net.creeperhost.chickens.Chickens;
-import net.creeperhost.chickens.api.ChickensRegistryItem;
-import net.creeperhost.chickens.init.ModChickens;
-import net.minecraft.tags.BiomeTags;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Config {
@@ -36,6 +30,16 @@ public class Config {
     public double breederFoodConsumptionChance = 0.50;
     public double maxChickensInChunk = 10;
     public int lifespanReductionOnLay = 2;
+
+    public double tamingModifierLimit = 10;
+    public double tamingModifierExpo = 0.1;
+    public double passiveTamingRange = 16;
+    public int passiveTamingTime = 300;
+    public double passiveTamingAmount = 0.5;
+    public int playerHostileTime = 300;
+    public double tamingInheritanceRange = 8;
+    public double tamingInheritanceRate = 0.1;
+    public double tamingInheritanceLimit = 0.8;
 
 //    public List<ChickenConfig> chickens = new ArrayList<>();
 //    public List<FabricSpawn> fabricSpawns = new ArrayList<>();

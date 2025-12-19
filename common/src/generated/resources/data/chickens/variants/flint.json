@@ -38,16 +38,6 @@
       "singleInheritChance": 0.25,
       "spawnMax": 1.0,
       "spawnMin": 0.25,
-      "trait": "chickens:production"
-    },
-    {
-      "evoExpo": 1.0,
-      "evoLimit": 10.0,
-      "evoRate": 0.1,
-      "inheritChance": 1.0,
-      "singleInheritChance": 0.25,
-      "spawnMax": 1.0,
-      "spawnMin": 0.25,
       "trait": "chickens:maturation"
     },
     {
