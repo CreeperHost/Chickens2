@@ -1,6 +1,6 @@
 {
   "eggColour": -1,
-  "id": "string",
+  "id": "chickens:string",
   "name": "String",
   "product": {
     "type": "ITEM",

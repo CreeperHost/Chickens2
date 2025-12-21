@@ -62,4 +62,9 @@ public class ChickensPlatform
     public static EntityDataSerializer<Map<Trait, Double>> getTraitSerializer() {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static EntityDataSerializer<ResourceLocation> getResourceSerializer() {
+        throw new AssertionError();
+    }
 }

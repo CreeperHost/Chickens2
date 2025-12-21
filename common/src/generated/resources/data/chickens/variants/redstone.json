@@ -1,6 +1,6 @@
 {
   "eggColour": -1,
-  "id": "redstone",
+  "id": "chickens:redstone",
   "name": "Redstone",
   "product": {
     "type": "ITEM",

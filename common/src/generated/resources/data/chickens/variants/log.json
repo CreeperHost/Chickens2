@@ -1,6 +1,6 @@
 {
   "eggColour": -1,
-  "id": "log",
+  "id": "chickens:log",
   "name": "Log",
   "product": {
     "type": "ITEM",

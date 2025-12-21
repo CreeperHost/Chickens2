@@ -24,36 +24,36 @@ import java.util.*;
  * @param parent1      First parent variant required to breed this chicken.
  * @param parent2      Second parent variant required to breed this chicken.
  */
-public record ChickenVariant(String id, String name, ResourceLocation texture, ChickenProduct product, int eggColour, List<TraitConfig> traitConfigs, Optional<String> parent1, Optional<String> parent2, Optional<ChickenSpawn> spawn) {
+public record ChickenVariant(ResourceLocation id, String name, ResourceLocation texture, ChickenProduct product, int eggColour, List<TraitConfig> traitConfigs, Optional<ResourceLocation> parent1, Optional<ResourceLocation> parent2, Optional<ChickenSpawn> spawn) {
     /**Used as a fallback ic a chicken variant is no longer available*/
-    public static final ChickenVariant MISSING = new ChickenVariant("_invalid_id_", "[Invalid or unknown chicken ID]", ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "textures/entity/invalid_chicken.png"), new ChickenProduct(ResourceLocation.parse("minecraft:air"), ChickenProduct.Type.ITEM, 1, 1, 0, 0), 0xf800f8, Collections.emptyList(), Optional.empty(), Optional.empty(), Optional.empty());
+    public static final ChickenVariant MISSING = new ChickenVariant(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "_invalid_id_"), "[Invalid or unknown chicken ID]", ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "textures/entity/invalid_chicken.png"), new ChickenProduct(ResourceLocation.parse("minecraft:air"), ChickenProduct.Type.ITEM, 1, 1, 0, 0), 0xf800f8, Collections.emptyList(), Optional.empty(), Optional.empty(), Optional.empty());
 
     public static final Codec<ChickenVariant> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            Codec.STRING.fieldOf("id").forGetter(ChickenVariant::id),
+            ResourceLocation.CODEC.fieldOf("id").forGetter(ChickenVariant::id),
             Codec.STRING.fieldOf("name").forGetter(ChickenVariant::name),
             ResourceLocation.CODEC.fieldOf("texture").forGetter(ChickenVariant::texture),
             ChickenProduct.CODEC.fieldOf("product").forGetter(ChickenVariant::product),
             Codec.INT.fieldOf("eggColour").forGetter(ChickenVariant::eggColour),
             TraitConfig.CODEC.listOf().fieldOf("traitConfigs").forGetter(ChickenVariant::traitConfigs),
-            Codec.STRING.optionalFieldOf("parent1").forGetter(ChickenVariant::parent1),
-            Codec.STRING.optionalFieldOf("parent2").forGetter(ChickenVariant::parent2),
+            ResourceLocation.CODEC.optionalFieldOf("parent1").forGetter(ChickenVariant::parent1),
+            ResourceLocation.CODEC.optionalFieldOf("parent2").forGetter(ChickenVariant::parent2),
             ChickenSpawn.CODEC.optionalFieldOf("spawn").forGetter(ChickenVariant::spawn)
     ).apply(builder, ChickenVariant::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChickenVariant> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.STRING_UTF8, ChickenVariant::id,
+            ResourceLocation.STREAM_CODEC, ChickenVariant::id,
             ByteBufCodecs.STRING_UTF8, ChickenVariant::name,
             ResourceLocation.STREAM_CODEC, ChickenVariant::texture,
             ChickenProduct.STREAM_CODEC, ChickenVariant::product,
             ByteBufCodecs.INT, ChickenVariant::eggColour,
             TraitConfig.STREAM_CODEC.apply(ByteBufCodecs.list()), ChickenVariant::traitConfigs,
-            ByteBufCodecs.optional(ByteBufCodecs.STRING_UTF8), ChickenVariant::parent1,
-            ByteBufCodecs.optional(ByteBufCodecs.STRING_UTF8), ChickenVariant::parent2,
+            ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), ChickenVariant::parent1,
+            ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), ChickenVariant::parent2,
             ByteBufCodecs.optional(ChickenSpawn.STREAM_CODEC), ChickenVariant::spawn,
             ChickenVariant::new
     );
 
-    public List<String> parents() {
+    public List<ResourceLocation> parents() {
         if (parent1().isPresent() && parent2().isPresent()) {
             return Lists.newArrayList(parent1().get(), parent2().get());
         }

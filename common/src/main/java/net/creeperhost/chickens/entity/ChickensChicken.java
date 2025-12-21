@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
@@ -43,7 +44,7 @@ import java.util.function.Predicate;
  */
 public class ChickensChicken extends Chicken {
 
-    private static final EntityDataAccessor<String> CHICKEN_VARIANT = SynchedEntityData.defineId(ChickensChicken.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<ResourceLocation> CHICKEN_VARIANT = SynchedEntityData.defineId(ChickensChicken.class, ChickensPlatform.getResourceSerializer());
     private static final EntityDataAccessor<Boolean> IS_ROOSTER = SynchedEntityData.defineId(ChickensChicken.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Map<Trait, Double>> TRAITS = SynchedEntityData.defineId(ChickensChicken.class, ChickensPlatform.getTraitSerializer());
 
@@ -106,11 +107,11 @@ public class ChickensChicken extends Chicken {
         return ChickenDataManager.getVariantOrMissing(this.entityData.get(CHICKEN_VARIANT));
     }
 
-    public void setVariantString(String variantId) {
-        this.entityData.set(CHICKEN_VARIANT, variantId);
+    public void setVariantString(ResourceLocation id) {
+        this.entityData.set(CHICKEN_VARIANT, id);
     }
 
-    public String getVariantString() {
+    public ResourceLocation getVariantString() {
         return this.entityData.get(CHICKEN_VARIANT);
     }
 
@@ -173,7 +174,7 @@ public class ChickensChicken extends Chicken {
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
-        output.putString("chicken_variant", getVariantString());
+        output.store("chicken_variant", ResourceLocation.CODEC, getVariantString());
         output.putBoolean("is_rooster", isRooster());
         output.putDouble("taming_mod", getTamingModifier());
 
@@ -188,7 +189,7 @@ public class ChickensChicken extends Chicken {
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        setVariantString(input.getStringOr("chicken_variant", ChickenVariant.MISSING.id()));
+        setVariantString(input.read("chicken_variant", ResourceLocation.CODEC).orElse(ChickenVariant.MISSING.id()));
         setRooster(input.getBooleanOr("is_rooster", false));
         setTamingModifier(input.getDoubleOr("taming_mod", 0));
 

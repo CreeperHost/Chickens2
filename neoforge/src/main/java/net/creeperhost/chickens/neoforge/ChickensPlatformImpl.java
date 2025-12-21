@@ -57,4 +57,8 @@ public class ChickensPlatformImpl
     public static EntityDataSerializer<Map<Trait, Double>> getTraitSerializer() {
         return ChickensModNeoForge.TRAIT_SERIALIZER.get();
     }
+
+    public static EntityDataSerializer<ResourceLocation> getResourceSerializer() {
+        return ChickensModNeoForge.RESOURCE_SERIALIZER.get();
+    }
 }

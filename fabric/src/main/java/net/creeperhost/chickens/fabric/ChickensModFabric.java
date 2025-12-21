@@ -32,6 +32,7 @@ import java.util.concurrent.Executor;
 
 public class ChickensModFabric implements ModInitializer {
     public static final EntityDataSerializer<Map<Trait, Double>> TRAIT_SERIALIZER = EntityDataSerializer.forValueType(ByteBufCodecs.map(HashMap::new, ByteBufCodecs.registry(Chickens.TRAIT_KEY), ByteBufCodecs.DOUBLE));
+    public static final EntityDataSerializer<ResourceLocation> RESOURCE_SERIALIZER = EntityDataSerializer.forValueType(ResourceLocation.STREAM_CODEC);
 
     @Override
     public void onInitialize() {
@@ -46,6 +47,7 @@ public class ChickensModFabric implements ModInitializer {
         }
 
         FabricTrackedDataRegistry.register(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "trait_serializer"), TRAIT_SERIALIZER);
+        FabricTrackedDataRegistry.register(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "resource_serializer"), RESOURCE_SERIALIZER);
 
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new IdentifiableResourceReloadListener() {
             @Override

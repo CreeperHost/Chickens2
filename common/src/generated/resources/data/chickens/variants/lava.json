@@ -1,6 +1,6 @@
 {
   "eggColour": -1,
-  "id": "lava",
+  "id": "chickens:lava",
   "name": "Lava",
   "product": {
     "type": "FLUID",

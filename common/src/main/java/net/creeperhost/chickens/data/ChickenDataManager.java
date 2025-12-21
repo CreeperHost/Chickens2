@@ -23,7 +23,7 @@ import java.util.*;
 public class ChickenDataManager extends SimpleJsonResourceReloadListener<ChickenVariant> {
 
     public static final ChickenDataManager INSTANCE = new ChickenDataManager();
-    private final Map<String, ChickenVariant> variants = new HashMap<>();
+    private final Map<ResourceLocation, ChickenVariant> variants = new HashMap<>();
     private final List<SpawnData> spawns = new ArrayList<>();
     private final Set<TagKey<Biome>> biomes = new HashSet<>();
 
@@ -31,7 +31,7 @@ public class ChickenDataManager extends SimpleJsonResourceReloadListener<Chicken
         super(ChickenVariant.CODEC, FileToIdConverter.json("variants"));
     }
 
-    public static Set<String> getVariantIds() {
+    public static Set<ResourceLocation> getVariantIds() {
         return INSTANCE.variants.keySet();
     }
 
@@ -40,11 +40,11 @@ public class ChickenDataManager extends SimpleJsonResourceReloadListener<Chicken
     }
 
     @Nullable
-    public static ChickenVariant getVariant(String variantId) {
+    public static ChickenVariant getVariant(ResourceLocation variantId) {
         return INSTANCE.variants.get(variantId);
     }
 
-    public static ChickenVariant getVariantOrMissing(String variantId) {
+    public static ChickenVariant getVariantOrMissing(ResourceLocation variantId) {
         return INSTANCE.variants.getOrDefault(variantId, ChickenVariant.MISSING);
     }
 

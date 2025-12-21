@@ -59,4 +59,8 @@ public class ChickensPlatformImpl
     public static EntityDataSerializer<Map<Trait, Double>> getTraitSerializer() {
         return ChickensModFabric.TRAIT_SERIALIZER;
     }
+
+    public static EntityDataSerializer<ResourceLocation> getResourceSerializer() {
+        return ChickensModFabric.RESOURCE_SERIALIZER;
+    }
 }

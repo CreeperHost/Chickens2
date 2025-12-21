@@ -1,6 +1,6 @@
 {
   "eggColour": -1,
-  "id": "gunpowder",
+  "id": "chickens:gunpowder",
   "name": "Gunpowder",
   "product": {
     "type": "ITEM",

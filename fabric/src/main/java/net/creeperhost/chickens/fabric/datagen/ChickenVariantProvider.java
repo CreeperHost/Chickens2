@@ -31,123 +31,191 @@ import java.util.function.Supplier;
  * Created by brandon3055 on 10/11/2025
  */
 public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVariant> {
+    public static final ResourceLocation flint = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "flint");
+    public static final ResourceLocation log = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "log");
+    public static final ResourceLocation sand = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "sand");
+    public static final ResourceLocation quartz = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "quartz");
+    public static final ResourceLocation soulsand = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "soulsand");
+
+    public static final ResourceLocation black = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "black");
+    public static final ResourceLocation blue = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "blue");
+    public static final ResourceLocation brown = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "brown");
+    public static final ResourceLocation cyan = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "cyan");
+    public static final ResourceLocation gray = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "gray");
+    public static final ResourceLocation green = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "green");
+    public static final ResourceLocation light_blue = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "light_blue");
+    public static final ResourceLocation light_gray = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "light_gray");
+    public static final ResourceLocation lime = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "lime");
+    public static final ResourceLocation magenta = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "magenta");
+    public static final ResourceLocation orange = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "orange");
+    public static final ResourceLocation pink = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "pink");
+    public static final ResourceLocation purple = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "purple");
+    public static final ResourceLocation red = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "red");
+    public static final ResourceLocation white = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "white");
+    public static final ResourceLocation yellow = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "yellow");
+
+    public static final ResourceLocation blaze = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "blaze");
+    public static final ResourceLocation clay = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "clay");
+    public static final ResourceLocation coal = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "coal");
+    public static final ResourceLocation copper = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "copper");
+    public static final ResourceLocation diamond = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "diamond");
+    public static final ResourceLocation emerald = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "emerald");
+    public static final ResourceLocation ender = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "ender");
+    public static final ResourceLocation ghast = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "ghast");
+    public static final ResourceLocation glass = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "glass");
+    public static final ResourceLocation glowstone = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "glowstone");
+    public static final ResourceLocation gold = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "gold");
+    public static final ResourceLocation gunpowder = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "gunpowder");
+    public static final ResourceLocation iron = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "iron");
+    public static final ResourceLocation lapis = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "lapis");
+    public static final ResourceLocation lava = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "lava");
+    public static final ResourceLocation leather = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "leather");
+    public static final ResourceLocation magma = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "magma");
+    public static final ResourceLocation netherite = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "netherite");
+    public static final ResourceLocation netherwart = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "netherwart");
+    public static final ResourceLocation obsidian = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "obsidian");
+    public static final ResourceLocation pcrystal = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "pcrystal");
+    public static final ResourceLocation pshard = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "pshard");
+    public static final ResourceLocation redstone = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "redstone");
+    public static final ResourceLocation slime = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "slime");
+    public static final ResourceLocation smart = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "smart");
+    public static final ResourceLocation snowball = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "snowball");
+    public static final ResourceLocation string = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "string");
+    public static final ResourceLocation water = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "water");
+
+
     protected ChickenVariantProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(dataOutput, registriesFuture, PackOutput.Target.DATA_PACK, "variants", ChickenVariant.CODEC);
     }
 
-    private void addChickens(BiConsumer<ResourceLocation, ChickenVariant> consumer, HolderLookup.Provider provider) {
-        simple(provider, "black", "Black", Items.BLACK_DYE)
-                .build(consumer);
-        simple(provider, "blue", "Blue", Items.BLUE_DYE)
-                .build(consumer);
-        simple(provider, "brown", "Brown", Items.BROWN_DYE)
-                .build(consumer);
-        simple(provider, "cyan", "Cyan", Items.CYAN_DYE)
-                .build(consumer);
-        simple(provider, "gray", "Gray", Items.GRAY_DYE)
-                .build(consumer);
-        simple(provider, "green", "Green", Items.GREEN_DYE)
-                .build(consumer);
-        simple(provider, "light_blue", "Light Blue", Items.LIGHT_BLUE_DYE)
-                .build(consumer);
-        simple(provider, "light_gray", "Light Gray", Items.LIGHT_GRAY_DYE)
-                .build(consumer);
-        simple(provider, "lime", "Lime", Items.LIME_DYE)
-                .build(consumer);
-        simple(provider, "magenta", "Magenta", Items.MAGENTA_DYE)
-                .build(consumer);
-        simple(provider, "orange", "Orange", Items.ORANGE_DYE)
-                .build(consumer);
-        simple(provider, "pink", "Pink", Items.PINK_DYE)
-                .build(consumer);
-        simple(provider, "purple", "Purple", Items.PURPLE_DYE)
-                .build(consumer);
-        simple(provider, "red", "Red", Items.RED_DYE)
-                .build(consumer);
-        simple(provider, "white", "White", Items.WHITE_DYE)
-                .build(consumer);
-        simple(provider, "yellow", "Yellow", Items.YELLOW_DYE)
-                .build(consumer);
 
-        simple(provider, "blaze", "Blaze", Items.BLAZE_ROD)
-                .build(consumer);
-        simple(provider, "clay", "Clay", Items.CLAY)
-                .build(consumer);
-        simple(provider, "coal", "Coal", Items.COAL)
-                .build(consumer);
-        simple(provider, "copper", "Copper", Items.COPPER_INGOT)
-                .build(consumer);
-        simple(provider, "diamond", "Diamond", Items.DIAMOND)
-                .build(consumer);
-        simple(provider, "emerald", "Emerald", Items.EMERALD)
-                .build(consumer);
-        simple(provider, "ender", "Ender", Items.ENDER_PEARL)
-                .build(consumer);
-        simple(provider, "flint", "Flint", Items.FLINT)
+    private void addChickens(BiConsumer<ResourceLocation, ChickenVariant> consumer, HolderLookup.Provider provider) {
+
+        // === Natural Spawn Chickens ===
+        simple(provider, flint, "Flint", Items.FLINT)
                 .spawn(new ChickenSpawn(List.of(BiomeTags.IS_MOUNTAIN, ConventionalBiomeTags.IS_STONY_SHORES, ConventionalBiomeTags.IS_MOUNTAIN), 10))
                 .build(consumer);
-        simple(provider, "ghast", "Ghast", Items.GHAST_TEAR)
-                .build(consumer);
-        simple(provider, "glass", "Glass", Items.GLASS)
-                .build(consumer);
-        simple(provider, "glowstone", "Glowstone", Items.GLOWSTONE)
-                .build(consumer);
-        simple(provider, "gold", "Gold", Items.GOLD_INGOT)
-                .build(consumer);
-        simple(provider, "gunpowder", "Gunpowder", Items.GUNPOWDER)
-                .build(consumer);
-        simple(provider, "iron", "Iron", Items.IRON_INGOT)
-                .build(consumer);
-        simple(provider, "lapis", "Lapis", Items.LAPIS_LAZULI)
-                .build(consumer);
 
-        simple(provider, "lava", "Lava", Fluids.LAVA)
-                .build(consumer);
-
-        simple(provider, "leather", "Leather", Items.LEATHER)
-                .build(consumer);
-        simple(provider, "log", "Log", Items.OAK_LOG)
+        simple(provider, log, "Log", Items.OAK_LOG)
                 .spawn(new ChickenSpawn(List.of(BiomeTags.IS_FOREST, ConventionalBiomeTags.IS_FOREST), 10))
                 .build(consumer);
-        simple(provider, "magma", "Magma", Items.MAGMA_CREAM)
-                .build(consumer);
-        simple(provider, "netherite", "Netherite", Items.NETHERITE_SCRAP)
-                .build(consumer);
-        simple(provider, "netherwart", "Netherwart", Items.NETHER_WART)
-                .build(consumer);
-        simple(provider, "obsidian", "Obsidian", Items.OBSIDIAN)
-                .build(consumer);
-        simple(provider, "pcrystal", "Prismarine Crystal", Items.PRISMARINE_CRYSTALS)
-                .build(consumer);
-        simple(provider, "pshard", "Prismarine Shard", Items.PRISMARINE_SHARD)
-                .build(consumer);
-        simple(provider, "quartz", "Quartz", Items.QUARTZ)
-                .spawn(new ChickenSpawn(List.of(BiomeTags.IS_NETHER, ConventionalBiomeTags.IS_NETHER), 10))
-                .build(consumer);
-        simple(provider, "redstone", "Redstone", Items.REDSTONE)
-                .build(consumer);
-        simple(provider, "sand", "Sand", Items.SAND)
+
+        simple(provider, sand, "Sand", Items.SAND)
                 .spawn(new ChickenSpawn(List.of(BiomeTags.HAS_VILLAGE_DESERT, BiomeTags.HAS_DESERT_PYRAMID, BiomeTags.IS_BEACH, ConventionalBiomeTags.IS_DESERT), 10))
                 .build(consumer);
-        simple(provider, "slime", "Slime", Items.SLIME_BALL)
-                .build(consumer);
-        simple(provider, "smart", "Smart", Items.EGG)
-                .build(consumer);
-        simple(provider, "snowball", "Snowball", Items.SNOWBALL)
-                .build(consumer);
-        simple(provider, "soulsand", "Soulsand", Items.SOUL_SAND)
+
+        simple(provider, quartz, "Quartz", Items.QUARTZ)
                 .spawn(new ChickenSpawn(List.of(BiomeTags.IS_NETHER, ConventionalBiomeTags.IS_NETHER), 10))
                 .build(consumer);
-        simple(provider, "string", "String", Items.STRING)
+
+        simple(provider, soulsand, "Soulsand", Items.SOUL_SAND)
+                .spawn(new ChickenSpawn(List.of(BiomeTags.IS_NETHER, ConventionalBiomeTags.IS_NETHER), 10))
                 .build(consumer);
-        simple(provider, "water", "Water", Fluids.LAVA)
+
+        // === Dyes ===
+        simple(provider, black, "Black", Items.BLACK_DYE)
+                .build(consumer);
+        simple(provider, blue, "Blue", Items.BLUE_DYE)
+                .build(consumer);
+        simple(provider, brown, "Brown", Items.BROWN_DYE)
+                .build(consumer);
+        simple(provider, cyan, "Cyan", Items.CYAN_DYE)
+                .build(consumer);
+        simple(provider, gray, "Gray", Items.GRAY_DYE)
+                .build(consumer);
+        simple(provider, green, "Green", Items.GREEN_DYE)
+                .build(consumer);
+        simple(provider, light_blue, "Light Blue", Items.LIGHT_BLUE_DYE)
+                .build(consumer);
+        simple(provider, light_gray, "Light Gray", Items.LIGHT_GRAY_DYE)
+                .build(consumer);
+        simple(provider, lime, "Lime", Items.LIME_DYE)
+                .build(consumer);
+        simple(provider, magenta, "Magenta", Items.MAGENTA_DYE)
+                .build(consumer);
+        simple(provider, orange, "Orange", Items.ORANGE_DYE)
+                .build(consumer);
+        simple(provider, pink, "Pink", Items.PINK_DYE)
+                .build(consumer);
+        simple(provider, purple, "Purple", Items.PURPLE_DYE)
+                .build(consumer);
+        simple(provider, red, "Red", Items.RED_DYE)
+                .build(consumer);
+        simple(provider, white, "White", Items.WHITE_DYE)
+                .build(consumer);
+        simple(provider, yellow, "Yellow", Items.YELLOW_DYE)
+                .build(consumer);
+
+
+        simple(provider, blaze, "Blaze", Items.BLAZE_ROD)
+                .build(consumer);
+        simple(provider, clay, "Clay", Items.CLAY)
+                .build(consumer);
+        simple(provider, coal, "Coal", Items.COAL)
+                .build(consumer);
+        simple(provider, copper, "Copper", Items.COPPER_INGOT)
+                .build(consumer);
+        simple(provider, diamond, "Diamond", Items.DIAMOND)
+                .build(consumer);
+        simple(provider, emerald, "Emerald", Items.EMERALD)
+                .build(consumer);
+        simple(provider, ender, "Ender", Items.ENDER_PEARL)
+                .build(consumer);
+
+        simple(provider, ghast, "Ghast", Items.GHAST_TEAR)
+                .build(consumer);
+        simple(provider, glass, "Glass", Items.GLASS)
+                .build(consumer);
+        simple(provider, glowstone, "Glowstone", Items.GLOWSTONE)
+                .build(consumer);
+        simple(provider, gold, "Gold", Items.GOLD_INGOT)
+                .build(consumer);
+        simple(provider, gunpowder, "Gunpowder", Items.GUNPOWDER)
+                .build(consumer);
+        simple(provider, iron, "Iron", Items.IRON_INGOT)
+                .build(consumer);
+        simple(provider, lapis, "Lapis", Items.LAPIS_LAZULI)
+                .build(consumer);
+
+        simple(provider, lava, "Lava", Fluids.LAVA)
+                .build(consumer);
+
+        simple(provider, leather, "Leather", Items.LEATHER)
+                .build(consumer);
+
+        simple(provider, magma, "Magma", Items.MAGMA_CREAM)
+                .build(consumer);
+        simple(provider, netherite, "Netherite", Items.NETHERITE_SCRAP)
+                .build(consumer);
+        simple(provider, netherwart, "Netherwart", Items.NETHER_WART)
+                .build(consumer);
+        simple(provider, obsidian, "Obsidian", Items.OBSIDIAN)
+                .build(consumer);
+        simple(provider, pcrystal, "Prismarine Crystal", Items.PRISMARINE_CRYSTALS)
+                .build(consumer);
+        simple(provider, pshard, "Prismarine Shard", Items.PRISMARINE_SHARD)
+                .build(consumer);
+
+        simple(provider, redstone, "Redstone", Items.REDSTONE)
+                .build(consumer);
+
+        simple(provider, slime, "Slime", Items.SLIME_BALL)
+                .build(consumer);
+        simple(provider, smart, "Smart", Items.EGG)
+                .build(consumer);
+        simple(provider, snowball, "Snowball", Items.SNOWBALL)
+                .build(consumer);
+
+        simple(provider, string, "String", Items.STRING)
+                .build(consumer);
+        simple(provider, water, "Water", Fluids.LAVA)
                 .build(consumer);
     }
 
 
     @Override
     protected void configure(BiConsumer<ResourceLocation, ChickenVariant> consumer, HolderLookup.Provider provider) {
-        Map<String, ChickenVariant> variantMap = new HashMap<>();
+        Map<ResourceLocation, ChickenVariant> variantMap = new HashMap<>();
         addChickens((location, chickenVariant) -> {
             if (variantMap.containsKey(chickenVariant.id())) {
                 throw new IllegalArgumentException("Duplicate chicken id " + chickenVariant.id());
@@ -172,7 +240,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
 
 
     //TODO this is just a quick helper for the initial data gen. Once we start balancing things, this method will likely go away.
-    private Builder simple(HolderLookup.Provider provider, String id, String name, Item item) {
+    private Builder simple(HolderLookup.Provider provider, ResourceLocation id, String name, Item item) {
         return builder(provider, id, name)
                 .itemProduct(item, 1, 1, 6000, 12000)
                 .trait(ChickenTraits.SPEED, 0.25, 1, 0.1, 10, 1)
@@ -181,7 +249,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
                 .trait(ChickenTraits.LIFESPAN, 0.25, 1, 0.1, 10, 1);
     }
 
-    private Builder simple(HolderLookup.Provider provider, String id, String name, Fluid fluid) {
+    private Builder simple(HolderLookup.Provider provider, ResourceLocation id, String name, Fluid fluid) {
         return builder(provider, id, name)
                 .fluidProduct(fluid, 1000, 1000, 6000, 12000)//TODO, this is not going to work with fabric... Maybe I should use mb for this even on fabric?
                 .trait(ChickenTraits.SPEED, 0.25, 1, 0.1, 10, 1)
@@ -195,7 +263,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         return "chickens:chicken-variants";
     }
 
-    private static Builder builder(HolderLookup.Provider provider, String id, String name) {
+    private static Builder builder(HolderLookup.Provider provider, ResourceLocation id, String name) {
         return new Builder(provider, id, name);
     }
 
@@ -206,26 +274,26 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
 
     private static class Builder {
         private final HolderLookup.Provider provider;
-        private final String id;
+        private final ResourceLocation id;
         private final String name;
         private ResourceLocation texture;
         private ChickenProduct product = ChickenProduct.EMPTY;
         private int colour = 0xFFFFFFFF;
         private final List<TraitConfig> traits = new ArrayList<>();
-        private String parent1 = null;
-        private String parent2 = null;
+        private ResourceLocation parent1 = null;
+        private ResourceLocation parent2 = null;
         private ChickenSpawn spawn = null;
         private double inheritChance = 1;
         private double singleInheritChance = 0.25;
 
-        public Builder(HolderLookup.Provider provider, String id, String name) {
+        public Builder(HolderLookup.Provider provider, ResourceLocation id, String name) {
             this.provider = provider;
             this.id = id;
             this.name = name;
-            this.texture = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "textures/entity/" + id + "_chicken.png");
+            this.texture = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/entity/" + id.getPath() + "_chicken.png");
         }
 
-        public Builder parents(String parent1, String parent2) {
+        public Builder parents(ResourceLocation parent1, ResourceLocation parent2) {
             this.parent1 = parent1;
             this.parent2 = parent2;
             return this;
@@ -275,7 +343,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         }
 
         public void build(BiConsumer<ResourceLocation, ChickenVariant> consumer) {
-            consumer.accept(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, id), new ChickenVariant(id, name, texture, product, colour, traits, Optional.ofNullable(parent1), Optional.ofNullable(parent2), Optional.ofNullable(spawn)));
+            consumer.accept(id, new ChickenVariant(id, name, texture, product, colour, traits, Optional.ofNullable(parent1), Optional.ofNullable(parent2), Optional.ofNullable(spawn)));
         }
     }
 }

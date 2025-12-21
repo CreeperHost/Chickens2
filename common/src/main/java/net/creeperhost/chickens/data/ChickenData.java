@@ -10,6 +10,7 @@ import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -102,7 +103,7 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
             potentials.add(roosterVariant);
 
             for (ChickenVariant potential : ChickenDataManager.getVariants()) {
-                List<String> parents = potential.parents();
+                List<ResourceLocation> parents = potential.parents();
                 if (parents.contains(chickenVariant.id()) && parents.contains(roosterVariant.id())) {
                     potentials.add(potential);
                 }
