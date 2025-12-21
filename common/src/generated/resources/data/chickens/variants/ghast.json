@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:ghast",
   "name": "Ghast",
+  "parent1": "chickens:white",
+  "parent2": "chickens:blaze",
   "product": {
     "type": "ITEM",
     "id": "minecraft:ghast_tear",

@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:netherite",
   "name": "Netherite",
+  "parent1": "chickens:obsidian",
+  "parent2": "chickens:magenta",
   "product": {
     "type": "ITEM",
     "id": "minecraft:netherite_scrap",

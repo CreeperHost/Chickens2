@@ -91,7 +91,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
 
     private void addChickens(BiConsumer<ResourceLocation, ChickenVariant> consumer, HolderLookup.Provider provider) {
 
-        // === Natural Spawn Chickens ===
+        // === Natural Spawn Chickens === //
         simple(provider, flint, "Flint", Items.FLINT)
                 .spawn(new ChickenSpawn(List.of(BiomeTags.IS_MOUNTAIN, ConventionalBiomeTags.IS_STONY_SHORES, ConventionalBiomeTags.IS_MOUNTAIN), 10))
                 .build(consumer);
@@ -112,7 +112,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
                 .spawn(new ChickenSpawn(List.of(BiomeTags.IS_NETHER, ConventionalBiomeTags.IS_NETHER), 10))
                 .build(consumer);
 
-        // === Dyes ===
+        // === Dyes === //
         simple(provider, black, "Black", Items.BLACK_DYE)
                 .build(consumer);
         simple(provider, blue, "Blue", Items.BLUE_DYE)
@@ -120,24 +120,33 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         simple(provider, brown, "Brown", Items.BROWN_DYE)
                 .build(consumer);
         simple(provider, cyan, "Cyan", Items.CYAN_DYE)
+                .parents(blue, green)
                 .build(consumer);
         simple(provider, gray, "Gray", Items.GRAY_DYE)
+                .parents(black, white)
                 .build(consumer);
         simple(provider, green, "Green", Items.GREEN_DYE)
                 .build(consumer);
         simple(provider, light_blue, "Light Blue", Items.LIGHT_BLUE_DYE)
+                .parents(white, blue)
                 .build(consumer);
         simple(provider, light_gray, "Light Gray", Items.LIGHT_GRAY_DYE)
+                .parents(green, white)
                 .build(consumer);
         simple(provider, lime, "Lime", Items.LIME_DYE)
+                .parents(green, white)
                 .build(consumer);
         simple(provider, magenta, "Magenta", Items.MAGENTA_DYE)
+                .parents(purple, pink)
                 .build(consumer);
         simple(provider, orange, "Orange", Items.ORANGE_DYE)
+                .parents(red, yellow)
                 .build(consumer);
         simple(provider, pink, "Pink", Items.PINK_DYE)
+                .parents(red, white)
                 .build(consumer);
         simple(provider, purple, "Purple", Items.PURPLE_DYE)
+                .parents(blue, red)
                 .build(consumer);
         simple(provider, red, "Red", Items.RED_DYE)
                 .build(consumer);
@@ -146,70 +155,99 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         simple(provider, yellow, "Yellow", Items.YELLOW_DYE)
                 .build(consumer);
 
-
-        simple(provider, blaze, "Blaze", Items.BLAZE_ROD)
-                .build(consumer);
-        simple(provider, clay, "Clay", Items.CLAY)
-                .build(consumer);
-        simple(provider, coal, "Coal", Items.COAL)
-                .build(consumer);
-        simple(provider, copper, "Copper", Items.COPPER_INGOT)
-                .build(consumer);
-        simple(provider, diamond, "Diamond", Items.DIAMOND)
-                .build(consumer);
-        simple(provider, emerald, "Emerald", Items.EMERALD)
-                .build(consumer);
-        simple(provider, ender, "Ender", Items.ENDER_PEARL)
-                .build(consumer);
-
-        simple(provider, ghast, "Ghast", Items.GHAST_TEAR)
-                .build(consumer);
-        simple(provider, glass, "Glass", Items.GLASS)
+        // === Tier 2 === //
+        simple(provider, string, "String", Items.STRING)
+                .parents(black, log)
                 .build(consumer);
         simple(provider, glowstone, "Glowstone", Items.GLOWSTONE)
-                .build(consumer);
-        simple(provider, gold, "Gold", Items.GOLD_INGOT)
+                .parents(quartz, yellow)
                 .build(consumer);
         simple(provider, gunpowder, "Gunpowder", Items.GUNPOWDER)
+                .parents(sand, flint)
                 .build(consumer);
-        simple(provider, iron, "Iron", Items.IRON_INGOT)
+        simple(provider, redstone, "Redstone", Items.REDSTONE)
+                .parents(red, sand)
                 .build(consumer);
         simple(provider, lapis, "Lapis", Items.LAPIS_LAZULI)
+                .parents(blue, sand)
+                .build(consumer);
+        simple(provider, glass, "Glass", Items.GLASS)
+                .parents(quartz, redstone)
+                .build(consumer);
+        simple(provider, iron, "Iron", Items.IRON_INGOT)
+                .parents(flint, white)
+                .build(consumer);
+        simple(provider, copper, "Copper", Items.COPPER_INGOT)
+                .parents(flint, orange)
+                .build(consumer);
+        simple(provider, coal, "Coal", Items.COAL)
+                .parents(flint, log)
                 .build(consumer);
 
-        simple(provider, lava, "Lava", Fluids.LAVA)
-                .build(consumer);
-
-        simple(provider, leather, "Leather", Items.LEATHER)
-                .build(consumer);
-
-        simple(provider, magma, "Magma", Items.MAGMA_CREAM)
-                .build(consumer);
-        simple(provider, netherite, "Netherite", Items.NETHERITE_SCRAP)
-                .build(consumer);
-        simple(provider, netherwart, "Netherwart", Items.NETHER_WART)
-                .build(consumer);
-        simple(provider, obsidian, "Obsidian", Items.OBSIDIAN)
-                .build(consumer);
-        simple(provider, pcrystal, "Prismarine Crystal", Items.PRISMARINE_CRYSTALS)
-                .build(consumer);
-        simple(provider, pshard, "Prismarine Shard", Items.PRISMARINE_SHARD)
-                .build(consumer);
-
-        simple(provider, redstone, "Redstone", Items.REDSTONE)
-                .build(consumer);
-
-        simple(provider, slime, "Slime", Items.SLIME_BALL)
-                .build(consumer);
-        simple(provider, smart, "Smart", Items.EGG)
+        // === Tier 3 === //
+        simple(provider, gold, "Gold", Items.GOLD_INGOT)
+                .parents(iron, yellow)
                 .build(consumer);
         simple(provider, snowball, "Snowball", Items.SNOWBALL)
+                .parents(blue, log)
+                .build(consumer);
+        simple(provider, water, "Water", Fluids.WATER)
+                .parents(gunpowder, snowball)
+                .build(consumer);
+        simple(provider, lava, "Lava", Fluids.LAVA)
+                .parents(coal, quartz)
+                .build(consumer);
+        simple(provider, clay, "Clay", Items.CLAY)
+                .parents(snowball, sand)
+                .build(consumer);
+        simple(provider, leather, "Leather", Items.LEATHER)
+                .parents(string, brown)
+                .build(consumer);
+        simple(provider, netherwart, "Netherwart", Items.NETHER_WART)
+                .parents(brown, glowstone)
                 .build(consumer);
 
-        simple(provider, string, "String", Items.STRING)
+        // === Tier 4 === //
+        simple(provider, diamond, "Diamond", Items.DIAMOND)
+                .parents(glass, gold)
                 .build(consumer);
-        simple(provider, water, "Water", Fluids.LAVA)
+        simple(provider, blaze, "Blaze", Items.BLAZE_ROD)
+                .parents(gold, lava)
                 .build(consumer);
+        simple(provider, slime, "Slime", Items.SLIME_BALL)
+                .parents(clay, green)
+                .build(consumer);
+
+        // === Tier 5 === //
+        simple(provider, ender, "Ender", Items.ENDER_PEARL)
+                .parents(diamond, netherwart)
+                .build(consumer);
+        simple(provider, ghast, "Ghast", Items.GHAST_TEAR)
+                .parents(white, blaze)
+                .build(consumer);
+        simple(provider, emerald, "Emerald", Items.EMERALD)
+                .parents(diamond, green)
+                .build(consumer);
+        simple(provider, magma, "Magma", Items.MAGMA_CREAM)
+                .parents(slime, blaze)
+                .build(consumer);
+        simple(provider, pshard, "Prismarine Shard", Items.PRISMARINE_SHARD)
+                .parents(water, blue)
+                .build(consumer);
+        simple(provider, pcrystal, "Prismarine Crystal", Items.PRISMARINE_CRYSTALS)
+                .parents(water, emerald)
+                .build(consumer);
+        simple(provider, obsidian, "Obsidian", Items.OBSIDIAN)
+                .parents(water, lava)
+                .build(consumer);
+
+        // === Tier 5 === //
+        simple(provider, netherite, "Netherite", Items.NETHERITE_SCRAP)
+                .parents(obsidian, magenta)
+                .build(consumer);
+
+        //        simple(provider, smart, "Smart", Items.EGG)
+//                .build(consumer);
     }
 
 

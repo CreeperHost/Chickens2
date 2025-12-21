@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:netherwart",
   "name": "Netherwart",
+  "parent1": "chickens:brown",
+  "parent2": "chickens:glowstone",
   "product": {
     "type": "ITEM",
     "id": "minecraft:nether_wart",

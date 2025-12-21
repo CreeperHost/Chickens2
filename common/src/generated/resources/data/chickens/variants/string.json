@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:string",
   "name": "String",
+  "parent1": "chickens:black",
+  "parent2": "chickens:log",
   "product": {
     "type": "ITEM",
     "id": "minecraft:string",

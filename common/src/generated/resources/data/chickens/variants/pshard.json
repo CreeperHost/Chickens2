@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:pshard",
   "name": "Prismarine Shard",
+  "parent1": "chickens:water",
+  "parent2": "chickens:blue",
   "product": {
     "type": "ITEM",
     "id": "minecraft:prismarine_shard",

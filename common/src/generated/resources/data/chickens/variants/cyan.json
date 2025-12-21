@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:cyan",
   "name": "Cyan",
+  "parent1": "chickens:blue",
+  "parent2": "chickens:green",
   "product": {
     "type": "ITEM",
     "id": "minecraft:cyan_dye",

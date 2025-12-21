@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:lapis",
   "name": "Lapis",
+  "parent1": "chickens:blue",
+  "parent2": "chickens:sand",
   "product": {
     "type": "ITEM",
     "id": "minecraft:lapis_lazuli",

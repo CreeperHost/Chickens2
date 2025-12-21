@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:pcrystal",
   "name": "Prismarine Crystal",
+  "parent1": "chickens:water",
+  "parent2": "chickens:emerald",
   "product": {
     "type": "ITEM",
     "id": "minecraft:prismarine_crystals",

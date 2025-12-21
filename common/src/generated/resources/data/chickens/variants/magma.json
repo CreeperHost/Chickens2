@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:magma",
   "name": "Magma",
+  "parent1": "chickens:slime",
+  "parent2": "chickens:blaze",
   "product": {
     "type": "ITEM",
     "id": "minecraft:magma_cream",

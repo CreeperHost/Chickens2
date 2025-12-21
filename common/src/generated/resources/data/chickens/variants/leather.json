@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:leather",
   "name": "Leather",
+  "parent1": "chickens:string",
+  "parent2": "chickens:brown",
   "product": {
     "type": "ITEM",
     "id": "minecraft:leather",

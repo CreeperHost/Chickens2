@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:gunpowder",
   "name": "Gunpowder",
+  "parent1": "chickens:sand",
+  "parent2": "chickens:flint",
   "product": {
     "type": "ITEM",
     "id": "minecraft:gunpowder",

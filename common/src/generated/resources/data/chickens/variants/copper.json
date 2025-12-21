@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:copper",
   "name": "Copper",
+  "parent1": "chickens:flint",
+  "parent2": "chickens:orange",
   "product": {
     "type": "ITEM",
     "id": "minecraft:copper_ingot",

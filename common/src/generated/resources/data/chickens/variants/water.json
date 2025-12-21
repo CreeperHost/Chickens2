@@ -2,9 +2,11 @@
   "eggColour": -1,
   "id": "chickens:water",
   "name": "Water",
+  "parent1": "chickens:gunpowder",
+  "parent2": "chickens:snowball",
   "product": {
     "type": "FLUID",
-    "id": "minecraft:lava",
+    "id": "minecraft:water",
     "max": 1000,
     "maxLayTime": 12000,
     "min": 1000,

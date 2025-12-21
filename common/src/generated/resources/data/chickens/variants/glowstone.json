@@ -2,6 +2,8 @@
   "eggColour": -1,
   "id": "chickens:glowstone",
   "name": "Glowstone",
+  "parent1": "chickens:quartz",
+  "parent2": "chickens:yellow",
   "product": {
     "type": "ITEM",
     "id": "minecraft:glowstone",

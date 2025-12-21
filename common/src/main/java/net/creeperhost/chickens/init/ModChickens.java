@@ -69,89 +69,115 @@ public class ModChickens
         chickens.add(sandChicken);
 
         // Tier 2
-        ChickensRegistryItem stringChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "string_chicken"), "string_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/string_chicken.png"), new ItemStack(Items.STRING), 16777215, blackChicken, logChicken);
+        ChickensRegistryItem stringChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "string_chicken"), "string_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/string_chicken.png"),
+                new ItemStack(Items.STRING), 16777215, blackChicken, logChicken);
         stringChicken.setLayItem(new ItemStack(Items.STRING));
         chickens.add(stringChicken);
 
-        ChickensRegistryItem glowstoneChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "glowstone_chicken"), "glowstone_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/glowstone_chicken.png"), new ItemStack(Items.GLOWSTONE_DUST), 0xffff66, quartzChicken, yellowChicken);
+        ChickensRegistryItem glowstoneChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "glowstone_chicken"), "glowstone_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/glowstone_chicken.png"),
+                new ItemStack(Items.GLOWSTONE_DUST), 0xffff66, quartzChicken, yellowChicken);
         chickens.add(glowstoneChicken);
 
-        ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "gunpowder_chicken"), "gunpowder_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/gunpowder_chicken.png"), new ItemStack(Items.GUNPOWDER), 0x999999, sandChicken, flintChicken);
+        ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "gunpowder_chicken"), "gunpowder_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/gunpowder_chicken.png"),
+                new ItemStack(Items.GUNPOWDER), 0x999999, sandChicken, flintChicken);
         chickens.add(gunpowderChicken);
 
-        ChickensRegistryItem redstoneChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "redstone_chicken"), "redstone_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/redstone_chicken.png"), new ItemStack(Items.REDSTONE), 0xe60000, redChicken, sandChicken);
+        ChickensRegistryItem redstoneChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "redstone_chicken"), "redstone_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/redstone_chicken.png"),
+                new ItemStack(Items.REDSTONE), 0xe60000, redChicken, sandChicken);
         chickens.add(redstoneChicken);
 
-        ChickensRegistryItem lapisChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "lapis_chicken"), "lapis_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/lapis_chicken.png"), new ItemStack(Items.LAPIS_LAZULI), 0x0000e6, blueChicken, sandChicken);
+        ChickensRegistryItem lapisChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "lapis_chicken"), "lapis_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/lapis_chicken.png"),
+                new ItemStack(Items.LAPIS_LAZULI), 0x0000e6, blueChicken, sandChicken);
         chickens.add(lapisChicken);
 
-        ChickensRegistryItem glassChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "glass_chicken"), "glass_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/glass_chicken.png"), new ItemStack(Blocks.GLASS), 0xffffff, quartzChicken, redstoneChicken);
+        ChickensRegistryItem glassChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "glass_chicken"), "glass_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/glass_chicken.png"),
+                new ItemStack(Blocks.GLASS), 0xffffff, quartzChicken, redstoneChicken);
         chickens.add(glassChicken);
 
-        ChickensRegistryItem ironChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "iron_chicken"), "iron_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/iron_chicken.png"), new ItemStack(Items.IRON_INGOT), 0xffffcc, flintChicken, whiteChicken);
+        ChickensRegistryItem ironChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "iron_chicken"), "iron_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/iron_chicken.png"),
+                new ItemStack(Items.IRON_INGOT), 0xffffcc, flintChicken, whiteChicken);
         chickens.add(ironChicken);
 
-        ChickensRegistryItem coalChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "coal_chicken"), "coal_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/coal_chicken.png"), new ItemStack(Items.COAL), 0x262626, flintChicken, logChicken);
+        ChickensRegistryItem coalChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "coal_chicken"), "coal_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/coal_chicken.png"),
+                new ItemStack(Items.COAL), 0x262626, flintChicken, logChicken);
         chickens.add(coalChicken);
 
         ChickensRegistryItem brownChicken = createDyeChicken(DyeColor.BROWN, "brown_chicken").setParentsNew(redChicken, greenChicken);
         chickens.add(brownChicken);
 
         // tier 3
-        ChickensRegistryItem goldChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "gold_chicken"), "gold_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/gold_chicken.png"), new ItemStack(Items.GOLD_NUGGET), 0xcccc00, ironChicken, yellowChicken);
+        ChickensRegistryItem goldChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "gold_chicken"), "gold_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/gold_chicken.png"),
+                new ItemStack(Items.GOLD_NUGGET), 0xcccc00, ironChicken, yellowChicken);
         chickens.add(goldChicken);
 
-        ChickensRegistryItem snowballChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "snowball_chicken"), "snowball_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/snowball_chicken.png"), new ItemStack(Items.SNOWBALL), 0x33bbff, blueChicken, logChicken);
+        ChickensRegistryItem snowballChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "snowball_chicken"), "snowball_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/snowball_chicken.png"),
+                new ItemStack(Items.SNOWBALL), 0x33bbff, blueChicken, logChicken);
         chickens.add(snowballChicken);
 
-        ChickensRegistryItem waterChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "water_chicken"), "water_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/water_chicken.png"), new ItemHolder("fluid", "minecraft:water", (int) FluidManager.BUCKET), 0x000099, gunpowderChicken, snowballChicken);
+        ChickensRegistryItem waterChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "water_chicken"), "water_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/water_chicken.png"),
+                new ItemHolder("fluid", "minecraft:water", (int) FluidManager.BUCKET), 0x000099, gunpowderChicken, snowballChicken);
         chickens.add(waterChicken);
 
-        ChickensRegistryItem lavaChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "lava_chicken"), "lava_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/lava_chicken.png"), new ItemHolder("fluid", "minecraft:lava", (int) FluidManager.BUCKET), 0xcc3300, coalChicken, quartzChicken);
+        ChickensRegistryItem lavaChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "lava_chicken"), "lava_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/lava_chicken.png"),
+                new ItemHolder("fluid", "minecraft:lava", (int) FluidManager.BUCKET), 0xcc3300, coalChicken, quartzChicken);
         chickens.add(lavaChicken);
 
-        ChickensRegistryItem clayChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "clay_chicken"), "clay_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/clay_chicken.png"), new ItemStack(Items.CLAY_BALL), 0xcccccc, snowballChicken, sandChicken);
+        ChickensRegistryItem clayChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "clay_chicken"), "clay_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/clay_chicken.png"),
+                new ItemStack(Items.CLAY_BALL), 0xcccccc, snowballChicken, sandChicken);
         chickens.add(clayChicken);
 
-        ChickensRegistryItem leatherChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "leather_chicken"), "leather_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/leather_chicken.png"), new ItemStack(Items.LEATHER), 0xA7A06C, stringChicken, brownChicken);
+        ChickensRegistryItem leatherChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "leather_chicken"), "leather_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/leather_chicken.png"),
+                new ItemStack(Items.LEATHER), 0xA7A06C, stringChicken, brownChicken);
         chickens.add(leatherChicken);
 
-        ChickensRegistryItem netherwartChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "netherwart_chicken"), "netherwart_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/netherwart_chicken.png"), new ItemStack(Items.NETHER_WART), 0x800000, brownChicken, glowstoneChicken);
+        ChickensRegistryItem netherwartChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "netherwart_chicken"), "netherwart_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/netherwart_chicken.png"),
+                new ItemStack(Items.NETHER_WART), 0x800000, brownChicken, glowstoneChicken);
         chickens.add(netherwartChicken);
 
         // Tier 4
-        ChickensRegistryItem diamondChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "diamond_chicken"), "diamond_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/diamond_chicken.png"), new ItemStack(Items.DIAMOND), 0x99ccff, glassChicken, goldChicken);
+        ChickensRegistryItem diamondChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "diamond_chicken"), "diamond_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/diamond_chicken.png"),
+                new ItemStack(Items.DIAMOND), 0x99ccff, glassChicken, goldChicken);
         chickens.add(diamondChicken);
 
-        ChickensRegistryItem blazeChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "blaze_chicken"), "blaze_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/blaze_chicken.png"), new ItemStack(Items.BLAZE_ROD), 0xffff66, goldChicken, lavaChicken);
+        ChickensRegistryItem blazeChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "blaze_chicken"), "blaze_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/blaze_chicken.png"),
+                new ItemStack(Items.BLAZE_ROD), 0xffff66, goldChicken, lavaChicken);
         chickens.add(blazeChicken);
 
-        ChickensRegistryItem slimeChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "slime_chicken"), "slime_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/slime_chicken.png"), new ItemStack(Items.SLIME_BALL), 0x009933, clayChicken, greenChicken);
+        ChickensRegistryItem slimeChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "slime_chicken"), "slime_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/slime_chicken.png"),
+                new ItemStack(Items.SLIME_BALL), 0x009933, clayChicken, greenChicken);
         chickens.add(slimeChicken);
 
         // Tier 5
-        ChickensRegistryItem enderChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "ender_chicken"), "ender_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/ender_chicken.png"), new ItemStack(Items.ENDER_PEARL), 0x001a00, diamondChicken, netherwartChicken);
+        ChickensRegistryItem enderChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "ender_chicken"), "ender_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/ender_chicken.png"),
+                new ItemStack(Items.ENDER_PEARL), 0x001a00, diamondChicken, netherwartChicken);
         chickens.add(enderChicken);
 
-        ChickensRegistryItem ghastChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "ghast_chicken"), "ghast_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/ghast_chicken.png"), new ItemStack(Items.GHAST_TEAR), 0xffffcc, whiteChicken, blazeChicken);
+        ChickensRegistryItem ghastChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "ghast_chicken"), "ghast_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/ghast_chicken.png"),
+                new ItemStack(Items.GHAST_TEAR), 0xffffcc, whiteChicken, blazeChicken);
         chickens.add(ghastChicken);
 
-        ChickensRegistryItem emeraldChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "emerald_chicken"), "emerald_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/emerald_chicken.png"), new ItemStack(Items.EMERALD), 0x00cc00, diamondChicken, greenChicken);
+        ChickensRegistryItem emeraldChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "emerald_chicken"), "emerald_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/emerald_chicken.png"),
+                new ItemStack(Items.EMERALD), 0x00cc00, diamondChicken, greenChicken);
         chickens.add(emeraldChicken);
 
-        ChickensRegistryItem magmaChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "magma_chicken"), "magma_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/magma_chicken.png"), new ItemStack(Items.MAGMA_CREAM), 0x1a0500, slimeChicken, blazeChicken);
+        ChickensRegistryItem magmaChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "magma_chicken"), "magma_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/magma_chicken.png"),
+                new ItemStack(Items.MAGMA_CREAM), 0x1a0500, slimeChicken, blazeChicken);
         chickens.add(magmaChicken);
 
-        ChickensRegistryItem pShardChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "pshard_chicken"), "pshard_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/pshard_chicken.png"), new ItemStack(Items.PRISMARINE_SHARD), 0x43806e, waterChicken, blueChicken);
+        ChickensRegistryItem pShardChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "pshard_chicken"), "pshard_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/pshard_chicken.png"),
+                new ItemStack(Items.PRISMARINE_SHARD), 0x43806e, waterChicken, blueChicken);
         chickens.add(pShardChicken);
 
-        ChickensRegistryItem pCrystalChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "pcrystal_chicken"), "pcrystal_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/pcrystal_chicken.png"), new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0x4e6961, waterChicken, emeraldChicken);
+        ChickensRegistryItem pCrystalChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "pcrystal_chicken"), "pcrystal_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/pcrystal_chicken.png"),
+                new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0x4e6961, waterChicken, emeraldChicken);
         chickens.add(pCrystalChicken);
 
-        ChickensRegistryItem obsidianChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "obsidian_chicken"), "obsidian_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/obsidian_chicken.png"), new ItemStack(Blocks.OBSIDIAN, 1), 0x08080e, waterChicken, lavaChicken);
+        ChickensRegistryItem obsidianChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "obsidian_chicken"), "obsidian_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/obsidian_chicken.png"),
+                new ItemStack(Blocks.OBSIDIAN, 1), 0x08080e, waterChicken, lavaChicken);
         chickens.add(obsidianChicken);
 
-        ChickensRegistryItem soulSandChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "soulsand_chicken"), "soulsand_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/soulsand_chicken.png"), new ItemStack(Blocks.SOUL_SAND, 1), 0x453125);
+        ChickensRegistryItem soulSandChicken = new ChickensRegistryItem(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "soulsand_chicken"), "soulsand_chicken", ResourceLocation.fromNamespaceAndPath("chickens", "textures/entity/soulsand_chicken.png"),
+                new ItemStack(Blocks.SOUL_SAND, 1), 0x453125);
         chickens.add(soulSandChicken);
 
         return chickens;
