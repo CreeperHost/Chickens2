@@ -1,10 +1,5 @@
 package net.creeperhost.chickens;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.DoubleArgumentType;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
@@ -24,11 +19,7 @@ import net.creeperhost.chickens.network.PacketHandler;
 import net.creeperhost.chickens.trait.Trait;
 import net.creeperhost.polylib.PolyLib;
 import net.fabricmc.api.EnvType;
-import net.minecraft.commands.CommandBuildContext;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -99,21 +90,32 @@ public class Chickens {
 //                }
 //            }
 //        }
-        if (!player.getItemInHand(interactionHand).isEmpty()) {
-            for (ChickenTransformationRecipe transformationRecipe : ChickenAPI.TRANSFORMATION_RECIPES) {
-                if (transformationRecipe.getEntityTypeIn() == entity.getType() && ItemStack.isSameItem(player.getItemInHand(interactionHand), transformationRecipe.getStack())) {
-                    Entity newEntity = transformationRecipe.getEntityTypeOut().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
-                    if (newEntity != null) {
-                        newEntity.setPos(entity.position());
-                        level.addFreshEntity(newEntity);
-                        entity.remove(Entity.RemovalReason.DISCARDED);
-                        if (!player.isCreative()) {
-                            player.getItemInHand(interactionHand).shrink(1);
-                        }
-                    }
+
+        ItemStack stack = player.getItemInHand(interactionHand);
+        if (stack.isEmpty() || !(level instanceof ServerLevel serverLevel)) {
+            return EventResult.pass();
+        }
+
+        for (ChickenTransformationRecipe recipe : ChickenAPI.TRANSFORMATION_RECIPES) {
+            if (recipe.getEntityTypeIn() == entity.getType() && ItemStack.isSameItem(stack, recipe.getStack())) {
+                ChickensChicken chicken = ModEntities.CHICKEN.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
+                ChickenVariant variant = ChickenDataManager.getVariant(recipe.getVariant());
+                if (chicken == null || variant == null) {
+                    return EventResult.pass();
                 }
+                chicken.setPos(entity.position());
+                chicken.setChickenVariant(variant);
+                chicken.initRandomTraits(serverLevel, variant, 0);
+                chicken.setRooster(serverLevel.getRandom().nextBoolean());
+                level.addFreshEntity(chicken);
+                entity.remove(Entity.RemovalReason.DISCARDED);
+                if (!player.isCreative()) {
+                    stack.shrink(1);
+                }
+                return EventResult.pass();
             }
         }
+
         return EventResult.pass();
     }
 }
