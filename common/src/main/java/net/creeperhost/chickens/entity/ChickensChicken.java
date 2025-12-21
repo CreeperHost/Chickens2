@@ -21,11 +21,9 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Chicken;
-import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -37,7 +35,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 /**
  * Created by brandon3055 on 17/11/2025
@@ -107,7 +104,7 @@ public class ChickensChicken extends Chicken {
         return ChickenDataManager.getVariantOrMissing(this.entityData.get(CHICKEN_VARIANT));
     }
 
-    public void setVariantString(ResourceLocation id) {
+    public void setChickenVariant(ResourceLocation id) {
         this.entityData.set(CHICKEN_VARIANT, id);
     }
 
@@ -153,14 +150,19 @@ public class ChickensChicken extends Chicken {
             Chickens.LOGGER.warn("No valid chicken variant found for spawn biome {}, chicken will be discarded.", level.getBiome(blockPosition()));
         } else {
             setChickenVariant(variant);
-            for (TraitConfig config : variant.traitConfigs()) {
-                double value = config.spawnMin() + ((config.spawnMax() - config.spawnMin()) * level.getRandom().nextDouble());
-                if (value <= 0) continue;
-                setTrait(config.trait(), value);
-            }
+            initRandomTraits(level, variant, 0);
         }
         setRooster(level.getRandom().nextBoolean());
         return super.finalizeSpawn(level, difficultyInstance, entitySpawnReason, spawnGroupData);
+    }
+
+    public void initRandomTraits(ServerLevelAccessor level, ChickenVariant variant, double forceValue) {
+        for (TraitConfig config : variant.traitConfigs()) {
+            double value = config.spawnMin() + ((config.spawnMax() - config.spawnMin()) * level.getRandom().nextDouble());
+            if (forceValue > 0) value = forceValue;
+            if (value <= 0) continue;
+            setTrait(config.trait(), value);
+        }
     }
 
     @Override
@@ -189,7 +191,7 @@ public class ChickensChicken extends Chicken {
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        setVariantString(input.read("chicken_variant", ResourceLocation.CODEC).orElse(ChickenVariant.MISSING.id()));
+        setChickenVariant(input.read("chicken_variant", ResourceLocation.CODEC).orElse(ChickenVariant.MISSING.id()));
         setRooster(input.getBooleanOr("is_rooster", false));
         setTamingModifier(input.getDoubleOr("taming_mod", 0));
 
