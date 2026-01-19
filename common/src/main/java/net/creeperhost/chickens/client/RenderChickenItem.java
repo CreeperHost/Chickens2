@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.creeperhost.chickens.api.ChickensRegistry;
+import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.data.ChickenDataManager;
 import net.creeperhost.chickens.data.ChickenVariant;
@@ -31,7 +32,7 @@ public class RenderChickenItem {
         ChickenData data = ChickenData.fromItem(itemStack);
         if (data == null) {
             ChickenVariant variant = Iterables.get(ChickenDataManager.getVariants(), (int) ((System.currentTimeMillis() / 1000) % ChickenDataManager.getVariants().size()));
-            data = new ChickenData(variant, false, Collections.emptyList(), new ChickenData.EntityData(0, 0, 0));
+            data = new ChickenData(variant, false, Collections.emptyList(), new ChickenData.EntityData(0, 0, 0, (float) Config.INSTANCE.chickenLifeSpan));
         }
 
         ChickensChicken chicken = ModEntities.CHICKEN.get().create(mc.level, EntitySpawnReason.SPAWNER);

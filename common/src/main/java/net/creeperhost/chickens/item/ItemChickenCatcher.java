@@ -1,20 +1,11 @@
 package net.creeperhost.chickens.item;
 
-import net.creeperhost.chickens.api.ChickenStats;
-import net.creeperhost.chickens.api.ChickensRegistry;
 import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.entity.ChickensChicken;
-import net.creeperhost.chickens.entity.EntityChickensChicken;
-import net.creeperhost.chickens.entity.EntityRooster;
-import net.creeperhost.chickens.init.ModComponentTypes;
-import net.creeperhost.chickens.init.ModItems;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;

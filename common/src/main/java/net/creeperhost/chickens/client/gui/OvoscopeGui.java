@@ -5,6 +5,7 @@ import net.creeperhost.chickens.blockentities.OvoscopeBlockEntity;
 import net.creeperhost.chickens.client.ChickenGuiTextures;
 import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.containers.OvoscopeMenu;
+import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.item.ItemChickenEgg;
 import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.ModularGuiContainer;
@@ -134,9 +135,9 @@ public class OvoscopeGui extends ContainerGuiProvider<OvoscopeMenu> {
             if (stack.isEmpty() || !(stack.getItem() instanceof ItemChickenEgg eggItem) || !menu.scanning.get()) {
                 return;
             }
-            ChickensRegistryItem type = eggItem.getType(stack);
-            if (type == null) return;
-            int colour = type.getBgColor();
+            ChickenData data = ChickenData.fromItem(stack);
+            if (data == null) return;
+            int colour = data.variant().eggColour();
             randy.setSeed(menu.scanCount.get());
             int pIndex = randy.nextInt(1, 4);
             boolean viable = eggItem.isFertilized(stack);

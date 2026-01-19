@@ -260,20 +260,20 @@ public class EntityChickensChicken extends Chicken
             setTimeUntilNextEgg(newTimeUntilNextEgg);
             if (newTimeUntilNextEgg <= 1)
             {
-                int damage = Config.INSTANCE.lifespanReductionOnLay;
+                int damage = (int) Config.INSTANCE.lifespanReductionOnLay;
                 if(nearby > Config.INSTANCE.maxChickensInChunk) damage *= nearby;
                 setLifeSpan(getLifeSpan() -damage);
 
                 ChickensRegistryItem chickenDescription = getChickenRegistryItem();
                 boolean viable = level().random.nextDouble() < Config.INSTANCE.onLaidViabilityChange;
                 if(nearby > Config.INSTANCE.maxChickensInChunk) viable = false;
-                ItemStack eggStack = ItemChickenEgg.of(chickenDescription, viable);
+//                ItemStack eggStack = ItemChickenEgg.of(chickenDescription, viable);
 
-                if (!eggStack.isEmpty()) {
-                    ItemEntity itemEntity = new ItemEntity(level(), getX(), getY(), getZ(), eggStack);
-                    level().addFreshEntity(itemEntity);
-                    playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-                }
+//                if (!eggStack.isEmpty()) {
+//                    ItemEntity itemEntity = new ItemEntity(level(), getX(), getY(), getZ(), eggStack);
+//                    level().addFreshEntity(itemEntity);
+//                    playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+//                }
 
                 resetTimeUntilNextEgg();
             }

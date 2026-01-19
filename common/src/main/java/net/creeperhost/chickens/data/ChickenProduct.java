@@ -2,14 +2,23 @@ package net.creeperhost.chickens.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.architectury.fluid.FluidStack;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ByIdMap;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
 
+import java.util.Random;
 import java.util.function.IntFunction;
 
 /**
@@ -45,6 +54,31 @@ public record ChickenProduct(ResourceLocation id, Type type, int min, int max, i
             ByteBufCodecs.INT, ChickenProduct::maxLayTime,
             ChickenProduct::new
     );
+
+    public ItemStack getAsStack(Level level) {
+        Item item = level.registryAccess().lookupOrThrow(Registries.ITEM).getValue(id);
+        if (item == null) {
+            return ItemStack.EMPTY;
+        }
+        return new ItemStack(item, level.getRandom().nextInt(min, max + 1));
+    }
+
+    public FluidStack getAsFluid(Level level) {
+        Fluid fluid = level.registryAccess().lookupOrThrow(Registries.FLUID).getValue(id);
+        if (fluid == null) {
+            return FluidStack.empty();
+        }
+        long amount = level.getRandom().nextInt(min, max + 1);
+        //Forge to Fabric fluid value conversion
+        if (FluidStack.bucketAmount() != 1000) {
+            if (amount == 1000) {
+                amount = FluidStack.bucketAmount();
+            } else {
+                amount = (long) ((amount / 1000D) * FluidStack.bucketAmount());
+            }
+        }
+        return FluidStack.create(fluid, amount);
+    }
 
     public enum Type implements StringRepresentable {
         ITEM,

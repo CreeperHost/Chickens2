@@ -200,7 +200,8 @@ public class DataGen implements DataGeneratorEntrypoint
             provider.add("gui.chickens.ovoscope.viable", "Viable", ModuleType.COMMON);
             provider.add("gui.chickens.ovoscope.non_viable", "Non Viable", ModuleType.COMMON);
 
-            provider.add("gui.chickens.breeder.chicken_slot", "Add Chickens!", ModuleType.COMMON);
+            provider.add("gui.chickens.breeder.chicken_slot", "Chicken slot for egg production", ModuleType.COMMON);
+            provider.add("gui.chickens.breeder.rooster_slot", "Rooster slot (Optional, required for breeding) ", ModuleType.COMMON);
             provider.add("gui.chickens.breeder.seed_slot", "Add Seeds!", ModuleType.COMMON);
 
             return provider;

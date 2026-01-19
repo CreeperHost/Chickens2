@@ -1,23 +1,17 @@
 package net.creeperhost.chickens.item;
 
-import net.creeperhost.chickens.api.ChickensRegistry;
-import net.creeperhost.chickens.api.ChickensRegistryItem;
 import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.init.ModComponentTypes;
-import net.creeperhost.chickens.init.ModItems;
 import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class ItemChickenEgg extends Item
@@ -36,72 +30,68 @@ public class ItemChickenEgg extends Item
         return Component.translatable("item.chickens.egg.name", data.variant().name());
     }
 
-    @Deprecated
-    public static ItemStack of(ChickensRegistryItem chickensRegistryItem)
-    {
-        return of(chickensRegistryItem, true);
-    }
+//    @Deprecated
+//    public static ItemStack of(ChickensRegistryItem chickensRegistryItem)
+//    {
+//        return of(chickensRegistryItem, true);
+//    }
+//
+//    @Deprecated
+//    public static ItemStack of(ChickensRegistryItem chickensRegistryItem, boolean viable)
+//    {
+//        ItemStack stack = new ItemStack(ModItems.CHICKEN_EGG.get());
+//        stack.set(ModComponentTypes.EGG_CHICKEN_TYPE.get(), chickensRegistryItem.getRegistryName().toString());
+//        stack.set(ModComponentTypes.EGG_PROGRESS.get(), 0);
+//        stack.set(ModComponentTypes.EGG_MISSED.get(), 0);
+//        stack.set(ModComponentTypes.EGG_FERTILIZED.get(), viable);
+//        return stack;
+//    }
 
-    @Deprecated
-    public static ItemStack of(ChickensRegistryItem chickensRegistryItem, boolean viable)
-    {
-        ItemStack stack = new ItemStack(ModItems.CHICKEN_EGG.get());
-        stack.set(ModComponentTypes.EGG_CHICKEN_TYPE.get(), chickensRegistryItem.getRegistryName().toString());
-        stack.set(ModComponentTypes.EGG_PROGRESS.get(), 0);
-        stack.set(ModComponentTypes.EGG_MISSED.get(), 0);
-        stack.set(ModComponentTypes.EGG_FERTILIZED.get(), viable);
-        return stack;
-    }
+//    @Deprecated
+//    @Nullable
+//    public ChickensRegistryItem getType(ItemStack stack)
+//    {
+//        if(stack.isEmpty()) return null;
+//        if(!stack.has(ModComponentTypes.EGG_CHICKEN_TYPE.get())) return null;
+//
+//        ResourceLocation resourceLocation = ResourceLocation.tryParse(stack.getOrDefault(ModComponentTypes.EGG_CHICKEN_TYPE.get(), null));//ResourceLocation.tryParse(stack.getTag().getString("chickentype"));
+//        if(resourceLocation == null || resourceLocation.toString().isEmpty()) return null;
+//        AtomicReference<ChickensRegistryItem> value = new AtomicReference<>(null);
+//        ChickensRegistry.getItems().forEach(chickensRegistryItem1 ->
+//        {
+//            if(chickensRegistryItem1 != null && chickensRegistryItem1.getRegistryName().toString().equalsIgnoreCase(resourceLocation.toString()))
+//            {
+//                value.set(chickensRegistryItem1);
+//            }
+//        });
+//        return value.get();
+//    }
 
-    @Deprecated
-    @Nullable
-    public ChickensRegistryItem getType(ItemStack stack)
-    {
-        if(stack.isEmpty()) return null;
-        if(!stack.has(ModComponentTypes.EGG_CHICKEN_TYPE.get())) return null;
-
-        ResourceLocation resourceLocation = ResourceLocation.tryParse(stack.getOrDefault(ModComponentTypes.EGG_CHICKEN_TYPE.get(), null));//ResourceLocation.tryParse(stack.getTag().getString("chickentype"));
-        if(resourceLocation == null || resourceLocation.toString().isEmpty()) return null;
-        AtomicReference<ChickensRegistryItem> value = new AtomicReference<>(null);
-        ChickensRegistry.getItems().forEach(chickensRegistryItem1 ->
-        {
-            if(chickensRegistryItem1 != null && chickensRegistryItem1.getRegistryName().toString().equalsIgnoreCase(resourceLocation.toString()))
-            {
-                value.set(chickensRegistryItem1);
-            }
-        });
-        return value.get();
-    }
-
-    @Deprecated
     public int getProgress(ItemStack stack)
     {
         return stack.getOrDefault(ModComponentTypes.EGG_PROGRESS.get(), 0);
     }
 
-    @Deprecated
     public void setProgress(ItemStack stack, int amount)
     {
         stack.set(ModComponentTypes.EGG_PROGRESS.get(), amount);
     }
 
-    @Deprecated
-    public void incrementMissed(ItemStack stack)
-    {
+    public void incrementMissed(ItemStack stack) {
         int value = stack.getOrDefault(ModComponentTypes.EGG_MISSED.get(), 0) + 1;
         stack.set(ModComponentTypes.EGG_MISSED.get(), value);
     }
 
-    @Deprecated
-    public int getMissedCycles(ItemStack stack)
-    {
+    public int getMissedCycles(ItemStack stack) {
         return stack.getOrDefault(ModComponentTypes.EGG_MISSED.get(), 0);
     }
 
-    @Deprecated
-    public void setNotViable(ItemStack stack)
-    {
-        stack.set(ModComponentTypes.EGG_FERTILIZED.get(), false);
+    public void setNotViable(ItemStack stack) {
+        stack.set(ModComponentTypes.EGG_VIABLE.get(), false);
+    }
+
+    public boolean isViable(ItemStack stack) {
+        return stack.getOrDefault(ModComponentTypes.EGG_VIABLE.get(), true);
     }
 
     public void setFertilized(ItemStack stack, boolean fertilized) {
@@ -112,10 +102,14 @@ public class ItemChickenEgg extends Item
         return stack.getOrDefault(ModComponentTypes.EGG_FERTILIZED.get(), false);
     }
 
+    public boolean canHatch(ItemStack stack) {
+        return isFertilized(stack) && isViable(stack);
+    }
+
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
         ChickenData data = ChickenData.fromItem(itemStack);
-        if (data == null) return;
+        if (data == null || !isFertilized(itemStack)) return;
         if (Screen.hasShiftDown()) {
             for (Trait.StateValue state : data.traits()) {
                 state.trait().appendHoverText(consumer, state.value());
@@ -128,7 +122,7 @@ public class ItemChickenEgg extends Item
             //TODO clean this up
 //            consumer.accept(Component.literal(ChatFormatting.BLUE + "ChickenType: " + ChatFormatting.WHITE + data.variant().name()));
             consumer.accept(Component.literal(ChatFormatting.LIGHT_PURPLE + "Progress: " + ChatFormatting.WHITE + getProgress(itemStack)));
-            consumer.accept(Component.literal("Viable: " + isFertilized(itemStack)));
+//            consumer.accept(Component.literal("Fertilized: " + isFertilized(itemStack)));
         }
 
 //        ChickensRegistryItem item = getType(itemStack);

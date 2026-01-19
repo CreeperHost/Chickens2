@@ -7,6 +7,7 @@ import net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup;
 import net.creeperhost.polylib.containers.PolyBlockContainerMenu;
 import net.creeperhost.polylib.containers.slots.PolySlot;
 import net.creeperhost.polylib.data.serializable.FloatData;
+import net.creeperhost.polylib.data.serializable.IntData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -18,8 +19,8 @@ public class BreederMenu extends PolyBlockContainerMenu<BreederBlockEntity> {
     public final SlotGroup chickens = createSlotGroup(2, 0);
     public final SlotGroup output = createSlotGroup(3, 0);
 
-    public final DataSync<Float> progress;
-    public final DataSync<Float> targetProgress;
+    public final DataSync<Integer> progress;
+    public final DataSync<Integer> targetProgress;
 
     public BreederMenu(int windowId, Inventory playerInv, FriendlyByteBuf extraData) {
         this(windowId, playerInv, getClientTile(playerInv, extraData));
@@ -27,14 +28,14 @@ public class BreederMenu extends PolyBlockContainerMenu<BreederBlockEntity> {
 
     public BreederMenu(int windowId, Inventory playerInv, BreederBlockEntity tile) {
         super(ModContainers.BREEDER_CONTAINER.get(), windowId, playerInv, tile);
-        progress = new DataSync<>(this, new FloatData(), tile.progress::get);
-        targetProgress = new DataSync<>(this, new FloatData(), tile.targetProgress::get);
+        progress = new DataSync<>(this, new IntData(), tile.progress::get);
+        targetProgress = new DataSync<>(this, new IntData(), tile.targetProgress::get);
 
         main.addPlayerMain(playerInv);
         hotBar.addPlayerBar(playerInv);
 
         seeds.addSlot(new PolySlot(tile.inventory, 0));
-        chickens.addSlots(3, 1, slot -> new PolySlot(tile.inventory, slot).setStackLimit(stack -> 1));
-        output.addSlots(3, 4, slot -> new PolySlot(tile.inventory, slot).output());
+        chickens.addSlots(2, 1, slot -> new PolySlot(tile.inventory, slot).setStackLimit(stack -> 1));
+        output.addSlots(3, 3, slot -> new PolySlot(tile.inventory, slot).output());
     }
 }

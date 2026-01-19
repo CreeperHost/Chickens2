@@ -1,9 +1,10 @@
 package net.creeperhost.chickens.blockentities;
 
 import dev.architectury.fluid.FluidStack;
-import net.creeperhost.chickens.api.ChickensRegistryItem;
 import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.containers.EggCrackerMenu;
+import net.creeperhost.chickens.data.ChickenData;
+import net.creeperhost.chickens.data.ChickenProduct;
 import net.creeperhost.chickens.init.ModBlocks;
 import net.creeperhost.chickens.item.ItemChickenEgg;
 import net.creeperhost.polylib.blocks.PolyBlockEntity;
@@ -66,7 +67,14 @@ public class EggCrackerBlockEntity extends PolyBlockEntity implements PolyInvent
 
         //Can Run?
         ItemStack input = inventory.getItem(0);
-        if (!(input.getItem() instanceof ItemChickenEgg eggItem) || eggItem.getType(input) == null) {
+        ChickenData data = ChickenData.fromItem(input);
+        if (!(input.getItem() instanceof ItemChickenEgg eggItem) || data == null) {
+            progress.set(0);
+            return;
+        }
+
+        ChickenProduct product = data.variant().product();
+        if (product == null) {
             progress.set(0);
             return;
         }
@@ -79,26 +87,28 @@ public class EggCrackerBlockEntity extends PolyBlockEntity implements PolyInvent
             return;
         }
 
-        ChickensRegistryItem type = eggItem.getType(input);
-        ItemStack drop = type.getLayItemHolder().getStack();
-        if (!drop.isEmpty()) {
-            if (eggItem.isFertilized(input)) {
-                int remaining = ContainerUtil.insertStack(drop, inventory, true);
-                if (remaining == 0) {
-                    ContainerUtil.insertStack(drop, inventory);
-                    input.shrink(1);
-                    progress.set(0);
-                }
-            } else {
+        if (!eggItem.isViable(input)) {
+            input.shrink(1);
+            progress.set(0);
+            return;
+        }
+
+        if (product.type() == ChickenProduct.Type.ITEM) {
+            ItemStack stack = product.getAsStack(level);
+            if (stack.isEmpty()) {
+                return;
+            }
+            int remaining = ContainerUtil.insertStack(stack, inventory, true);
+            if (remaining == 0) {
+                ContainerUtil.insertStack(stack, inventory);
                 input.shrink(1);
                 progress.set(0);
             }
-        } else {
-            Fluid fluid = type.getLayItemHolder().getFluid();
-            int amount = type.getLayItemHolder().getAmount();
-            FluidStack fluidStack = FluidStack.create(fluid, amount);
-            if (fluidStack.isEmpty()) return;
-
+        } else if (product.type() == ChickenProduct.Type.FLUID){
+            FluidStack fluidStack = product.getAsFluid(level);
+            if (fluidStack.isEmpty()) {
+                return;
+            }
             if (tank.isEmpty() || tank.fill(fluidStack, true) == fluidStack.getAmount()) {
                 tank.fill(fluidStack, false);
                 input.shrink(1);

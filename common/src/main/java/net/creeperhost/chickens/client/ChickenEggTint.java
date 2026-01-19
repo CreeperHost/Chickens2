@@ -2,6 +2,7 @@ package net.creeperhost.chickens.client;
 
 import com.mojang.serialization.MapCodec;
 import net.creeperhost.chickens.api.ChickensRegistryItem;
+import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.item.ItemChickenEgg;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -19,11 +20,9 @@ public final class ChickenEggTint implements ItemTintSource {
 
     @Override
     public int calculate(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity) {
-        if (stack.getItem() instanceof ItemChickenEgg eggItem) {
-            ChickensRegistryItem item = eggItem.getType(stack);
-            if (item != null) {
-                return ARGB.opaque(item.getBgColor());
-            }
+        ChickenData data = ChickenData.fromItem(stack);
+        if (data != null) {
+            return ARGB.opaque(data.variant().eggColour());
         }
         return -1;
     }

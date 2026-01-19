@@ -63,7 +63,7 @@ public class BreederGui extends ContainerGuiProvider<BreederMenu> {
         GuiSlots seeds = GuiSlots.singleSlot(root, screenAccess, menu.seeds)
                 .setEmptyIcon(ChickenGuiTextures.get("slot/seeds"))
                 .setTooltip(Component.translatable("gui.chickens.breeder.seed_slot"))
-                .constrain(LEFT, relative(playInv.container.get(LEFT), -16))
+                .constrain(LEFT, relative(playInv.container.get(LEFT), 0))
                 .constrain(TOP, relative(title.get(BOTTOM), 6));
 
         GuiSlots outputs = new GuiSlots(root, screenAccess, menu.output, 3)
@@ -74,10 +74,15 @@ public class BreederGui extends ContainerGuiProvider<BreederMenu> {
         Constraints.size(plus, 16, 16);
         Constraints.placeOutside(plus, seeds, Constraints.LayoutPos.MIDDLE_RIGHT, 2, 0);
 
-        GuiSlots chickens = new GuiSlots(root, screenAccess, menu.chickens, 3)
-                .setEmptyIcon(ChickenGuiTextures.get("slot/chicken"))
+        GuiSlots chickens = new GuiSlots(root, screenAccess, menu.chickens, 2)
+                .setEmptyIcon(i -> i == 0 ? ChickenGuiTextures.get("slot/rooster") : ChickenGuiTextures.get("slot/chicken"))
                 .setTooltip(Component.translatable("gui.chickens.breeder.chicken_slot"));
         Constraints.placeOutside(chickens, plus, Constraints.LayoutPos.MIDDLE_RIGHT, 2, 0);
+
+        GuiElement<?> roosterToolTip = new GuiButton(chickens)
+                .setTooltip(Component.translatable("gui.chickens.breeder.rooster_slot"));
+        Constraints.placeInside(roosterToolTip, chickens, Constraints.LayoutPos.TOP_LEFT, 0, 0);
+        Constraints.size(roosterToolTip, 16, 16);
 
         GuiProgressIcon progress = new GuiProgressIcon(root)
                 .setProgress(() -> menu.progress.get() / (double) Math.max(1, menu.targetProgress.get()))

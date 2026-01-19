@@ -1,11 +1,10 @@
 package net.creeperhost.chickens.item;
 
-import net.creeperhost.chickens.api.ChickensRegistryItem;
+import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.entity.ChickensChicken;
 import net.creeperhost.chickens.init.ModComponentTypes;
 import net.creeperhost.chickens.init.ModEntities;
-import net.creeperhost.chickens.init.ModItems;
 import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -13,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -32,12 +32,12 @@ public class ItemChicken extends Item {
         super(properties);
     }
 
-    @Deprecated
-    public static ItemStack of(ChickensRegistryItem chickensRegistryItem) {
-        ItemStack stack = new ItemStack(ModItems.CHICKEN_ITEM.get());
-        applyEntityIdToItemStack(stack, chickensRegistryItem.getRegistryName());
-        return stack;
-    }
+//    @Deprecated
+//    public static ItemStack of(ChickensRegistryItem chickensRegistryItem) {
+//        ItemStack stack = new ItemStack(ModItems.CHICKEN_ITEM.get());
+//        applyEntityIdToItemStack(stack, chickensRegistryItem.getRegistryName());
+//        return stack;
+//    }
 
     @Override
     public InteractionResult useOn(UseOnContext useOnContext) {
@@ -82,13 +82,41 @@ public class ItemChicken extends Item {
         ChickenData data = ChickenData.fromItem(itemStack);
         if (data == null) return;
         if (Screen.hasShiftDown()) {
+            consumer.accept(Component.literal("== Traits =="));
             for (Trait.StateValue state : data.traits()) {
-                state.trait().appendHoverText(consumer, state.value());
+                state.trait().appendHoverText(c -> consumer.accept(Component.literal("- ").append(c)), state.value());
             }
             consumer.accept(Component.literal("Taming Modifier: ").append(Component.literal(String.format("%.3f", data.tamingModifier())).withStyle(ChatFormatting.WHITE)));
         } else {
             consumer.accept(Component.translatable("screen.shift.tooltip"));
         }
+        consumer.accept(Component.literal("Remaining Life: ").append(Component.literal(String.format("%.0f%%", data.entityData().lifespan())).withStyle(ChatFormatting.WHITE)));
+    }
+
+    private float getDamage(ItemStack itemStack) {
+        ChickenData data = ChickenData.fromItem(itemStack);
+        return data == null ? getMaxDamage(itemStack) : getMaxDamage(itemStack) - data.entityData().lifespan();
+    }
+
+    private float getMaxDamage(ItemStack itemStack) {
+        return (float) Config.INSTANCE.chickenLifeSpan;
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack itemStack) {
+        return getDamage(itemStack) > 0;
+    }
+
+    @Override
+    public int getBarWidth(ItemStack itemStack) {
+        return Mth.clamp(Math.round(13.0F - getDamage(itemStack) * 13.0F / getMaxDamage(itemStack)), 0, 13);
+    }
+
+    @Override
+    public int getBarColor(ItemStack itemStack) {
+        float maxDamage = getMaxDamage(itemStack);
+        float f = Math.max(0.0F, (maxDamage - getDamage(itemStack)) / maxDamage);
+        return Mth.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
     }
 
     @Override

@@ -2,11 +2,10 @@ package net.creeperhost.chickens.blockentities;
 
 import dev.architectury.fluid.FluidStack;
 import net.creeperhost.chickens.ChickensPlatform;
-import net.creeperhost.chickens.api.ChickenStats;
 import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.containers.IncubatorMenu;
+import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.init.ModBlocks;
-import net.creeperhost.chickens.item.ItemChicken;
 import net.creeperhost.chickens.item.ItemChickenEgg;
 import net.creeperhost.polylib.blocks.PolyBlockEntity;
 import net.creeperhost.polylib.blocks.RedstoneActivatedBlock;
@@ -161,7 +160,8 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
 
         for (int slot = 0; slot < 9; slot++) {
             ItemStack stack = inventory.getItem(slot);
-            if (!(stack.getItem() instanceof ItemChickenEgg eggItem) || !eggItem.isFertilized(stack)) {
+
+            if (!(stack.getItem() instanceof ItemChickenEgg eggItem) || !eggItem.canHatch(stack)) {
                 continue;
             }
 
@@ -170,8 +170,8 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
                 eggItem.setProgress(stack, 0);
                 continue;
             }
-
             int progress = eggItem.getProgress(stack);
+
             if (isWithinHatchingTemp()) {
                 if (progress < 100) {
                     //Previously we were updating a single random egg every second.
@@ -187,12 +187,14 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
                 } else {
                     //20% chance to hatch per second, adds some more randomness.
                     if (random.nextDouble() > 0.2) continue;
-                    ItemStack chicken = ItemChicken.of(eggItem.getType(stack));
-                    ChickenStats chickenStats = new ChickenStats(stack);
-                    chickenStats.write(chicken);
-                    if (!chicken.isEmpty()) {
-                        inventory.setItem(slot, chicken);
+                    ChickenData data = ChickenData.fromItem(stack);
+                    if (data == null) {
+                        eggItem.setNotViable(stack);
+                        eggItem.setProgress(stack, 0);
+                        continue;
                     }
+                    ItemStack chicken = data.toChickenItem();
+                    inventory.setItem(slot, chicken);
                 }
             } else if (progress > 0) {
                 eggItem.incrementMissed(stack);

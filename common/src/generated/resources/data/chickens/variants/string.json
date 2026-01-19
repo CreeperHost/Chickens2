@@ -1,5 +1,5 @@
 {
-  "eggColour": -1,
+  "eggColour": 16777215,
   "id": "chickens:string",
   "name": "String",
   "parent1": "chickens:black",

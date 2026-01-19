@@ -43,6 +43,9 @@ public class ModComponentTypes {
 
 
     //Eggs
+    public static final RegistrySupplier<DataComponentType<Boolean>> EGG_VIABLE = COMPONENTS.register("viable", () -> DataComponentType.<Boolean>builder().
+            persistent(Codec.BOOL.orElse(false)).networkSynchronized(ByteBufCodecs.BOOL).build());
+
     public static final RegistrySupplier<DataComponentType<Boolean>> EGG_FERTILIZED = COMPONENTS.register("fertilized", () -> DataComponentType.<Boolean>builder().
             persistent(Codec.BOOL.orElse(false)).networkSynchronized(ByteBufCodecs.BOOL).build());
 

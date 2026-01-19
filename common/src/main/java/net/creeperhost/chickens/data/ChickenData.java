@@ -2,6 +2,7 @@ package net.creeperhost.chickens.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.entity.ChickensChicken;
 import net.creeperhost.chickens.init.ChickenTraits;
 import net.creeperhost.chickens.init.ModComponentTypes;
@@ -61,7 +62,7 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
 
     public ItemStack toChickenEgg(boolean fertilized) {
         ItemStack stack = new ItemStack(ModItems.CHICKEN_EGG);
-        stack.set(ModComponentTypes.EGG_DATA.get(), new ChickenData(variant, isRooster, traits, new EntityData(0, entityData().age(), 0)));
+        stack.set(ModComponentTypes.EGG_DATA.get(), new ChickenData(variant, isRooster, traits, new EntityData(0, entityData().age(), 0, (float) Config.INSTANCE.chickenLifeSpan)));
         stack.set(ModComponentTypes.EGG_FERTILIZED.get(), fertilized);
         return stack;
     }
@@ -83,6 +84,10 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
 
     public double tamingModifier() {
         return entityData().tamingModifier();
+    }
+
+    public static ItemStack display(ChickenVariant variant) {
+        return new ChickenData(variant, false, Collections.emptyList(), EntityData.def()).toChickenItem();
     }
 
     /**
@@ -165,35 +170,46 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
         double growth = Math.max(0.1, growthA + ((growthB - growthA) * 0.5));
 
         //Taming modifier starts at zero, TODO, if baby chick spends time around adults, its taming modifier should slowly raise to the average of the adults around it.
-        EntityData childEntity = new EntityData(0, (int) (-24000D / growth), 0);
+        EntityData childEntity = new EntityData(0, (int) (-24000D / growth), 0, (float) Config.INSTANCE.chickenLifeSpan);
         return new ChickenData(childVariant, random.nextBoolean(), childTraits, childEntity);
+    }
+
+    public ChickenData modifyLifespan(float amount) {
+        EntityData e = new EntityData(entityData.inLoveTime, entityData.age, entityData.tamingModifier, entityData.lifespan + amount);
+        return new ChickenData(variant, isRooster, traits, e);
     }
 
     /**
      * Contains secondary entity data that needs to ke kept when converting a chicken to item form and back.
      */
-    public record EntityData(int inLoveTime, int age, double tamingModifier) {
+    public record EntityData(int inLoveTime, int age, double tamingModifier, float lifespan) {
         public static final Codec<EntityData> CODEC = RecordCodecBuilder.create(builder -> builder.group(
                 Codec.INT.fieldOf("inLoveTime").forGetter(EntityData::inLoveTime),
                 Codec.INT.fieldOf("age").forGetter(EntityData::age),
-                Codec.DOUBLE.fieldOf("tamingModifier").forGetter(EntityData::tamingModifier)
+                Codec.DOUBLE.fieldOf("tamingModifier").forGetter(EntityData::tamingModifier),
+                Codec.FLOAT.fieldOf("lifespan").forGetter(EntityData::lifespan)
         ).apply(builder, EntityData::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, EntityData> STREAM_CODEC = StreamCodec.composite(
                 ByteBufCodecs.INT, EntityData::inLoveTime,
                 ByteBufCodecs.INT, EntityData::age,
                 ByteBufCodecs.DOUBLE, EntityData::tamingModifier,
+                ByteBufCodecs.FLOAT, EntityData::lifespan,
                 EntityData::new
         );
 
         public static EntityData fromChicken(ChickensChicken chicken) {
-            return new EntityData(chicken.getInLoveTime(), chicken.getAge(), chicken.getTamingModifier());
+            return new EntityData(chicken.getInLoveTime(), chicken.getAge(), chicken.getTamingModifier(), chicken.getLifeSpan());
         }
 
         public void apply(ChickensChicken chicken) {
             chicken.setInLoveTime(inLoveTime());
             chicken.setAge(age());
             chicken.setTamingModifier(tamingModifier());
+        }
+
+        public static EntityData def() {
+            return new EntityData(0, 0, 0, (float) Config.INSTANCE.chickenLifeSpan);
         }
     }
 }

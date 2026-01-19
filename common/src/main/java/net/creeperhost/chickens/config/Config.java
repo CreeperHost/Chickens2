@@ -29,7 +29,10 @@ public class Config {
 
     public double breederFoodConsumptionChance = 0.50;
     public double maxChickensInChunk = 10;
-    public int lifespanReductionOnLay = 2;
+
+    public double chickenLifeSpan = 100;
+    //Reduction before applying lifespan trait modifier
+    public double lifespanReductionOnLay = 2;
 
     public double tamingModifierLimit = 10;
     public double tamingModifierExpo = 0.1;

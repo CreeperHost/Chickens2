@@ -15,8 +15,11 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
@@ -93,156 +96,200 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
 
         // === Natural Spawn Chickens === //
         simple(provider, flint, "Flint", Items.FLINT)
-                .spawn(new ChickenSpawn(List.of(BiomeTags.IS_MOUNTAIN, ConventionalBiomeTags.IS_STONY_SHORES, ConventionalBiomeTags.IS_MOUNTAIN), 10))
+                .spawn(List.of(BiomeTags.IS_MOUNTAIN, ConventionalBiomeTags.IS_STONY_SHORES, ConventionalBiomeTags.IS_MOUNTAIN), 10)
+                .eggColour(0x6b6b47)
                 .build(consumer);
-
         simple(provider, log, "Log", Items.OAK_LOG)
-                .spawn(new ChickenSpawn(List.of(BiomeTags.IS_FOREST, ConventionalBiomeTags.IS_FOREST), 10))
+                .spawn(List.of(BiomeTags.IS_FOREST, ConventionalBiomeTags.IS_FOREST), 10)
+                .eggColour(0x98846d)
                 .build(consumer);
-
         simple(provider, sand, "Sand", Items.SAND)
-                .spawn(new ChickenSpawn(List.of(BiomeTags.HAS_VILLAGE_DESERT, BiomeTags.HAS_DESERT_PYRAMID, BiomeTags.IS_BEACH, ConventionalBiomeTags.IS_DESERT), 10))
+                .spawn(List.of(BiomeTags.HAS_VILLAGE_DESERT, BiomeTags.HAS_DESERT_PYRAMID, BiomeTags.IS_BEACH, ConventionalBiomeTags.IS_DESERT), 10)
+                .eggColour(0xece5b1)
                 .build(consumer);
-
         simple(provider, quartz, "Quartz", Items.QUARTZ)
-                .spawn(new ChickenSpawn(List.of(BiomeTags.IS_NETHER, ConventionalBiomeTags.IS_NETHER), 10))
+                .spawn(List.of(BiomeTags.IS_NETHER, ConventionalBiomeTags.IS_NETHER), 10)
+                .eggColour(0x4d0000)
                 .build(consumer);
-
         simple(provider, soulsand, "Soulsand", Items.SOUL_SAND)
-                .spawn(new ChickenSpawn(List.of(BiomeTags.IS_NETHER, ConventionalBiomeTags.IS_NETHER), 10))
+                .spawn(List.of(BiomeTags.IS_NETHER, ConventionalBiomeTags.IS_NETHER), 10)
+                .eggColour(0x453125)
                 .build(consumer);
 
         // === Dyes === //
         simple(provider, black, "Black", Items.BLACK_DYE)
+                .eggColour(DyeColor.BLACK.getFireworkColor())
                 .build(consumer);
         simple(provider, blue, "Blue", Items.BLUE_DYE)
+                .eggColour(DyeColor.BLUE.getFireworkColor())
                 .build(consumer);
         simple(provider, brown, "Brown", Items.BROWN_DYE)
+                .eggColour(DyeColor.BROWN.getFireworkColor())
                 .build(consumer);
         simple(provider, cyan, "Cyan", Items.CYAN_DYE)
+                .eggColour(DyeColor.CYAN.getFireworkColor())
                 .parents(blue, green)
                 .build(consumer);
         simple(provider, gray, "Gray", Items.GRAY_DYE)
+                .eggColour(DyeColor.GRAY.getFireworkColor())
                 .parents(black, white)
                 .build(consumer);
         simple(provider, green, "Green", Items.GREEN_DYE)
+                .eggColour(DyeColor.GREEN.getFireworkColor())
                 .build(consumer);
         simple(provider, light_blue, "Light Blue", Items.LIGHT_BLUE_DYE)
+                .eggColour(DyeColor.LIGHT_BLUE.getFireworkColor())
                 .parents(white, blue)
                 .build(consumer);
         simple(provider, light_gray, "Light Gray", Items.LIGHT_GRAY_DYE)
+                .eggColour(DyeColor.LIGHT_GRAY.getFireworkColor())
                 .parents(green, white)
                 .build(consumer);
         simple(provider, lime, "Lime", Items.LIME_DYE)
+                .eggColour(DyeColor.LIME.getFireworkColor())
                 .parents(green, white)
                 .build(consumer);
         simple(provider, magenta, "Magenta", Items.MAGENTA_DYE)
+                .eggColour(DyeColor.MAGENTA.getFireworkColor())
                 .parents(purple, pink)
                 .build(consumer);
         simple(provider, orange, "Orange", Items.ORANGE_DYE)
+                .eggColour(DyeColor.ORANGE.getFireworkColor())
                 .parents(red, yellow)
                 .build(consumer);
         simple(provider, pink, "Pink", Items.PINK_DYE)
+                .eggColour(DyeColor.PINK.getFireworkColor())
                 .parents(red, white)
                 .build(consumer);
         simple(provider, purple, "Purple", Items.PURPLE_DYE)
+                .eggColour(DyeColor.PURPLE.getFireworkColor())
                 .parents(blue, red)
                 .build(consumer);
         simple(provider, red, "Red", Items.RED_DYE)
+                .eggColour(DyeColor.RED.getFireworkColor())
                 .build(consumer);
         simple(provider, white, "White", Items.WHITE_DYE)
+                .eggColour(DyeColor.WHITE.getFireworkColor())
                 .build(consumer);
         simple(provider, yellow, "Yellow", Items.YELLOW_DYE)
+                .eggColour(DyeColor.YELLOW.getFireworkColor())
                 .build(consumer);
 
         // === Tier 2 === //
         simple(provider, string, "String", Items.STRING)
+                .eggColour(0xffffff)
                 .parents(black, log)
                 .build(consumer);
         simple(provider, glowstone, "Glowstone", Items.GLOWSTONE)
+                .eggColour(0xffff66)
                 .parents(quartz, yellow)
                 .build(consumer);
         simple(provider, gunpowder, "Gunpowder", Items.GUNPOWDER)
+                .eggColour(0x999999)
                 .parents(sand, flint)
                 .build(consumer);
         simple(provider, redstone, "Redstone", Items.REDSTONE)
+                .eggColour(0xe60000)
                 .parents(red, sand)
                 .build(consumer);
         simple(provider, lapis, "Lapis", Items.LAPIS_LAZULI)
+                .eggColour(0x0000e6)
                 .parents(blue, sand)
                 .build(consumer);
         simple(provider, glass, "Glass", Items.GLASS)
+                .eggColour(0xffffff)
                 .parents(quartz, redstone)
                 .build(consumer);
         simple(provider, iron, "Iron", Items.IRON_INGOT)
+                .eggColour(0xffffcc)
                 .parents(flint, white)
                 .build(consumer);
         simple(provider, copper, "Copper", Items.COPPER_INGOT)
+                .eggColour(0xB87333)
                 .parents(flint, orange)
                 .build(consumer);
         simple(provider, coal, "Coal", Items.COAL)
+                .eggColour(0x262626)
                 .parents(flint, log)
                 .build(consumer);
 
         // === Tier 3 === //
         simple(provider, gold, "Gold", Items.GOLD_INGOT)
+                .eggColour(0xcccc00)
                 .parents(iron, yellow)
                 .build(consumer);
         simple(provider, snowball, "Snowball", Items.SNOWBALL)
+                .eggColour(0x33bbff)
                 .parents(blue, log)
                 .build(consumer);
         simple(provider, water, "Water", Fluids.WATER)
+                .eggColour(0x000099)
                 .parents(gunpowder, snowball)
                 .build(consumer);
         simple(provider, lava, "Lava", Fluids.LAVA)
+                .eggColour(0xcc3300)
                 .parents(coal, quartz)
                 .build(consumer);
         simple(provider, clay, "Clay", Items.CLAY)
+                .eggColour(0xcccccc)
                 .parents(snowball, sand)
                 .build(consumer);
         simple(provider, leather, "Leather", Items.LEATHER)
+                .eggColour(0xA7A06C)
                 .parents(string, brown)
                 .build(consumer);
         simple(provider, netherwart, "Netherwart", Items.NETHER_WART)
+                .eggColour(0x800000)
                 .parents(brown, glowstone)
                 .build(consumer);
 
         // === Tier 4 === //
         simple(provider, diamond, "Diamond", Items.DIAMOND)
+                .eggColour(0x99ccff)
                 .parents(glass, gold)
                 .build(consumer);
         simple(provider, blaze, "Blaze", Items.BLAZE_ROD)
+                .eggColour(0xffff66)
                 .parents(gold, lava)
                 .build(consumer);
         simple(provider, slime, "Slime", Items.SLIME_BALL)
+                .eggColour(0x009933)
                 .parents(clay, green)
                 .build(consumer);
 
         // === Tier 5 === //
         simple(provider, ender, "Ender", Items.ENDER_PEARL)
+                .eggColour(0x001a00)
                 .parents(diamond, netherwart)
                 .build(consumer);
         simple(provider, ghast, "Ghast", Items.GHAST_TEAR)
+                .eggColour(0xffffcc)
                 .parents(white, blaze)
                 .build(consumer);
         simple(provider, emerald, "Emerald", Items.EMERALD)
+                .eggColour(0x00cc00)
                 .parents(diamond, green)
                 .build(consumer);
         simple(provider, magma, "Magma", Items.MAGMA_CREAM)
+                .eggColour(0x1a0500)
                 .parents(slime, blaze)
                 .build(consumer);
         simple(provider, pshard, "Prismarine Shard", Items.PRISMARINE_SHARD)
+                .eggColour(0x43806e)
                 .parents(water, blue)
                 .build(consumer);
         simple(provider, pcrystal, "Prismarine Crystal", Items.PRISMARINE_CRYSTALS)
+                .eggColour(0x4e6961)
                 .parents(water, emerald)
                 .build(consumer);
         simple(provider, obsidian, "Obsidian", Items.OBSIDIAN)
+                .eggColour(0x08080e)
                 .parents(water, lava)
                 .build(consumer);
 
         // === Tier 5 === //
         simple(provider, netherite, "Netherite", Items.NETHERITE_SCRAP)
+                .eggColour(0x700000)
                 .parents(obsidian, magenta)
                 .build(consumer);
 
@@ -350,6 +397,11 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
 
         public Builder spawn(ChickenSpawn spawn) {
             this.spawn = spawn;
+            return this;
+        }
+
+        public Builder spawn(List<TagKey<Biome>> biomes, int weight) {
+            this.spawn = new ChickenSpawn(biomes, weight);
             return this;
         }
 

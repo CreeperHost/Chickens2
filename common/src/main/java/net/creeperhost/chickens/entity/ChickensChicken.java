@@ -4,6 +4,7 @@ import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.ChickensPlatform;
 import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.data.*;
+import net.creeperhost.chickens.init.ChickenTraits;
 import net.creeperhost.chickens.init.ModEntities;
 import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.core.BlockPos;
@@ -46,6 +47,7 @@ public class ChickensChicken extends Chicken {
     private static final EntityDataAccessor<Map<Trait, Double>> TRAITS = SynchedEntityData.defineId(ChickensChicken.class, ChickensPlatform.getTraitSerializer());
 
     private static final EntityDataAccessor<Float> TAMING_MODIFIER = SynchedEntityData.defineId(ChickensChicken.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> LIFESPAN = SynchedEntityData.defineId(ChickensChicken.class, EntityDataSerializers.FLOAT);
 
     private UUID hostilePlayer = null;
     private int playerTime = 0;
@@ -67,6 +69,7 @@ public class ChickensChicken extends Chicken {
         builder.define(CHICKEN_VARIANT, ChickenVariant.MISSING.id());//TODO, would like to pick a random naturally spawned chicken, but need to figure out spawning first.
         builder.define(IS_ROOSTER, false);
         builder.define(TAMING_MODIFIER, 0F);
+        builder.define(LIFESPAN, (float) Config.INSTANCE.chickenLifeSpan);
         builder.define(TRAITS, new HashMap<>());
     }
 
@@ -94,6 +97,16 @@ public class ChickensChicken extends Chicken {
 
     public boolean isRooster() {
         return this.entityData.get(IS_ROOSTER);
+    }
+
+    public float getLifeSpan()
+    {
+        return entityData.get(LIFESPAN);
+    }
+
+    public void setLifeSpan(float lifeSpan)
+    {
+        entityData.set(LIFESPAN, lifeSpan);
     }
 
     public void setChickenVariant(ChickenVariant variant) {
@@ -179,6 +192,7 @@ public class ChickensChicken extends Chicken {
         output.store("chicken_variant", ResourceLocation.CODEC, getVariantString());
         output.putBoolean("is_rooster", isRooster());
         output.putDouble("taming_mod", getTamingModifier());
+        output.putFloat("lifespan", getLifeSpan());
 
         ValueOutput.ValueOutputList traits = output.childrenList("traits");
         getTraits().forEach((trait, value) -> {
@@ -194,6 +208,7 @@ public class ChickensChicken extends Chicken {
         setChickenVariant(input.read("chicken_variant", ResourceLocation.CODEC).orElse(ChickenVariant.MISSING.id()));
         setRooster(input.getBooleanOr("is_rooster", false));
         setTamingModifier(input.getDoubleOr("taming_mod", 0));
+        setLifeSpan(input.getFloatOr("lifespan", (float) Config.INSTANCE.chickenLifeSpan));
 
         Map<Trait, Double> traitMap = new HashMap<>();
         ValueInput.ValueInputList traits = input.childrenListOrEmpty("traits");
@@ -270,6 +285,9 @@ public class ChickensChicken extends Chicken {
             getTraits().forEach((trait, value) -> {
                 eggTime = (int) (eggTime * trait.getLaySpeedModifier(value));
             });
+
+            double mod = data.getTraitValue(ChickenTraits.LIFESPAN.get(), 1);
+            setLifeSpan(getLifeSpan() - (float) (Config.INSTANCE.lifespanReductionOnLay / mod));
         }
     }
 

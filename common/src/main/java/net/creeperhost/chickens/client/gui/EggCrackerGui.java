@@ -6,6 +6,7 @@ import net.creeperhost.chickens.blockentities.EggCrackerBlockEntity;
 import net.creeperhost.chickens.client.ChickenGuiTextures;
 import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.containers.EggCrackerMenu;
+import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.item.ItemChickenEgg;
 import net.creeperhost.polylib.client.modulargui.ModularGui;
 import net.creeperhost.polylib.client.modulargui.ModularGuiContainer;
@@ -146,12 +147,12 @@ public class EggCrackerGui extends ContainerGuiProvider<EggCrackerMenu> {
         public void renderBehind(GuiRender render, double mouseX, double mouseY, float partialTicks) {
             ItemStack stack = menu.input.getSlot(0).getItem();
             float progress = Math.min(menu.progress.get() + partialTicks, Config.INSTANCE.crackerProcessTime);
-            if (stack.isEmpty() || !(stack.getItem() instanceof ItemChickenEgg eggItem) || progress == 0) {
+            if (stack.isEmpty() || !(stack.getItem() instanceof ItemChickenEgg) || progress == 0) {
                 return;
             }
-            ChickensRegistryItem type = eggItem.getType(stack);
-            if (type == null) return;
-            int colour = type.getBgColor();
+            ChickenData data = ChickenData.fromItem(stack);
+            if (data == null) return;
+            int colour = data.variant().eggColour();
 
             float animation = progress / (float) Config.INSTANCE.crackerProcessTime;
             float maxAnimLen = 30;
