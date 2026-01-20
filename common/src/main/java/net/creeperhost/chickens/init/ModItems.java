@@ -4,20 +4,23 @@ import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.creeperhost.chickens.Chickens;
-import net.creeperhost.chickens.api.ChickensRegistry;
-import net.creeperhost.chickens.api.ChickensRegistryItem;
 import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.data.ChickenDataManager;
+import net.creeperhost.chickens.data.ChickenVariant;
+import net.creeperhost.chickens.data.TraitConfig;
 import net.creeperhost.chickens.item.ItemChicken;
 import net.creeperhost.chickens.item.ItemChickenCatcher;
 import net.creeperhost.chickens.item.ItemChickenEgg;
+import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.animal.ChickenVariants;
 import net.minecraft.world.item.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -46,23 +49,28 @@ public class ModItems {
                         output.accept(OVOSCOPE.get());
                         output.accept(CATCHER_ITEM.get());
 
-//                        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-//                            output.accept(ItemChicken.of(chicken));
-//                            //For testing
-//                            ItemStack stack = ItemChicken.of(chicken);
-//                            ChickenStats chickenStats = new ChickenStats(stack);
-//                            chickenStats.setGain(10);
-//                            chickenStats.setGrowth(10);
-//                            chickenStats.setStrength(10);
-//                            chickenStats.write(stack);
-//                            output.accept(stack);
-//                        }
+                        for (ChickenVariant variant : ChickenDataManager.getVariants()) {
+                            List<Trait.StateValue> traits = new ArrayList<>();
+                            for (TraitConfig trait : variant.traitConfigs()) {
+                                traits.add(new Trait.StateValue(trait.trait(), trait.evoLimit()));
+                            }
+
+                            ChickenData hen = new ChickenData(variant, false, traits, ChickenData.EntityData.create());
+                            ChickenData rooster = new ChickenData(variant, true, traits, ChickenData.EntityData.create());
+                            output.accept(hen.toChickenItem());
+                            output.accept(rooster.toChickenItem());
+                        }
                     }))
     );
     public static final RegistrySupplier<CreativeModeTab> CREATIVE_MODE_TAB_EGGS = TABS.register("creative_tab_eggs", () -> CreativeTabRegistry.create(builder -> builder
                     .title(Component.translatable("itemGroup.chickens.creative_tab_eggs"))
                     .icon(() -> new ItemStack(Items.EGG))
-                    .displayItems((itemDisplayParameters, output) -> ChickenDataManager.getVariants().forEach(variant -> output.accept(ChickenData.display(variant))))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        for (ChickenVariant variant : ChickenDataManager.getVariants()) {
+                            ChickenData data = new ChickenData(variant, false, Collections.emptyList(), ChickenData.EntityData.create());
+                            output.accept(data.toChickenEgg(true));
+                        }
+                    })
             )
     );
 

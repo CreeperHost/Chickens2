@@ -32,6 +32,8 @@
   "gui.chickens.breeder.seed_slot": "Add Seeds!",
   "gui.chickens.cracker.fluid_slot": "Drain Fluid",
   "gui.chickens.incubator.decrease_heat": "Decrease heat setting",
+  "gui.chickens.incubator.full_grow_false": "Chickens can be extracted immediately",
+  "gui.chickens.incubator.full_grow_true": "Chickens can be extracted when fully grown",
   "gui.chickens.incubator.heat": "Heat,",
   "gui.chickens.incubator.hygrometer.dry": "Too Dry!, ModuleType.COMMON); Water tank is empty!",
   "gui.chickens.incubator.hygrometer.info": "Incubator Humidity",

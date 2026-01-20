@@ -128,7 +128,7 @@ public class IncubatorGui extends ContainerGuiProvider<IncubatorMenu> {
                 .constrain(LEFT, relative(eggsBorder.get(RIGHT), 2))
                 .constrain(RIGHT, relative(tank.container.get(LEFT), -2))
                 .autoHeight();
-        heatLabel.constrain(TOP, midPoint(eggsBorder.get(TOP), eggsBorder.get(BOTTOM), heatLabel.ySize() / -2));
+        heatLabel.constrain(TOP, midPoint(eggsBorder.get(TOP), eggsBorder.get(BOTTOM), (heatLabel.ySize() / -2) - 4));
 
         GuiButton incButton = GuiButton.vanillaAnimated(root, Component.literal("\u2191 \u2191"))
                 .setDisabled(() -> menu.heatSetting.get() >= 15)
@@ -143,10 +143,22 @@ public class IncubatorGui extends ContainerGuiProvider<IncubatorMenu> {
                 .setDisabled(() -> menu.heatSetting.get() <= 0)
                 .onPress(() -> tile.sendDataValueToServer(tile.heatSetting, menu.heatSetting.get() - 1))
                 .setTooltip(Component.translatable("gui.chickens.incubator.decrease_heat"))
-                .constrain(BOTTOM, match(eggsBorder.get(BOTTOM)))
+                .constrain(BOTTOM, relative(eggsBorder.get(BOTTOM), -8))
                 .constrain(LEFT, relative(eggsBorder.get(RIGHT), 5))
                 .constrain(RIGHT, relative(tank.container.get(LEFT), -5))
                 .constrain(HEIGHT, literal(14));
+
+        GuiButton growButton = GuiButton.vanillaAnimated(root, Component.literal(""))
+                .onPress(() -> tile.sendDataValueToServer(tile.fullGrow, !menu.fullGrow.get()))
+                .setTooltipSingle(() -> Component.translatable("gui.chickens.incubator.full_grow_" + menu.fullGrow.get()))
+                .constrain(BOTTOM, relative(playInv.container.get(TOP), -3))
+                .constrain(LEFT, relative(eggsBorder.get(RIGHT), 5))
+                .constrain(RIGHT, relative(tank.container.get(LEFT), -5))
+                .constrain(HEIGHT, literal(14));
+
+        GuiTexture growTex = new GuiTexture(growButton, () -> menu.fullGrow.get() ? ChickenGuiTextures.get("elements/chicken_grown") : ChickenGuiTextures.get("elements/chicken_baby"));
+        Constraints.size(growTex, 14, 14);
+        Constraints.placeInside(growTex, growButton, Constraints.LayoutPos.BOTTOM_CENTER, 0, 0);
 
         GuiButton rsButton = GuiButton.redstoneButton(root, tile);
         Constraints.placeOutside(rsButton, tank.container, Constraints.LayoutPos.TOP_LEFT, -2, 12);

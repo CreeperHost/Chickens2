@@ -8,10 +8,7 @@ import net.creeperhost.polylib.client.modulargui.lib.container.DataSync;
 import net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup;
 import net.creeperhost.polylib.containers.PolyBlockContainerMenu;
 import net.creeperhost.polylib.containers.slots.PolySlot;
-import net.creeperhost.polylib.data.serializable.FloatData;
-import net.creeperhost.polylib.data.serializable.FluidData;
-import net.creeperhost.polylib.data.serializable.IntData;
-import net.creeperhost.polylib.data.serializable.LongData;
+import net.creeperhost.polylib.data.serializable.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +23,7 @@ public class IncubatorMenu extends PolyBlockContainerMenu<IncubatorBlockEntity>
     public final DataSync<Integer> temperature;
     public final DataSync<FluidStack> tank;
     public final DataSync<Integer> heatSetting;
+    public final DataSync<Boolean> fullGrow;
     public final DataSync<Long> energy;
 
     public final SlotGroup main = Config.INSTANCE.enableEnergy ? createSlotGroup(0, 1, 2, 3) : createSlotGroup(0, 1, 2);
@@ -45,6 +43,7 @@ public class IncubatorMenu extends PolyBlockContainerMenu<IncubatorBlockEntity>
         temperature = new DataSync<>(this, new IntData(), tile.temperature::get);
         tank = new DataSync<>(this, new FluidData(), tile.tank::getFluid);
         heatSetting = new DataSync<>(this, new IntData(), tile.heatSetting::get);
+        fullGrow = new DataSync<>(this, new BooleanData(), tile.fullGrow::get);
         energy = new DataSync<>(this, new LongData(), tile.energy::getEnergyStored);
 
         main.addPlayerMain(playerInv);

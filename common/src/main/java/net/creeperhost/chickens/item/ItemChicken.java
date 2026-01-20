@@ -91,6 +91,10 @@ public class ItemChicken extends Item {
             consumer.accept(Component.translatable("screen.shift.tooltip"));
         }
         consumer.accept(Component.literal("Remaining Life: ").append(Component.literal(String.format("%.0f%%", data.entityData().lifespan())).withStyle(ChatFormatting.WHITE)));
+
+        if (data.entityData().age() < 0) {
+            consumer.accept(Component.literal("Growing Time: ").append(Component.literal(String.format("%ss", Math.abs(data.entityData().age()) / 20)).withStyle(ChatFormatting.WHITE)));
+        }
     }
 
     private float getDamage(ItemStack itemStack) {

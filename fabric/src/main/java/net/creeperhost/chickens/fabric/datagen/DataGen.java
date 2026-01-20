@@ -187,6 +187,8 @@ public class DataGen implements DataGeneratorEntrypoint
             provider.add("gui.chickens.incubator.heat", "Heat,", ModuleType.COMMON);
             provider.add("gui.chickens.incubator.increase_heat", "Increase heat setting", ModuleType.COMMON);
             provider.add("gui.chickens.incubator.decrease_heat", "Decrease heat setting", ModuleType.COMMON);
+            provider.add("gui.chickens.incubator.full_grow_true", "Chickens can be extracted when fully grown", ModuleType.COMMON);
+            provider.add("gui.chickens.incubator.full_grow_false", "Chickens can be extracted immediately", ModuleType.COMMON);
             provider.add("gui.chickens.incubator.temperature.info", "Incubator Temperature", ModuleType.COMMON);
             provider.add("gui.chickens.incubator.temperature.temp", " %sc", ModuleType.COMMON);
             provider.add("gui.chickens.incubator.temperature.hot", "Too Hot!", ModuleType.COMMON);

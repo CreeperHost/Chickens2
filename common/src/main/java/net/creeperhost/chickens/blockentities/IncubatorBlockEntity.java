@@ -6,9 +6,11 @@ import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.containers.IncubatorMenu;
 import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.init.ModBlocks;
+import net.creeperhost.chickens.item.ItemChicken;
 import net.creeperhost.chickens.item.ItemChickenEgg;
 import net.creeperhost.polylib.blocks.PolyBlockEntity;
 import net.creeperhost.polylib.blocks.RedstoneActivatedBlock;
+import net.creeperhost.polylib.data.serializable.BooleanData;
 import net.creeperhost.polylib.data.serializable.FloatData;
 import net.creeperhost.polylib.data.serializable.IntData;
 import net.creeperhost.polylib.helpers.MathUtil;
@@ -45,13 +47,14 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
             .setMaxStackSize(1)
             .setSlotValidator(9, stack -> FluidManager.isFluidItem(stack) && FluidManager.getHandler(stack).getFluidInTank(0).getFluid() == Fluids.WATER)
             .setSlotValidator(10, stack -> EnergyManager.isEnergyItem(stack) && EnergyManager.getHandler(stack).canExtract())
-            .setStackValidator((slot, stack) -> stack.getItem() instanceof ItemChickenEgg);
+            .setStackValidator((slot, stack) -> stack.getItem() instanceof ItemChickenEgg || stack.getItem() instanceof ItemChicken);
 
     public final PolyEnergyStorage energy = new PolyBlockEnergyStorage(this, 128000);
 
     public final IntData temperature = register("temperature", new IntData(10), SAVE_BOTH);
     public final FloatData humidity = register("humidity", new FloatData(20), SAVE_BOTH);
     public final IntData heatSetting = (IntData) register("heat_setting", new IntData(0), SAVE_BOTH, CLIENT_CONTROL).setValidator(e -> e >= 0 && e <= 15);
+    public final BooleanData fullGrow = register("full_grow", new BooleanData(true), SAVE_BOTH, CLIENT_CONTROL);
 
     public IncubatorBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlocks.INCUBATOR_TILE.get(), blockPos, blockState);
@@ -161,6 +164,21 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
         for (int slot = 0; slot < 9; slot++) {
             ItemStack stack = inventory.getItem(slot);
 
+            //Handle chicken incubation
+            if (stack.getItem() instanceof ItemChicken) {
+                ChickenData data = ChickenData.fromItem(stack);
+                if (data == null) {
+                    continue;
+                }
+                int age = data.entityData().age();
+                if (age < 0) {
+                    int amount = Math.min(20, Math.abs(age));
+                    data = data.modifyAge(amount);
+                    inventory.setItem(slot, data.toChickenItem());
+                }
+                continue;
+            }
+
             if (!(stack.getItem() instanceof ItemChickenEgg eggItem) || !eggItem.canHatch(stack)) {
                 continue;
             }
@@ -243,10 +261,17 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
         return new ContainerAccessControl(inventory, 0, Config.INSTANCE.enableEnergy ? 11 : 10)
                 .containerRemoveCheck((slot, stack) -> {
                     if (slot <= 8) {
-                        if (!(stack.getItem() instanceof ItemChickenEgg eggItem)) {
+                        if (stack.getItem() instanceof ItemChickenEgg egg && !egg.canHatch(stack)) {
                             return true;
                         }
-                        return !eggItem.isFertilized(stack);
+                        if (stack.getItem() instanceof ItemChicken) {
+                            if (!fullGrow.get()) {
+                                return true;
+                            }
+                            ChickenData data = ChickenData.fromItem(stack);
+                            return data == null || data.entityData().age() >= 0;
+                        }
+                        return false;
                     } else if (slot == 9) {
                         PolyFluidHandlerItem handler = FluidManager.getHandler(stack);
                         if (handler == null) return true;

@@ -86,10 +86,6 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
         return entityData().tamingModifier();
     }
 
-    public static ItemStack display(ChickenVariant variant) {
-        return new ChickenData(variant, false, Collections.emptyList(), EntityData.def()).toChickenItem();
-    }
-
     /**
      * This is the main function that handles all breeding calculations.
      * Currently, this does not actually care about parent gender, that should be handled before we get to calling this method.
@@ -179,6 +175,11 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
         return new ChickenData(variant, isRooster, traits, e);
     }
 
+    public ChickenData modifyAge(int amount) {
+        EntityData e = new EntityData(entityData.inLoveTime, entityData.age + amount, entityData.tamingModifier, entityData.lifespan);
+        return new ChickenData(variant, isRooster, traits, e);
+    }
+
     /**
      * Contains secondary entity data that needs to ke kept when converting a chicken to item form and back.
      */
@@ -208,7 +209,7 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
             chicken.setTamingModifier(tamingModifier());
         }
 
-        public static EntityData def() {
+        public static EntityData create() {
             return new EntityData(0, 0, 0, (float) Config.INSTANCE.chickenLifeSpan);
         }
     }
