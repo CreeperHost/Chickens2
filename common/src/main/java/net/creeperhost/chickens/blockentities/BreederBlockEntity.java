@@ -157,6 +157,10 @@ public class BreederBlockEntity extends PolyBlockEntity implements PolyInventory
 
         double mod = data.getTraitValue(ChickenTraits.LIFESPAN.get(), 1);
         data = data.modifyLifespan((float) -(Config.INSTANCE.lifespanReductionOnLay / mod));
-        inventory.setItem(slot, data.toChickenItem());
+        if (data.entityData().lifespan() <= 0) {
+            inventory.setItem(slot, ItemStack.EMPTY);
+        } else {
+            inventory.setItem(slot, data.toChickenItem());
+        }
     }
 }

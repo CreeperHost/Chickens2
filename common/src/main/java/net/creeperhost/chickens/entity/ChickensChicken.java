@@ -104,9 +104,9 @@ public class ChickensChicken extends Chicken {
         return entityData.get(LIFESPAN);
     }
 
-    public void setLifeSpan(float lifeSpan)
-    {
+    public void setLifeSpan(float lifeSpan) {
         entityData.set(LIFESPAN, lifeSpan);
+
     }
 
     public void setChickenVariant(ChickenVariant variant) {
@@ -232,6 +232,11 @@ public class ChickensChicken extends Chicken {
             return;
         }
 
+        if (getLifeSpan() <= 0) {
+            remove(RemovalReason.KILLED);
+            return;
+        }
+
         if (tick++ % 20 == 0) {
             //Handle taming modifier inheritance from nearby chickens
             if (isBaby()) {
@@ -315,6 +320,18 @@ public class ChickensChicken extends Chicken {
         }
 
         return chicken;
+    }
+
+    @Override
+    public void finalizeSpawnChildFromBreeding(ServerLevel serverLevel, Animal animal, @Nullable AgeableMob child) {
+        super.finalizeSpawnChildFromBreeding(serverLevel, animal, child);
+        if (child != null && animal instanceof ChickensChicken partner) {
+            double mod = ChickenData.fromEntity(partner).getTraitValue(ChickenTraits.LIFESPAN.get(), 1);
+            partner.setLifeSpan(getLifeSpan() - (float) (Config.INSTANCE.lifespanReductionOnLay / mod));
+
+            mod = ChickenData.fromEntity(this).getTraitValue(ChickenTraits.LIFESPAN.get(), 1);
+            setLifeSpan(getLifeSpan() - (float) (Config.INSTANCE.lifespanReductionOnLay / mod));
+        }
     }
 
     @Override

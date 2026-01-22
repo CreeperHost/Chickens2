@@ -29,6 +29,7 @@ public class JadePlugin implements IWailaPlugin
                 if(accessor.getEntity() instanceof ChickensChicken chicken)
                 {
                     tag.putDouble("tame", chicken.getTamingModifier());
+                    tag.putFloat("life", chicken.getLifeSpan());
                     CompoundTag traits = new CompoundTag();
                     chicken.getTraits().forEach((trait, value) -> {
                         ResourceLocation key = Chickens.TRAIT_REGISTRY.getKey(trait);
@@ -61,6 +62,7 @@ public class JadePlugin implements IWailaPlugin
                     }
                 }
                 tooltip.add(Component.literal("Taming Modifier: ").append(Component.literal(String.format("%.3f", accessor.getServerData().getDoubleOr("tame", 0))).withStyle(ChatFormatting.WHITE)));
+                tooltip.add(Component.literal("Remaining Life: ").append(Component.literal(String.format("%.1f%%", accessor.getServerData().getFloatOr("life", 0))).withStyle(ChatFormatting.WHITE)));
             }
 
             @Override
