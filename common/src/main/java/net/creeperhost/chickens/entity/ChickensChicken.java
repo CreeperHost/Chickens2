@@ -121,7 +121,7 @@ public class ChickensChicken extends Chicken {
         this.entityData.set(CHICKEN_VARIANT, id);
     }
 
-    public ResourceLocation getVariantString() {
+    public ResourceLocation getVariantID() {
         return this.entityData.get(CHICKEN_VARIANT);
     }
 
@@ -189,7 +189,7 @@ public class ChickensChicken extends Chicken {
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
-        output.store("chicken_variant", ResourceLocation.CODEC, getVariantString());
+        output.store("chicken_variant", ResourceLocation.CODEC, getVariantID());
         output.putBoolean("is_rooster", isRooster());
         output.putDouble("taming_mod", getTamingModifier());
         output.putFloat("lifespan", getLifeSpan());
@@ -271,7 +271,7 @@ public class ChickensChicken extends Chicken {
 
         ChickenVariant variant = getChickenVariant();
         ChickenProduct product = variant.product();
-        if (isRooster() || variant == ChickenVariant.MISSING || product == ChickenProduct.EMPTY) {
+        if (isRooster() || ChickenVariant.MISSING.equals(variant) || product == ChickenProduct.EMPTY) {
             eggTime = 0;
         } else if (isAlive() && !isBaby() && !isChickenJockey() && eggTime-- <= 0) {
             //All we do here is drop an egg with all of this chicken's data. The rest can be figured out when the egg is used in one way or another.

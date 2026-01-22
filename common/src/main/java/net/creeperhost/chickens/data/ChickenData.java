@@ -23,17 +23,17 @@ import java.util.*;
  * <p>
  * Created by brandon3055 on 01/12/2025
  */
-public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.StateValue> traits, EntityData entityData) {
+public record ChickenData(ResourceLocation variantId, boolean isRooster, List<Trait.StateValue> traits, EntityData entityData) {
 
     public static final Codec<ChickenData> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            ChickenVariant.CODEC.fieldOf("variant").forGetter(ChickenData::variant),
+            ResourceLocation.CODEC.fieldOf("variantId").forGetter(ChickenData::variantId),
             Codec.BOOL.fieldOf("isRooster").forGetter(ChickenData::isRooster),
             Trait.StateValue.CODEC.listOf().fieldOf("traits").forGetter(ChickenData::traits),
             EntityData.CODEC.fieldOf("entityData").forGetter(ChickenData::entityData)
     ).apply(builder, ChickenData::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChickenData> STREAM_CODEC = StreamCodec.composite(
-            ChickenVariant.STREAM_CODEC, ChickenData::variant,
+            ResourceLocation.STREAM_CODEC, ChickenData::variantId,
             ByteBufCodecs.BOOL, ChickenData::isRooster,
             Trait.StateValue.STREAM_CODEC.apply(ByteBufCodecs.list()), ChickenData::traits,
             EntityData.STREAM_CODEC, ChickenData::entityData,
@@ -43,16 +43,20 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
     public static ChickenData fromEntity(ChickensChicken chicken) {
         List<Trait.StateValue> traits = new ArrayList<>();
         chicken.getTraits().forEach((trait, value) -> traits.add(new Trait.StateValue(trait, value)));
-        return new ChickenData(chicken.getChickenVariant(), chicken.isRooster(), traits, EntityData.fromChicken(chicken));
+        return new ChickenData(chicken.getVariantID(), chicken.isRooster(), traits, EntityData.fromChicken(chicken));
     }
 
     public void apply(ChickensChicken chicken) {
-        chicken.setChickenVariant(variant);
+        chicken.setChickenVariant(variantId);
         chicken.setRooster(isRooster);
         Map<Trait, Double> traitMap = new HashMap<>();
         traits.forEach(state -> traitMap.put(state.trait(), state.value()));
         chicken.setTraits(traitMap);
         entityData.apply(chicken);
+    }
+
+    public ChickenVariant variant() {
+        return ChickenDataManager.getVariantOrMissing(variantId);
     }
 
     @Nullable
@@ -62,7 +66,7 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
 
     public ItemStack toChickenEgg(boolean fertilized) {
         ItemStack stack = new ItemStack(ModItems.CHICKEN_EGG);
-        stack.set(ModComponentTypes.EGG_DATA.get(), new ChickenData(variant, isRooster, traits, new EntityData(0, entityData().age(), 0, (float) Config.INSTANCE.chickenLifeSpan)));
+        stack.set(ModComponentTypes.EGG_DATA.get(), new ChickenData(variantId, isRooster, traits, new EntityData(0, entityData().age(), 0, (float) Config.INSTANCE.chickenLifeSpan)));
         stack.set(ModComponentTypes.EGG_FERTILIZED.get(), fertilized);
         return stack;
     }
@@ -98,7 +102,7 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
         //The logic for choosing the child variant is simple, both parent variants, and any potential combination variants are added to a list,
         //Then we just choose one at random, meaning each has an equal chance.
         //TODO, we may want to add some additional logic to this later, but not sure if we will use the old logic or something new.
-        if (chickenVariant != roosterVariant) {
+        if (!chickenVariant.equals(roosterVariant)) {
             List<ChickenVariant> potentials = new ArrayList<>();
             potentials.add(chickenVariant);
             potentials.add(roosterVariant);
@@ -167,17 +171,17 @@ public record ChickenData(ChickenVariant variant, boolean isRooster, List<Trait.
 
         //Taming modifier starts at zero, TODO, if baby chick spends time around adults, its taming modifier should slowly raise to the average of the adults around it.
         EntityData childEntity = new EntityData(0, (int) (-24000D / growth), 0, (float) Config.INSTANCE.chickenLifeSpan);
-        return new ChickenData(childVariant, random.nextBoolean(), childTraits, childEntity);
+        return new ChickenData(childVariant.id(), random.nextBoolean(), childTraits, childEntity);
     }
 
     public ChickenData modifyLifespan(float amount) {
         EntityData e = new EntityData(entityData.inLoveTime, entityData.age, entityData.tamingModifier, entityData.lifespan + amount);
-        return new ChickenData(variant, isRooster, traits, e);
+        return new ChickenData(variantId, isRooster, traits, e);
     }
 
     public ChickenData modifyAge(int amount) {
         EntityData e = new EntityData(entityData.inLoveTime, entityData.age + amount, entityData.tamingModifier, entityData.lifespan);
-        return new ChickenData(variant, isRooster, traits, e);
+        return new ChickenData(variantId, isRooster, traits, e);
     }
 
     /**

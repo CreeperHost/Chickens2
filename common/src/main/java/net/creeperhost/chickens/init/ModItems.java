@@ -55,8 +55,8 @@ public class ModItems {
                                 traits.add(new Trait.StateValue(trait.trait(), trait.evoLimit()));
                             }
 
-                            ChickenData hen = new ChickenData(variant, false, traits, ChickenData.EntityData.create());
-                            ChickenData rooster = new ChickenData(variant, true, traits, ChickenData.EntityData.create());
+                            ChickenData hen = new ChickenData(variant.id(), false, traits, ChickenData.EntityData.create());
+                            ChickenData rooster = new ChickenData(variant.id(), true, traits, ChickenData.EntityData.create());
                             output.accept(hen.toChickenItem());
                             output.accept(rooster.toChickenItem());
                         }
@@ -67,7 +67,7 @@ public class ModItems {
                     .icon(() -> new ItemStack(Items.EGG))
                     .displayItems((itemDisplayParameters, output) -> {
                         for (ChickenVariant variant : ChickenDataManager.getVariants()) {
-                            ChickenData data = new ChickenData(variant, false, Collections.emptyList(), ChickenData.EntityData.create());
+                            ChickenData data = new ChickenData(variant.id(), false, Collections.emptyList(), ChickenData.EntityData.create());
                             output.accept(data.toChickenEgg(true));
                         }
                     })
