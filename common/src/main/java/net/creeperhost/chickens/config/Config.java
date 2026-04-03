@@ -15,12 +15,12 @@ public class Config {
 
     public boolean enableEnergy = true;
     public int crackerEnergyRate = 20;
-    public int ovoscopeEnergyRate = 10;
+    public int sorterEnergyRate = 10;
     public double incubatorEnergyMultiplier = 1;
 
     public int breederMaxProcessTime = 9000;
     public int crackerProcessTime = 100;
-    public int ovoscopeProcessTime = 100;
+    public int sorterProcessTime = 100;
 
     public int eggItemMaxTimeOnGround = 15;
 

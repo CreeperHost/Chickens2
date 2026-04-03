@@ -65,4 +65,17 @@ public record ChickenVariant(ResourceLocation id, String name, ResourceLocation 
         traitConfigs().forEach(e -> map.put(e.trait(), e));
         return map;
     }
+
+    public record GUI(ResourceLocation id, String name) {
+        public static final Codec<GUI> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+                ResourceLocation.CODEC.fieldOf("id").forGetter(GUI::id),
+                Codec.STRING.fieldOf("name").forGetter(GUI::name)
+        ).apply(builder, GUI::new));
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, GUI> STREAM_CODEC = StreamCodec.composite(
+                ResourceLocation.STREAM_CODEC, GUI::id,
+                ByteBufCodecs.STRING_UTF8, GUI::name,
+                GUI::new
+        );
+    }
 }

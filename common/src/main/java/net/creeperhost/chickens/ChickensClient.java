@@ -31,6 +31,6 @@ public class ChickensClient
         BlockEntityRendererRegistry.register(ModBlocks.INCUBATOR_TILE.get(), context -> new RenderIncubator());
 
         ChickensPlatform.registerBlockRenderType(ModBlocks.INCUBATOR.get(), ChunkSectionLayer.TRANSLUCENT);
-        ChickensPlatform.registerBlockRenderType(ModBlocks.OVOSCOPE.get(), ChunkSectionLayer.TRANSLUCENT);
+        ChickensPlatform.registerBlockRenderType(ModBlocks.SORTER.get(), ChunkSectionLayer.TRANSLUCENT);
     }
 }

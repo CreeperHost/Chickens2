@@ -37,7 +37,7 @@ public class ModItems {
     public static final RegistrySupplier<Item> BREEDER = ITEMS.register("breeder", item("breeder", props -> new BlockItem(ModBlocks.BREEDER.get(), props)));
     public static final RegistrySupplier<Item> INCUBATOR = ITEMS.register("incubator", item("incubator", props -> new BlockItem(ModBlocks.INCUBATOR.get(), props)));
     public static final RegistrySupplier<Item> EGG_CRACKER = ITEMS.register("egg_cracker", item("egg_cracker", props -> new BlockItem(ModBlocks.EGG_CRACKER.get(), props)));
-    public static final RegistrySupplier<Item> OVOSCOPE = ITEMS.register("ovoscope", item("ovoscope", props -> new BlockItem(ModBlocks.OVOSCOPE.get(), props)));
+    public static final RegistrySupplier<Item> SORTER = ITEMS.register("sorter", item("sorter", props -> new BlockItem(ModBlocks.SORTER.get(), props)));
 
     public static final RegistrySupplier<CreativeModeTab> CREATIVE_MODE_TAB = TABS.register("creative_tab", () -> CreativeTabRegistry.create(builder -> builder
                     .title(Component.translatable("itemGroup.chickens.creative_tab"))
@@ -46,7 +46,7 @@ public class ModItems {
                         output.accept(BREEDER.get());
                         output.accept(INCUBATOR.get());
                         output.accept(EGG_CRACKER.get());
-                        output.accept(OVOSCOPE.get());
+                        output.accept(SORTER.get());
                         output.accept(CATCHER_ITEM.get());
 
                         for (ChickenVariant variant : ChickenDataManager.getVariants()) {

@@ -1,7 +1,10 @@
 package net.creeperhost.chickens.containers;
 
-import net.creeperhost.chickens.blockentities.OvoscopeBlockEntity;
+import net.creeperhost.chickens.blockentities.SorterBlockEntity;
+import net.creeperhost.chickens.blockentities.data.ListData;
+import net.creeperhost.chickens.blockentities.data.TraitFilter;
 import net.creeperhost.chickens.config.Config;
+import net.creeperhost.chickens.data.TryStateData;
 import net.creeperhost.chickens.init.ModContainers;
 import net.creeperhost.polylib.client.modulargui.lib.container.DataSync;
 import net.creeperhost.polylib.client.modulargui.lib.container.SlotGroup;
@@ -12,11 +15,13 @@ import net.creeperhost.polylib.data.serializable.ByteData;
 import net.creeperhost.polylib.data.serializable.IntData;
 import net.creeperhost.polylib.data.serializable.LongData;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.TriState;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
-public class OvoscopeMenu extends PolyBlockContainerMenu<OvoscopeBlockEntity> {
+import java.util.List;
+
+public class SorterMenu extends PolyBlockContainerMenu<SorterBlockEntity> {
     public final SlotGroup main = Config.INSTANCE.enableEnergy ? createSlotGroup(0, 1, 4) : createSlotGroup(0, 1);
     public final SlotGroup hotBar = Config.INSTANCE.enableEnergy ? createSlotGroup(0, 1, 4) : createSlotGroup(0, 1);
 
@@ -29,13 +34,18 @@ public class OvoscopeMenu extends PolyBlockContainerMenu<OvoscopeBlockEntity> {
     public final DataSync<Integer> progress;
     public final DataSync<Long> energy;
     public final DataSync<Byte> scanCount;
+    public final DataSync<List<TraitFilter>> traitFilter;
+    public final DataSync<List<ResourceLocation>> variantFilter;
+    public final DataSync<TriState> fertilizedFilter;
+    public final DataSync<TriState> viableFilter;
+    public final DataSync<TriState> eggFilter;
 
-    public OvoscopeMenu(int windowId, Inventory playerInv, FriendlyByteBuf extraData) {
+    public SorterMenu(int windowId, Inventory playerInv, FriendlyByteBuf extraData) {
         this(windowId, playerInv, getClientTile(playerInv, extraData));
     }
 
-    public OvoscopeMenu(int windowId, Inventory playerInv, OvoscopeBlockEntity tile) {
-        super(ModContainers.OVOSCOPE.get(), windowId, playerInv, tile);
+    public SorterMenu(int windowId, Inventory playerInv, SorterBlockEntity tile) {
+        super(ModContainers.SORTER.get(), windowId, playerInv, tile);
         main.addPlayerMain(playerInv);
         hotBar.addPlayerBar(playerInv);
 
@@ -47,6 +57,11 @@ public class OvoscopeMenu extends PolyBlockContainerMenu<OvoscopeBlockEntity> {
         progress = new DataSync<>(this, new IntData(), tile.progress::get);
         energy = new DataSync<>(this, new LongData(), tile.energy::getEnergyStored);
         scanCount = new DataSync<>(this, new ByteData(), () -> tile.scanCount);
+        traitFilter = new DataSync<>(this, new ListData<>(TraitFilter.CODEC, TraitFilter.STREAM_CODEC), tile.traitFilter::get);
+        variantFilter = new DataSync<>(this, new ListData<>(ResourceLocation.CODEC, ResourceLocation.STREAM_CODEC.cast()), tile.variantFilter::get);
+        fertilizedFilter = new DataSync<>(this, new TryStateData(), tile.fertilizedFilter::get);
+        viableFilter = new DataSync<>(this, new TryStateData(), tile.viableFilter::get);
+        eggFilter = new DataSync<>(this, new TryStateData(), tile.eggFilter::get);
 
         if (Config.INSTANCE.enableEnergy) {
             energySlot.addSlot(new PolySlot(tile.inventory, 3).setStackLimit(e -> 1));

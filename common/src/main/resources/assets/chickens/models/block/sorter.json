@@ -1,13 +1,13 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "minecraft:block/orientable",
+	"parent": "minecraft:block/block",
 	"textures": {
 		"3": "chickens:block/lamp",
-		"4": "chickens:block/glass_yellow",
+		"4": "chickens:block/glass_gray",
 		"particle": "chickens:block/plain_face",
 		"down": "chickens:block/plain_face",
-		"east": "chickens:block/ovoscope_east",
-		"west": "chickens:block/ovoscope_west"
+		"east": "chickens:block/sorter_east",
+		"west": "chickens:block/sorter_west"
 	},
 	"elements": [
 		{
@@ -86,11 +86,11 @@
 			"from": [4, 2, 4],
 			"to": [12, 3, 12],
 			"faces": {
-				"north": {"uv": [8, 8, 16, 9], "rotation": 180, "texture": "#3"},
-				"east": {"uv": [15, 8, 16, 16], "rotation": 90, "texture": "#3"},
-				"south": {"uv": [8, 15, 16, 16], "texture": "#3"},
-				"west": {"uv": [8, 8, 9, 16], "rotation": 270, "texture": "#3"},
-				"up": {"uv": [8, 8, 16, 16], "texture": "#3"}
+				"north": {"uv": [8, 0, 16, 1], "rotation": 180, "texture": "#3"},
+				"east": {"uv": [15, 0, 16, 8], "rotation": 90, "texture": "#3"},
+				"south": {"uv": [8, 7, 16, 8], "texture": "#3"},
+				"west": {"uv": [8, 0, 9, 8], "rotation": 270, "texture": "#3"},
+				"up": {"uv": [8, 0, 16, 8], "texture": "#3"}
 			}
 		},
 		{

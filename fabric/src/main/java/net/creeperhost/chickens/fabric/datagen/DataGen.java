@@ -164,7 +164,7 @@ public class DataGen implements DataGeneratorEntrypoint
             provider.add("gui.breeding.time", "%1$s%%", ModuleType.COMMON);
             provider.add("gui.drops", "Chicken Drop, ModuleType.COMMON);", ModuleType.COMMON);
             provider.add("gui.throws", "Color Egg Throwing", ModuleType.COMMON);
-            provider.add("chickens.screen.ovoscope", "Ovoscope", ModuleType.COMMON);
+            provider.add("chickens.screen.sorter", "Sorter", ModuleType.COMMON);
             provider.add("gui.chicken.incubator", "Chicken Incubator", ModuleType.COMMON);
             provider.add("gui.chicken.interaction", "Chicken Interaction", ModuleType.COMMON);
 
@@ -172,12 +172,12 @@ public class DataGen implements DataGeneratorEntrypoint
             provider.add("block.chickens.roost", "Roost", ModuleType.COMMON);
             provider.add("block.chickens.incubator", "Incubator", ModuleType.COMMON);
             provider.add("block.chickens.egg_cracker", "Egg Cracker", ModuleType.COMMON);
-            provider.add("block.chickens.ovoscope", "Ovoscope", ModuleType.COMMON);
+            provider.add("block.chickens.sorter", "Sorter", ModuleType.COMMON);
             provider.add("item.chickens.breeder", "Breeder", ModuleType.COMMON);
             provider.add("item.chickens.roost", "Roost", ModuleType.COMMON);
             provider.add("item.chickens.incubator", "Incubator", ModuleType.COMMON);
             provider.add("item.chickens.egg_cracker", "Egg Cracker", ModuleType.COMMON);
-            provider.add("item.chickens.ovoscope", "Ovoscope", ModuleType.COMMON);
+            provider.add("item.chickens.sorter", "Sorter", ModuleType.COMMON);
             provider.add("screen.shift.tooltip", "Hold <Shift> for stats", ModuleType.COMMON);
 
             provider.add("advancement.hard_boiled.title", "Hard Boiled", ModuleType.COMMON);
@@ -199,8 +199,36 @@ public class DataGen implements DataGeneratorEntrypoint
 
             provider.add("gui.chickens.cracker.fluid_slot", "Drain Fluid", ModuleType.COMMON);
 
-            provider.add("gui.chickens.ovoscope.viable", "Viable", ModuleType.COMMON);
-            provider.add("gui.chickens.ovoscope.non_viable", "Non Viable", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.pass", "Match", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.fail", "Fail", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.enable", "Enable", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.enable_filter", "Enable Filter", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.greater_true", "Greater", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.greater_true.info", "Value must be greater than the specified value", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.greater_false", "Less", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.greater_false.info", "Value must be less than the specified value", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.value_input", "Enter filter value", ModuleType.COMMON);
+
+            provider.add("gui.chickens.sorter.fertile_true", "Filter Fertile", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.fertile_false", "Filter Infertile", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.fertile_default", "Ignore Fertility", ModuleType.COMMON);
+
+            provider.add("gui.chickens.sorter.viable_true", "Filter Viable", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.viable_false", "Filter Nonviable", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.viable_default", "Ignore Viability", ModuleType.COMMON);
+
+            provider.add("gui.chickens.sorter.egg_true", "Eggs Only", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.egg_false", "Chickens Only", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.egg_default", "Eggs or Chickens", ModuleType.COMMON);
+
+            provider.add("gui.chickens.sorter.varient_filter", "Varient Filter", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.varient_select", "Select Varient", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.add", "Add", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.delete", "Delete", ModuleType.COMMON);
+
+            provider.add("gui.chickens.select_dialog.select", "Select", ModuleType.COMMON);
+            provider.add("gui.chickens.select_dialog.cancel", "Cancel", ModuleType.COMMON);
+            provider.add("gui.chickens.select_dialog.search", "Search", ModuleType.COMMON);
 
             provider.add("gui.chickens.breeder.chicken_slot", "Chicken slot for egg production", ModuleType.COMMON);
             provider.add("gui.chickens.breeder.rooster_slot", "Rooster slot (Optional, required for breeding) ", ModuleType.COMMON);
@@ -280,7 +308,7 @@ public class DataGen implements DataGeneratorEntrypoint
                     .group(Chickens.MOD_ID)
                     .unlockedBy("has_item", provider.has(ModTags.Items.MOD_EGGS)), ModuleType.COMMON);
 
-            provider.add(ShapedRecipeBuilder.shaped(itemRegistry, RecipeCategory.MISC, ModItems.OVOSCOPE.get())
+            provider.add(ShapedRecipeBuilder.shaped(itemRegistry, RecipeCategory.MISC, ModItems.SORTER.get())
                     .pattern("PPP")
                     .pattern("GEG")
                     .pattern("PCP")

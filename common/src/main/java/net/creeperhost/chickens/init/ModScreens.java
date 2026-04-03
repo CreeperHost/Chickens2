@@ -4,7 +4,7 @@ import dev.architectury.registry.menu.MenuRegistry;
 import net.creeperhost.chickens.client.gui.IncubatorGui;
 import net.creeperhost.chickens.client.gui.BreederGui;
 import net.creeperhost.chickens.client.gui.EggCrackerGui;
-import net.creeperhost.chickens.client.gui.OvoscopeGui;
+import net.creeperhost.chickens.client.gui.SorterGui;
 
 public class ModScreens
 {
@@ -13,6 +13,6 @@ public class ModScreens
         MenuRegistry.registerScreenFactory(ModContainers.BREEDER_CONTAINER.get(), BreederGui.Screen::new);
         MenuRegistry.registerScreenFactory(ModContainers.INCUBATOR.get(), IncubatorGui.Screen::new);
         MenuRegistry.registerScreenFactory(ModContainers.EGG_CRACKER.get(), EggCrackerGui.Screen::new);
-        MenuRegistry.registerScreenFactory(ModContainers.OVOSCOPE.get(), OvoscopeGui.Screen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.SORTER.get(), SorterGui.Screen::new);
     }
 }

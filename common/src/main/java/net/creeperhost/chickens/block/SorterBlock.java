@@ -20,13 +20,13 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
-public class OvoscopeBlock extends PolyEntityBlock {
+public class SorterBlock extends PolyEntityBlock {
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 
-    public OvoscopeBlock(Properties properties) {
+    public SorterBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));
-        this.setBlockEntity(ModBlocks.OVOSCOPE_TILE::get, true);
+        this.setBlockEntity(ModBlocks.SORTER_TILE::get, true);
         this.setLightTransparent();
     }
 

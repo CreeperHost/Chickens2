@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "chickens:item/ovoscope"
+    "model": "chickens:item/sorter"
   }
 }
