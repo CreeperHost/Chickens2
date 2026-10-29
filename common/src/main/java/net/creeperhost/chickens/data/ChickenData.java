@@ -11,7 +11,7 @@ import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -23,17 +23,17 @@ import java.util.*;
  * <p>
  * Created by brandon3055 on 01/12/2025
  */
-public record ChickenData(ResourceLocation variantId, boolean isRooster, List<Trait.StateValue> traits, EntityData entityData) {
+public record ChickenData(Identifier variantId, boolean isRooster, List<Trait.StateValue> traits, EntityData entityData) {
 
     public static final Codec<ChickenData> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            ResourceLocation.CODEC.fieldOf("variantId").forGetter(ChickenData::variantId),
+            Identifier.CODEC.fieldOf("variantId").forGetter(ChickenData::variantId),
             Codec.BOOL.fieldOf("isRooster").forGetter(ChickenData::isRooster),
             Trait.StateValue.CODEC.listOf().fieldOf("traits").forGetter(ChickenData::traits),
             EntityData.CODEC.fieldOf("entityData").forGetter(ChickenData::entityData)
     ).apply(builder, ChickenData::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChickenData> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC, ChickenData::variantId,
+            Identifier.STREAM_CODEC, ChickenData::variantId,
             ByteBufCodecs.BOOL, ChickenData::isRooster,
             Trait.StateValue.STREAM_CODEC.apply(ByteBufCodecs.list()), ChickenData::traits,
             EntityData.STREAM_CODEC, ChickenData::entityData,
@@ -65,14 +65,14 @@ public record ChickenData(ResourceLocation variantId, boolean isRooster, List<Tr
     }
 
     public ItemStack toChickenEgg(boolean fertilized) {
-        ItemStack stack = new ItemStack(ModItems.CHICKEN_EGG);
+        ItemStack stack = new ItemStack(ModItems.CHICKEN_EGG.get());
         stack.set(ModComponentTypes.EGG_DATA.get(), new ChickenData(variantId, isRooster, traits, new EntityData(0, entityData().age(), 0, (float) Config.INSTANCE.chickenLifeSpan)));
         stack.set(ModComponentTypes.EGG_FERTILIZED.get(), fertilized);
         return stack;
     }
 
     public ItemStack toChickenItem() {
-        ItemStack stack = new ItemStack(ModItems.CHICKEN_ITEM);
+        ItemStack stack = new ItemStack(ModItems.CHICKEN_ITEM.get());
         stack.set(ModComponentTypes.EGG_DATA.get(), this);
         return stack;
     }
@@ -108,7 +108,7 @@ public record ChickenData(ResourceLocation variantId, boolean isRooster, List<Tr
             potentials.add(roosterVariant);
 
             for (ChickenVariant potential : ChickenDataManager.getVariants()) {
-                List<ResourceLocation> parents = potential.parents();
+                List<Identifier> parents = potential.parents();
                 if (parents.contains(chickenVariant.id()) && parents.contains(roosterVariant.id())) {
                     potentials.add(potential);
                 }

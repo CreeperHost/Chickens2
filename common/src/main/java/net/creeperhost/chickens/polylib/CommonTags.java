@@ -1,8 +1,8 @@
 package net.creeperhost.chickens.polylib;
 
-import dev.architectury.platform.Platform;
+import net.creeperhost.polylib.platform.Services;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,11 +17,11 @@ public class CommonTags {
     private static final Set<Item> SEED_ITEMS = Set.of(Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.WHEAT_SEEDS, Items.TORCHFLOWER_SEEDS, Items.PITCHER_POD);
 
     public static TagKey<Item> registerTag(String string) {
-        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", string));
+        return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", string));
     }
 
     public static boolean isSeeds(ItemStack stack) {
-        if (Platform.isForgeLike()) {
+        if (!Services.PLATFORM.getPlatformName().equalsIgnoreCase("fabric")) {
             return stack.is(SEEDS);
         }
         //On fabric there is not default seeds tag

@@ -8,14 +8,15 @@ import net.creeperhost.chickens.entity.EntityChickensChicken;
 import net.creeperhost.chickens.entity.EntityRooster;
 
 import net.minecraft.client.model.AdultAndBabyModelPair;
-import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.model.animal.chicken.ChickenModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.chicken.Chicken;
 
 import java.util.Map;
 
@@ -35,14 +36,14 @@ public class RenderChickens extends MobRenderer<Chicken, RenderChickens.Chickens
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ChickensRenderState state) {
+    public Identifier getTextureLocation(ChickensRenderState state) {
         return state.texture;
     }
 
     @Override
-    public void render(ChickensRenderState state, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
+    public void submit(ChickensRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
         this.model = state.isBaby ? baby : adult;
-        super.render(state, poseStack, multiBufferSource, i);
+        super.submit(state, poseStack, collector, camera);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class RenderChickens extends MobRenderer<Chicken, RenderChickens.Chickens
                 state.texture = chickensChicken.getTexture();
             } else {
                 //TODO, temporary, just until i get the rooster variants figured out.
-                state.texture = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "textures/entity/rooster.png");
+                state.texture = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "textures/entity/rooster.png");
             }
             state.isRooster = entity instanceof EntityRooster;
         }
@@ -68,6 +69,6 @@ public class RenderChickens extends MobRenderer<Chicken, RenderChickens.Chickens
 
     public static class ChickensRenderState extends ChickenRenderState {
         public boolean isRooster = false;
-        public ResourceLocation texture;
+        public Identifier texture;
     }
 }

@@ -7,7 +7,7 @@ import net.creeperhost.chickens.Chickens;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -84,12 +84,12 @@ public class ItemHolder
         this.stackSize = qty;
     }
 
-    public ResourceLocation getRegistryName(Item item)
+    public Identifier getRegistryName(Item item)
     {
         return BuiltInRegistries.ITEM.getKey(item);
     }
 
-    public ResourceLocation getRegistryName(Fluid fluid)
+    public Identifier getRegistryName(Fluid fluid)
     {
         return BuiltInRegistries.FLUID.getKey(fluid);
     }
@@ -115,14 +115,14 @@ public class ItemHolder
     {
         if(this.itemID == null) return ItemStack.EMPTY.getItem();
 
-        return BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(this.itemID));
+        return BuiltInRegistries.ITEM.getValue(Identifier.parse(this.itemID));
     }
 
     public Fluid getFluid()
     {
         if(this.itemID == null) return Fluids.EMPTY;
 
-        return BuiltInRegistries.FLUID.getValue(ResourceLocation.parse(this.itemID));
+        return BuiltInRegistries.FLUID.getValue(Identifier.parse(this.itemID));
     }
 
     public int getStackSize()

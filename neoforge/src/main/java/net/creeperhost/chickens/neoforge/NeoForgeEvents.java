@@ -1,41 +1,27 @@
 package net.creeperhost.chickens.neoforge;
 
 import net.creeperhost.chickens.Chickens;
-import net.creeperhost.chickens.client.RenderChickens;
-import net.creeperhost.chickens.client.ChickensModel;
+import net.creeperhost.chickens.init.ModBlocks;
 import net.creeperhost.chickens.data.ChickenDataManager;
 import net.creeperhost.chickens.entity.ChickensChicken;
 import net.creeperhost.chickens.init.ModEntities;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraft.world.entity.animal.chicken.Chicken;
 
 @EventBusSubscriber(modid = Chickens.MOD_ID)
 public class NeoForgeEvents
 {
     @SubscribeEvent
-    public static void registerRenderEvent(EntityRenderersEvent.RegisterRenderers event)
-    {
-//        ModEntities.CHICKENS.forEach((chickensRegistryItem, entityTypeSupplier) ->
-//        {
-//            Chickens.LOGGER.info("Registering render for " + entityTypeSupplier.get().getDescriptionId());
-//            event.registerEntityRenderer(entityTypeSupplier.get(), RenderChickens::new);
-//        });
-
-//        event.registerEntityRenderer(ModEntities.ROOSTER.get(), RenderChickens::new);
-        event.registerEntityRenderer(ModEntities.CHICKEN.get(), RenderChickens::new);
-    }
-
-    @SubscribeEvent
-    public static void registerModelLayerEvent(EntityRenderersEvent.RegisterLayerDefinitions event)
-    {
-        event.registerLayerDefinition(ChickensModel.LAYER_LOCATION, () -> ChickensModel.createBodyLayer(false));
-        event.registerLayerDefinition(ChickensModel.BABY_LAYER_LOCATION, () -> ChickensModel.createBodyLayer(true));
+    public static void registerAttributes(EntityAttributeCreationEvent event) {
+        event.put(ModEntities.CHICKEN.get(), Chicken.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -50,6 +36,6 @@ public class NeoForgeEvents
 
     @SubscribeEvent
     public static void registerServerReloadListeners(AddServerReloadListenersEvent event) {
-        event.addListener(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "chicken_variants"), ChickenDataManager.INSTANCE);
+        event.addListener(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "chicken_variants"), ChickenDataManager.INSTANCE);
     }
 }

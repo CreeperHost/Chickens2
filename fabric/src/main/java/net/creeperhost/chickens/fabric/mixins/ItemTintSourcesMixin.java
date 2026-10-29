@@ -6,7 +6,7 @@ import net.creeperhost.chickens.client.ChickenEggTint;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.color.item.ItemTintSources;
 import net.minecraft.client.renderer.special.SpecialModelRenderers;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,14 +21,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemTintSources.class)
 public class ItemTintSourcesMixin {
 
-    @Shadow @Final public static ExtraCodecs.LateBoundIdMapper<ResourceLocation, MapCodec<? extends ItemTintSource>> ID_MAPPER;
+    @Shadow @Final public static ExtraCodecs.LateBoundIdMapper<Identifier, MapCodec<? extends ItemTintSource>> ID_MAPPER;
 
     @Inject (
             method = "Lnet/minecraft/client/color/item/ItemTintSources;bootstrap()V",
             at = @At ("RETURN")
     )
     private static void onBootstrap(CallbackInfo ci) {
-        ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "egg_tint"), ChickenEggTint.MAP_CODEC);
+        ID_MAPPER.put(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "egg_tint"), ChickenEggTint.MAP_CODEC);
     }
 
 }

@@ -8,7 +8,7 @@ import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.*;
 
@@ -24,36 +24,36 @@ import java.util.*;
  * @param parent1      First parent variant required to breed this chicken.
  * @param parent2      Second parent variant required to breed this chicken.
  */
-public record ChickenVariant(ResourceLocation id, String name, ResourceLocation texture, ChickenProduct product, int eggColour, List<TraitConfig> traitConfigs, Optional<ResourceLocation> parent1, Optional<ResourceLocation> parent2, Optional<ChickenSpawn> spawn) {
+public record ChickenVariant(Identifier id, String name, Identifier texture, ChickenProduct product, int eggColour, List<TraitConfig> traitConfigs, Optional<Identifier> parent1, Optional<Identifier> parent2, Optional<ChickenSpawn> spawn) {
     /**Used as a fallback ic a chicken variant is no longer available*/
-    public static final ChickenVariant MISSING = new ChickenVariant(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "_invalid_id_"), "[Invalid or unknown chicken ID]", ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "textures/entity/invalid_chicken.png"), new ChickenProduct(ResourceLocation.parse("minecraft:air"), ChickenProduct.Type.ITEM, 1, 1, 0, 0), 0xf800f8, Collections.emptyList(), Optional.empty(), Optional.empty(), Optional.empty());
+    public static final ChickenVariant MISSING = new ChickenVariant(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "_invalid_id_"), "[Invalid or unknown chicken ID]", Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "textures/entity/invalid_chicken.png"), new ChickenProduct(Identifier.parse("minecraft:air"), ChickenProduct.Type.ITEM, 1, 1, 0, 0), 0xf800f8, Collections.emptyList(), Optional.empty(), Optional.empty(), Optional.empty());
 
     public static final Codec<ChickenVariant> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            ResourceLocation.CODEC.fieldOf("id").forGetter(ChickenVariant::id),
+            Identifier.CODEC.fieldOf("id").forGetter(ChickenVariant::id),
             Codec.STRING.fieldOf("name").forGetter(ChickenVariant::name),
-            ResourceLocation.CODEC.fieldOf("texture").forGetter(ChickenVariant::texture),
+            Identifier.CODEC.fieldOf("texture").forGetter(ChickenVariant::texture),
             ChickenProduct.CODEC.fieldOf("product").forGetter(ChickenVariant::product),
             Codec.INT.fieldOf("eggColour").forGetter(ChickenVariant::eggColour),
             TraitConfig.CODEC.listOf().fieldOf("traitConfigs").forGetter(ChickenVariant::traitConfigs),
-            ResourceLocation.CODEC.optionalFieldOf("parent1").forGetter(ChickenVariant::parent1),
-            ResourceLocation.CODEC.optionalFieldOf("parent2").forGetter(ChickenVariant::parent2),
+            Identifier.CODEC.optionalFieldOf("parent1").forGetter(ChickenVariant::parent1),
+            Identifier.CODEC.optionalFieldOf("parent2").forGetter(ChickenVariant::parent2),
             ChickenSpawn.CODEC.optionalFieldOf("spawn").forGetter(ChickenVariant::spawn)
     ).apply(builder, ChickenVariant::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChickenVariant> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC, ChickenVariant::id,
+            Identifier.STREAM_CODEC, ChickenVariant::id,
             ByteBufCodecs.STRING_UTF8, ChickenVariant::name,
-            ResourceLocation.STREAM_CODEC, ChickenVariant::texture,
+            Identifier.STREAM_CODEC, ChickenVariant::texture,
             ChickenProduct.STREAM_CODEC, ChickenVariant::product,
             ByteBufCodecs.INT, ChickenVariant::eggColour,
             TraitConfig.STREAM_CODEC.apply(ByteBufCodecs.list()), ChickenVariant::traitConfigs,
-            ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), ChickenVariant::parent1,
-            ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), ChickenVariant::parent2,
+            ByteBufCodecs.optional(Identifier.STREAM_CODEC), ChickenVariant::parent1,
+            ByteBufCodecs.optional(Identifier.STREAM_CODEC), ChickenVariant::parent2,
             ByteBufCodecs.optional(ChickenSpawn.STREAM_CODEC), ChickenVariant::spawn,
             ChickenVariant::new
     );
 
-    public List<ResourceLocation> parents() {
+    public List<Identifier> parents() {
         if (parent1().isPresent() && parent2().isPresent()) {
             return Lists.newArrayList(parent1().get(), parent2().get());
         }
@@ -66,14 +66,14 @@ public record ChickenVariant(ResourceLocation id, String name, ResourceLocation 
         return map;
     }
 
-    public record GUI(ResourceLocation id, String name) {
+    public record GUI(Identifier id, String name) {
         public static final Codec<GUI> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-                ResourceLocation.CODEC.fieldOf("id").forGetter(GUI::id),
+                Identifier.CODEC.fieldOf("id").forGetter(GUI::id),
                 Codec.STRING.fieldOf("name").forGetter(GUI::name)
         ).apply(builder, GUI::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, GUI> STREAM_CODEC = StreamCodec.composite(
-                ResourceLocation.STREAM_CODEC, GUI::id,
+                Identifier.STREAM_CODEC, GUI::id,
                 ByteBufCodecs.STRING_UTF8, GUI::name,
                 GUI::new
         );

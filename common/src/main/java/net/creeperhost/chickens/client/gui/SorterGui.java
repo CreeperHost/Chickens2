@@ -1,6 +1,7 @@
 package net.creeperhost.chickens.client.gui;
 
-import dev.architectury.registry.registries.RegistrySupplier;
+import net.creeperhost.chickens.Chickens;
+
 import net.creeperhost.chickens.blockentities.SorterBlockEntity;
 import net.creeperhost.chickens.blockentities.data.TraitFilter;
 import net.creeperhost.chickens.client.ChickenGuiTextures;
@@ -28,7 +29,7 @@ import net.creeperhost.polylib.client.modulargui.lib.geometry.GuiParent;
 import net.creeperhost.polylib.client.modulargui.sprite.PolyTextures;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.TriState;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -54,7 +55,7 @@ public class SorterGui extends ContainerGuiProvider<SorterMenu> {
     private GuiElement<?> variantItemElement;
     private SorterMenu menu;
     private SorterBlockEntity tile;
-    private List<ResourceLocation> variantCache = new ArrayList<>();
+    private List<Identifier> variantCache = new ArrayList<>();
 
     @Override
     public GuiElement<?> createRootElement(ModularGui gui) {
@@ -206,7 +207,7 @@ public class SorterGui extends ContainerGuiProvider<SorterMenu> {
         eggBtn.onClick(() -> menu.tile.sendDataValueToServer(menu.tile.eggFilter, next(menu.eggFilter.get())));
         Constraints.bind(eggBtn, eggItem, 1);
 
-        for (RegistrySupplier<Trait> supplier : ChickenTraits.TRAITS) {
+        for (Trait trait : Chickens.TRAIT_REGISTRY) {
             GuiElement<?> item = new GuiRectangle(container)
                     .fill(0x35000000)
                     .constrain(HEIGHT, literal(28))
@@ -215,7 +216,6 @@ public class SorterGui extends ContainerGuiProvider<SorterMenu> {
                     .constrain(TOP, relative(container.get(TOP), offset));
             offset += (int) item.ySize() + 1;
 
-            Trait trait = supplier.get();
             Supplier<Boolean> isEnabled = () -> {
                 for (TraitFilter filter : menu.traitFilter.get()) {
                     if (filter.trait().equals(trait)) return true;
@@ -293,8 +293,8 @@ public class SorterGui extends ContainerGuiProvider<SorterMenu> {
     }
 
     public void openVarientSelection(GuiElement<?> root) {
-        List<ResourceLocation> list = new ArrayList<>();
-        for (ResourceLocation id : ChickenDataManager.getVariantIds()) {
+        List<Identifier> list = new ArrayList<>();
+        for (Identifier id : ChickenDataManager.getVariantIds()) {
             if (!menu.variantFilter.get().contains(id)) {
                 list.add(id);
             }
@@ -304,20 +304,20 @@ public class SorterGui extends ContainerGuiProvider<SorterMenu> {
             return Component.literal(variant == null ? e.toString() : variant.name());
         })
                 .setOnItemSelected(e -> {
-                    List<ResourceLocation> newList = new ArrayList<>(menu.variantFilter.get());
+                    List<Identifier> newList = new ArrayList<>(menu.variantFilter.get());
                     newList.add(e);
                     menu.tile.sendDataValueToServer(menu.tile.variantFilter, newList);
                 });
     }
 
     public void updateVarientList() {
-        List<ResourceLocation> list = menu.variantFilter.get();
+        List<Identifier> list = menu.variantFilter.get();
         variantItemElement.constrain(HEIGHT, literal(13 + (variantCache.size() * 10)));
         variantItemElement.getChildren().forEach(variantItemElement::removeChild);
 
         int offset = 13;
         int i = 0;
-        for (ResourceLocation location : list) {
+        for (Identifier location : list) {
             ChickenVariant variant = ChickenDataManager.getVariant(location);
             GuiRectangle back = new GuiRectangle(variantItemElement)
                     .constrain(HEIGHT, literal(10))
@@ -333,7 +333,7 @@ public class SorterGui extends ContainerGuiProvider<SorterMenu> {
             GuiButton delete = GuiButton.flatColourButton(back, () -> Component.literal("X").withStyle(ChatFormatting.RED), hover -> hover ? 0x50FFFFFF : 0x10FFFFFF);
             delete.setTooltip(Component.translatable("gui.chickens.sorter.delete"));
             delete.onClick(() -> {
-                List<ResourceLocation> newList = new ArrayList<>(menu.variantFilter.get());
+                List<Identifier> newList = new ArrayList<>(menu.variantFilter.get());
                 newList.remove(location);
                 menu.tile.sendDataValueToServer(menu.tile.variantFilter, newList);
             });
@@ -346,10 +346,10 @@ public class SorterGui extends ContainerGuiProvider<SorterMenu> {
     }
 
     public void update() {
-        List<ResourceLocation> list = menu.variantFilter.get();
+        List<Identifier> list = menu.variantFilter.get();
         if (!list.equals(variantCache)) {
             variantCache.clear();
-            list.forEach(e -> variantCache.add(ResourceLocation.fromNamespaceAndPath(e.getNamespace(), e.getPath())));
+            list.forEach(e -> variantCache.add(Identifier.fromNamespaceAndPath(e.getNamespace(), e.getPath())));
             updateVarientList();
         }
     }

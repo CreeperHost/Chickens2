@@ -1,12 +1,9 @@
 package net.creeperhost.chickens;
 
-import dev.architectury.event.EventResult;
-import dev.architectury.event.events.client.ClientLifecycleEvent;
-import dev.architectury.event.events.common.CommandRegistrationEvent;
-import dev.architectury.event.events.common.InteractionEvent;
-import dev.architectury.event.events.common.LifecycleEvent;
-import dev.architectury.platform.Platform;
-import dev.architectury.registry.level.entity.EntityAttributeRegistry;
+import net.creeperhost.polylib.event.events.server.PolyPlayerEvents;
+import net.creeperhost.polylib.event.events.server.PolyServerCommandEvents;
+
+import net.creeperhost.polylib.event.events.server.PolyServerLifecycleEvents;
 import net.creeperhost.chickens.api.ChickenAPI;
 import net.creeperhost.chickens.api.ChickenTransformationRecipe;
 import net.creeperhost.chickens.config.Config;
@@ -17,16 +14,16 @@ import net.creeperhost.chickens.entity.EggTimer;
 import net.creeperhost.chickens.init.*;
 import net.creeperhost.chickens.network.PacketHandler;
 import net.creeperhost.chickens.trait.Trait;
-import net.creeperhost.polylib.PolyLib;
-import net.fabricmc.api.EnvType;
+import net.creeperhost.polylib.init.DataComps;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -41,43 +38,38 @@ public class Chickens {
     public static final File CONFIG_DIR = new File("config/chickens");
     public static final File CONFIG_FILE = new File(CONFIG_DIR, "chickens.json");
 
-    public static final ResourceKey<Registry<Trait>> TRAIT_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "trait"));
+    public static final ResourceKey<Registry<Trait>> TRAIT_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "trait"));
     public static Registry<Trait> TRAIT_REGISTRY;
 
     public static void init() {
-        PolyLib.initPolyItemData();
+        DataComps.registerData();
         Config.init();
 
-        ModBlocks.BLOCKS.register();
-        ModEntities.ENTITIES.register();
-        ModBlocks.TILES_ENTITIES.register();
-        ModItems.ITEMS.register();
-        ModItems.TABS.register();
-        ModContainers.CONTAINERS.register();
-        ModSounds.SOUNDS.register();
-        ModComponentTypes.COMPONENTS.register();
+        ModBlocks.BLOCKS.init();
+        ModEntities.ENTITIES.init();
+        ModBlocks.TILES_ENTITIES.init();
+        ModItems.ITEMS.init();
+        ModItems.TABS.init();
+        ModContainers.CONTAINERS.init();
+        ModSounds.SOUNDS.init();
+        ModComponentTypes.COMPONENTS.init();
+        ChickenTraits.TRAITS.init();
 
-        if (Platform.getEnv() == EnvType.CLIENT) {
-            ClientLifecycleEvent.CLIENT_SETUP.register(ChickensClient::clientSetup);
-        }
 
-        EntityAttributeRegistry.register(ModEntities.CHICKEN, Chicken::createAttributes);
-
-        InteractionEvent.INTERACT_ENTITY.register(Chickens::onEntityInteract);
+        PolyPlayerEvents.ENTITY_INTERACT.register(Chickens::onEntityInteract);
         PacketHandler.init();
         EggTimer.init();
 
         //We need to do this late or the entities are not registered yet
-        LifecycleEvent.SETUP.register(ModRecipes::init);
+        PolyServerLifecycleEvents.SERVER_STARTED.register(server -> ModRecipes.init());
 
-        CommandRegistrationEvent.EVENT.register(Commands::registerCommands);
+        PolyServerCommandEvents.REGISTER_COMMANDS.register(Commands::registerCommands);
     }
 
     public static void register() {
-        ChickenTraits.TRAITS.register();
     }
 
-    private static EventResult onEntityInteract(Player player, Entity entity, InteractionHand interactionHand) {
+    private static void onEntityInteract(Player player, Entity entity, InteractionHand interactionHand) {
         Level level = player.level();
 //        if (!level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND) {
 //            for (ChickenVariant variant : ChickenDataManager.getVariants()) {
@@ -85,7 +77,7 @@ public class Chickens {
 //                    ChickensChicken chicken = new ChickensChicken(ModEntities.CHICKEN.get(), player.level());
 //                    chicken.setChickenVariant(variant);
 //                    chicken.setRooster(i == 1);
-//                    chicken.setPos(player.getX() - 3 + level.random.nextInt(6), player.getY(), player.getZ() - 3 + level.random.nextInt(6));
+//                    chicken.setPos(player.getX() - 3 + level.getRandom().nextInt(6), player.getY(), player.getZ() - 3 + level.getRandom().nextInt(6));
 //                    player.level().addFreshEntity(chicken);
 //                }
 //            }
@@ -93,7 +85,7 @@ public class Chickens {
 
         ItemStack stack = player.getItemInHand(interactionHand);
         if (stack.isEmpty() || !(level instanceof ServerLevel serverLevel)) {
-            return EventResult.pass();
+            return;
         }
 
         for (ChickenTransformationRecipe recipe : ChickenAPI.TRANSFORMATION_RECIPES) {
@@ -101,7 +93,7 @@ public class Chickens {
                 ChickensChicken chicken = ModEntities.CHICKEN.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
                 ChickenVariant variant = ChickenDataManager.getVariant(recipe.getVariant());
                 if (chicken == null || variant == null) {
-                    return EventResult.pass();
+                    return;
                 }
                 chicken.setPos(entity.position());
                 chicken.setChickenVariant(variant);
@@ -112,10 +104,9 @@ public class Chickens {
                 if (!player.isCreative()) {
                     stack.shrink(1);
                 }
-                return EventResult.pass();
+                return;
             }
         }
 
-        return EventResult.pass();
     }
 }

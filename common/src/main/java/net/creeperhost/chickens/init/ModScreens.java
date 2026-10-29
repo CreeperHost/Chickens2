@@ -1,6 +1,6 @@
 package net.creeperhost.chickens.init;
 
-import dev.architectury.registry.menu.MenuRegistry;
+import net.creeperhost.polylib.registry.PolyScreens;
 import net.creeperhost.chickens.client.gui.IncubatorGui;
 import net.creeperhost.chickens.client.gui.BreederGui;
 import net.creeperhost.chickens.client.gui.EggCrackerGui;
@@ -10,9 +10,9 @@ public class ModScreens
 {
     public static void init()
     {
-        MenuRegistry.registerScreenFactory(ModContainers.BREEDER_CONTAINER.get(), BreederGui.Screen::new);
-        MenuRegistry.registerScreenFactory(ModContainers.INCUBATOR.get(), IncubatorGui.Screen::new);
-        MenuRegistry.registerScreenFactory(ModContainers.EGG_CRACKER.get(), EggCrackerGui.Screen::new);
-        MenuRegistry.registerScreenFactory(ModContainers.SORTER.get(), SorterGui.Screen::new);
+        PolyScreens.register(ModContainers.BREEDER_CONTAINER, BreederGui.Screen::new);
+        PolyScreens.register(ModContainers.INCUBATOR, IncubatorGui.Screen::new);
+        PolyScreens.register(ModContainers.EGG_CRACKER, EggCrackerGui.Screen::new);
+        PolyScreens.register(ModContainers.SORTER, SorterGui.Screen::new);
     }
 }

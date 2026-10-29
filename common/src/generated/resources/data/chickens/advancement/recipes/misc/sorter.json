@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "chickens:sorter"
+        "recipes": "chickens:sorter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

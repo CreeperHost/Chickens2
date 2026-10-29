@@ -11,7 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -24,7 +24,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -81,7 +81,7 @@ public class EntityChickensChicken extends Chicken
         return super.checkSpawnRules(levelAccessor, spawnReason);
     }
 
-    public ResourceLocation getRegistryName(EntityType<?> entityType)
+    public Identifier getRegistryName(EntityType<?> entityType)
     {
         return BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
     }
@@ -153,7 +153,7 @@ public class EntityChickensChicken extends Chicken
         return 40;
     }
 
-    public ResourceLocation getTexture()
+    public Identifier getTexture()
     {
         ChickensRegistryItem chickenDescription = getChickenRegistryItem();
         return chickenDescription.getTexture();
@@ -170,7 +170,7 @@ public class EntityChickensChicken extends Chicken
         ChickensRegistryItem description = ChickensRegistry.getByRegistryName(getRegistryName(entityType).toString());
         if (description == null || !description.isEnabled())
         {
-            description = ChickensRegistry.getByResourceLocation(ChickensRegistry.SMART_CHICKEN_ID);
+            description = ChickensRegistry.getByIdentifier(ChickensRegistry.SMART_CHICKEN_ID);
             if (!description.isEnabled())
             {
                 this.remove(RemovalReason.DISCARDED);
@@ -249,7 +249,7 @@ public class EntityChickensChicken extends Chicken
     {
         int nearby = getNearbyChickens(level());
 
-        if (!this.level().isClientSide && !this.isBaby() && !this.isChickenJockey())
+        if (!this.level().isClientSide() && !this.isBaby() && !this.isChickenJockey())
         {
             if(getLifeSpan() <= 0)
             {
@@ -265,7 +265,7 @@ public class EntityChickensChicken extends Chicken
                 setLifeSpan(getLifeSpan() -damage);
 
                 ChickensRegistryItem chickenDescription = getChickenRegistryItem();
-                boolean viable = level().random.nextDouble() < Config.INSTANCE.onLaidViabilityChange;
+                boolean viable = level().getRandom().nextDouble() < Config.INSTANCE.onLaidViabilityChange;
                 if(nearby > Config.INSTANCE.maxChickensInChunk) viable = false;
 //                ItemStack eggStack = ItemChickenEgg.of(chickenDescription, viable);
 
@@ -278,7 +278,7 @@ public class EntityChickensChicken extends Chicken
                 resetTimeUntilNextEgg();
             }
         }
-        if(level().isClientSide && nearby > Config.INSTANCE.maxChickensInChunk) fancy();
+        if(level().isClientSide() && nearby > Config.INSTANCE.maxChickensInChunk) fancy();
         super.tick();
     }
 

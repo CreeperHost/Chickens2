@@ -15,7 +15,7 @@ import net.creeperhost.polylib.data.serializable.ByteData;
 import net.creeperhost.polylib.data.serializable.IntData;
 import net.creeperhost.polylib.data.serializable.LongData;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.TriState;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -35,7 +35,7 @@ public class SorterMenu extends PolyBlockContainerMenu<SorterBlockEntity> {
     public final DataSync<Long> energy;
     public final DataSync<Byte> scanCount;
     public final DataSync<List<TraitFilter>> traitFilter;
-    public final DataSync<List<ResourceLocation>> variantFilter;
+    public final DataSync<List<Identifier>> variantFilter;
     public final DataSync<TriState> fertilizedFilter;
     public final DataSync<TriState> viableFilter;
     public final DataSync<TriState> eggFilter;
@@ -58,7 +58,7 @@ public class SorterMenu extends PolyBlockContainerMenu<SorterBlockEntity> {
         energy = new DataSync<>(this, new LongData(), tile.energy::getEnergyStored);
         scanCount = new DataSync<>(this, new ByteData(), () -> tile.scanCount);
         traitFilter = new DataSync<>(this, new ListData<>(TraitFilter.CODEC, TraitFilter.STREAM_CODEC), tile.traitFilter::get);
-        variantFilter = new DataSync<>(this, new ListData<>(ResourceLocation.CODEC, ResourceLocation.STREAM_CODEC.cast()), tile.variantFilter::get);
+        variantFilter = new DataSync<>(this, new ListData<>(Identifier.CODEC, Identifier.STREAM_CODEC.cast()), tile.variantFilter::get);
         fertilizedFilter = new DataSync<>(this, new TryStateData(), tile.fertilizedFilter::get);
         viableFilter = new DataSync<>(this, new TryStateData(), tile.viableFilter::get);
         eggFilter = new DataSync<>(this, new TryStateData(), tile.eggFilter::get);

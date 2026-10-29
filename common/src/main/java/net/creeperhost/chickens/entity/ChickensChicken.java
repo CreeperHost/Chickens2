@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
@@ -24,7 +24,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -42,7 +42,7 @@ import java.util.*;
  */
 public class ChickensChicken extends Chicken {
 
-    private static final EntityDataAccessor<ResourceLocation> CHICKEN_VARIANT = SynchedEntityData.defineId(ChickensChicken.class, ChickensPlatform.getResourceSerializer());
+    private static final EntityDataAccessor<Identifier> CHICKEN_VARIANT = SynchedEntityData.defineId(ChickensChicken.class, ChickensPlatform.getResourceSerializer());
     private static final EntityDataAccessor<Boolean> IS_ROOSTER = SynchedEntityData.defineId(ChickensChicken.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Map<Trait, Double>> TRAITS = SynchedEntityData.defineId(ChickensChicken.class, ChickensPlatform.getTraitSerializer());
 
@@ -117,11 +117,11 @@ public class ChickensChicken extends Chicken {
         return ChickenDataManager.getVariantOrMissing(this.entityData.get(CHICKEN_VARIANT));
     }
 
-    public void setChickenVariant(ResourceLocation id) {
+    public void setChickenVariant(Identifier id) {
         this.entityData.set(CHICKEN_VARIANT, id);
     }
 
-    public ResourceLocation getVariantID() {
+    public Identifier getVariantID() {
         return this.entityData.get(CHICKEN_VARIANT);
     }
 
@@ -189,7 +189,7 @@ public class ChickensChicken extends Chicken {
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
-        output.store("chicken_variant", ResourceLocation.CODEC, getVariantID());
+        output.store("chicken_variant", Identifier.CODEC, getVariantID());
         output.putBoolean("is_rooster", isRooster());
         output.putDouble("taming_mod", getTamingModifier());
         output.putFloat("lifespan", getLifeSpan());
@@ -205,7 +205,7 @@ public class ChickensChicken extends Chicken {
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        setChickenVariant(input.read("chicken_variant", ResourceLocation.CODEC).orElse(ChickenVariant.MISSING.id()));
+        setChickenVariant(input.read("chicken_variant", Identifier.CODEC).orElse(ChickenVariant.MISSING.id()));
         setRooster(input.getBooleanOr("is_rooster", false));
         setTamingModifier(input.getDoubleOr("taming_mod", 0));
         setLifeSpan(input.getFloatOr("lifespan", (float) Config.INSTANCE.chickenLifeSpan));
@@ -312,7 +312,7 @@ public class ChickensChicken extends Chicken {
         }
         ChickenData thisData = ChickenData.fromEntity(this);
         ChickenData otherData = ChickenData.fromEntity(other);
-        ChickenData childData = ChickenData.fromParents(thisData, otherData, serverLevel.random);
+        ChickenData childData = ChickenData.fromParents(thisData, otherData, serverLevel.getRandom());
 
         ChickensChicken chicken = ModEntities.CHICKEN.get().create(serverLevel, EntitySpawnReason.BREEDING);
         if (chicken instanceof ChickensChicken child) {

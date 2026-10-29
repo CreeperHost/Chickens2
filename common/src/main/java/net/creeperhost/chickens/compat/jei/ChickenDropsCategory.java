@@ -9,7 +9,7 @@
 //import mezz.jei.api.recipe.category.IRecipeCategory;
 //import net.creeperhost.chickens.Chickens;
 //import net.minecraft.network.chat.Component;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.world.item.ItemStack;
 //import net.minecraft.world.item.crafting.Ingredient;
 //import org.jetbrains.annotations.NotNull;
@@ -39,13 +39,13 @@
 //    @Override
 //    public @NotNull IDrawable getBackground()
 //    {
-//        return guiHelper.drawableBuilder(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "textures/gui/drops.png"), 0, 0, 82, 54).addPadding(0, 20, 0, 0).build();
+//        return guiHelper.drawableBuilder(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "textures/gui/drops.png"), 0, 0, 82, 54).addPadding(0, 20, 0, 0).build();
 //    }
 //
 //    @Override
 //    public @NotNull IDrawable getIcon()
 //    {
-//        return guiHelper.createDrawable(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "textures/gui/drops_icon.png"), 0, 0, 16, 16);
+//        return guiHelper.createDrawable(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "textures/gui/drops_icon.png"), 0, 0, 16, 16);
 //    }
 //
 //    @Override

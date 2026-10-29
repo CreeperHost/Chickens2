@@ -1,70 +1,28 @@
 package net.creeperhost.chickens;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
-import dev.architectury.platform.Platform;
 import net.creeperhost.chickens.trait.Trait;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.Holder;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.ServiceLoader;
 
-public class ChickensPlatform
-{
-    /**
-     * We can use {@link Platform#getConfigFolder()} but this is just an example of {@link ExpectPlatform}.
-     * <p>
-     * This must be a <b>public static</b> method. The platform-implemented solution must be placed under a
-     * platform sub-package, with its class suffixed with {@code Impl}.
-     * <p>
-     * Example:
-     * Expect: net.examplemod.ExampleExpectPlatform#getConfigDirectory()
-     * Actual Fabric: net.examplemod.fabric.ExampleExpectPlatformImpl#getConfigDirectory()
-     * Actual Forge: net.examplemod.forge.ExampleExpectPlatformImpl#getConfigDirectory()
-     * <p>
-     * <a href="https://plugins.jetbrains.com/plugin/16210-architectury">You should also get the IntelliJ plugin to help with @ExpectPlatform.</a>
-     */
-    @ExpectPlatform
-    public static Path getConfigDirectory()
-    {
-        // Just throw an error, the content should get replaced at runtime.
-        throw new AssertionError();
+public final class ChickensPlatform {
+    public interface Provider {
+        Path getConfigDirectory();
+        int getBiomeTemperature(Holder<Biome> biome);
+        int getBiomeHumidity(Holder<Biome> biome);
+        EntityDataSerializer<Map<Trait, Double>> getTraitSerializer();
+        EntityDataSerializer<Identifier> getResourceSerializer();
     }
-
-//    @ExpectPlatform
-//    public static Item createNewChickenItem(Item.Properties properties)
-//    {
-//        throw new AssertionError();
-//    }
-
-    @ExpectPlatform
-    public static int getBiomeTemperature(Holder<Biome> biome) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static int getBiomeHumidity(Holder<Biome> biome) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static void registerBlockRenderType(Block block, ChunkSectionLayer layer) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static EntityDataSerializer<Map<Trait, Double>> getTraitSerializer() {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static EntityDataSerializer<ResourceLocation> getResourceSerializer() {
-        throw new AssertionError();
-    }
+    private static final Provider PROVIDER = ServiceLoader.load(Provider.class).findFirst().orElseThrow();
+    public static Path getConfigDirectory() { return PROVIDER.getConfigDirectory(); }
+    public static int getBiomeTemperature(Holder<Biome> biome) { return PROVIDER.getBiomeTemperature(biome); }
+    public static int getBiomeHumidity(Holder<Biome> biome) { return PROVIDER.getBiomeHumidity(biome); }
+    public static EntityDataSerializer<Map<Trait, Double>> getTraitSerializer() { return PROVIDER.getTraitSerializer(); }
+    public static EntityDataSerializer<Identifier> getResourceSerializer() { return PROVIDER.getResourceSerializer(); }
 }

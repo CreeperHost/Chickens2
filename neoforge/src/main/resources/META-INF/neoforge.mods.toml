@@ -15,28 +15,21 @@ logoFile = "logo.png"
 [[dependencies.chickens]]
 modId = "neoforge"
 type="required"
-versionRange = "[21.6,)"
+versionRange = "[26.3,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.chickens]]
 modId = "minecraft"
 type="required"
-versionRange = "[1.21.6,)"
+versionRange = "[26.3,26.4)"
 ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.chickens]]
-modId = "architectury"
-type="required"
-versionRange = "[17.0.4,)"
-ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.chickens]]
 modId = "polylib"
 type="required"
-versionRange = "[2106.1.0,)"
+versionRange = "[2.0.17,)"
 ordering = "AFTER"
 side = "BOTH"
 

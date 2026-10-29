@@ -1,6 +1,6 @@
 package net.creeperhost.chickens.containers;
 
-import dev.architectury.fluid.FluidStack;
+import net.creeperhost.polylib.inventory.fluid.PolyFluidStack;
 import net.creeperhost.chickens.blockentities.EggCrackerBlockEntity;
 import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.init.ModContainers;
@@ -17,7 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class EggCrackerMenu extends PolyBlockContainerMenu<EggCrackerBlockEntity> {
-    public final DataSync<FluidStack> tank;
+    public final DataSync<PolyFluidStack> tank;
     public final DataSync<Long> energy;
     public final DataSync<Integer> progress;
 

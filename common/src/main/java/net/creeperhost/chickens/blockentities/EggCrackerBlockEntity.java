@@ -1,6 +1,6 @@
 package net.creeperhost.chickens.blockentities;
 
-import dev.architectury.fluid.FluidStack;
+import net.creeperhost.polylib.inventory.fluid.PolyFluidStack;
 import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.containers.EggCrackerMenu;
 import net.creeperhost.chickens.data.ChickenData;
@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class EggCrackerBlockEntity extends PolyBlockEntity implements PolyInventoryBlock, MenuProvider, PolyFluidBlock, PolyEnergyBlock, RedstoneActivatedBlock {
 
-    public final PolyTank tank = new PolyBlockTank(this, FluidManager.BUCKET * 16L);
+    public final PolyFluidStorage tank = new PolyBlockFluidStorage(this, FluidManager.BUCKET * 16L);
     public final PolyEnergyStorage energy = new PolyBlockEnergyStorage(this, 128000);
     public final BlockInventory inventory = new BlockInventory(this, 9)
             .setSlotValidator(0, stack -> stack.getItem() instanceof ItemChickenEgg)
@@ -60,8 +60,8 @@ public class EggCrackerBlockEntity extends PolyBlockEntity implements PolyInvent
 
         //Update Fluid Slot
         ItemStack fluidItem = inventory.getItem(7);
-        PolyFluidHandlerItem itemFluidHandler = FluidManager.getHandler(fluidItem);
-        if (!FluidManager.transferFluid(tank, itemFluidHandler).isEmpty()) {
+        IPolyFluidStorageItem itemFluidHandler = FluidManager.getHandler(fluidItem);
+        if (itemFluidHandler != null && FluidManager.transferFluid(tank, itemFluidHandler) > 0) {
             inventory.setItem(7, itemFluidHandler.getContainer());
         }
 
@@ -105,11 +105,11 @@ public class EggCrackerBlockEntity extends PolyBlockEntity implements PolyInvent
                 progress.set(0);
             }
         } else if (product.type() == ChickenProduct.Type.FLUID){
-            FluidStack fluidStack = product.getAsFluid(level);
+            PolyFluidStack fluidStack = product.getAsFluid(level);
             if (fluidStack.isEmpty()) {
                 return;
             }
-            if (tank.isEmpty() || tank.fill(fluidStack, true) == fluidStack.getAmount()) {
+            if (tank.fill(fluidStack, true) == fluidStack.getAmount()) {
                 tank.fill(fluidStack, false);
                 input.shrink(1);
                 progress.set(0);
@@ -142,11 +142,11 @@ public class EggCrackerBlockEntity extends PolyBlockEntity implements PolyInvent
                 .slotRemoveCheck(0, stack -> false)
                 .slotInsertCheck(7, stack -> stack.getCount() == 1 && inventory.getItem(7).isEmpty()) //TODO This limiting slot to 1 item can be done better with a custom SidedInvWrapper, though not sure about fabric...
                 .slotRemoveCheck(7, stack -> {
-                    PolyFluidHandlerItem handler = FluidManager.getHandler(stack);
+                    IPolyFluidStorageItem handler = FluidManager.getHandler(stack);
                     if (handler == null) return true;
-                    if (handler.getTanks() == 1 && handler.getFluidInTank(0).getAmount() >= handler.getTankCapacity(0)) return true;
-                    if (tank.isEmpty()) return false;
-                    return handler.fill(FluidStack.create(tank.getFluid(), FluidManager.BUCKET), true) == 0;
+                    if (handler.getFluid().getAmount() >= handler.getCapacity()) return true;
+                    if (tank.getFluid().isEmpty()) return false;
+                    return handler.fill(tank.getFluid().copyWithAmount(FluidManager.BUCKET), true) == 0;
                 });
 
         if (Config.INSTANCE.enableEnergy) {
@@ -160,7 +160,7 @@ public class EggCrackerBlockEntity extends PolyBlockEntity implements PolyInvent
     }
 
     @Override
-    public @Nullable PolyFluidHandler getFluidHandler(@Nullable Direction side) {
+    public @Nullable IPolyFluidStorage getFluidStorage(@Nullable Direction side) {
         return tank;
     }
 

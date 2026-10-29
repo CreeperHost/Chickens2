@@ -1,11 +1,12 @@
 package net.creeperhost.chickens.entity;
 
-import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.EntityEvent;
-import dev.architectury.event.events.common.TickEvent;
+import net.creeperhost.polylib.event.data.CancelContext;
+import net.creeperhost.polylib.event.events.server.PolyEntityEvents;
+import net.creeperhost.polylib.event.events.server.PolyServerTickEvents;
 import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.item.ItemChickenEgg;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -21,11 +22,11 @@ public class EggTimer {
     private static final WeakHashMap<ItemEntity, Long> EGGS = new WeakHashMap<>();
 
     public static void init() {
-        EntityEvent.ADD.register(EggTimer::entitySpawn);
-        TickEvent.SERVER_PRE.register(EggTimer::serverTick);
+        PolyEntityEvents.JOIN_LEVEL.register(EggTimer::entitySpawn);
+        PolyServerTickEvents.TICK_START.register(EggTimer::serverTick);
     }
 
-    private static EventResult entitySpawn(Entity entity, Level level) {
+    private static void entitySpawn(Entity entity, ServerLevel level, CancelContext context) {
         if (entity instanceof ItemEntity item) {
             ItemStack stack = item.getItem();
             if (stack.getItem() instanceof ItemChickenEgg egg && egg.isFertilized(stack)) {
@@ -33,7 +34,6 @@ public class EggTimer {
             }
         }
 
-        return EventResult.pass();
     }
 
     private static void serverTick(MinecraftServer server) {

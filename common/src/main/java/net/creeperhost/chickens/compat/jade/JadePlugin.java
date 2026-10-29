@@ -9,14 +9,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
 
 @WailaPlugin
 public class JadePlugin implements IWailaPlugin
 {
-    private static final ResourceLocation ENTITY_DATA_ID = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "entity_data");
+    private static final Identifier ENTITY_DATA_ID = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "entity_data");
 
     @Override
     public void register(IWailaCommonRegistration registration)
@@ -32,7 +32,7 @@ public class JadePlugin implements IWailaPlugin
                     tag.putFloat("life", chicken.getLifeSpan());
                     CompoundTag traits = new CompoundTag();
                     chicken.getTraits().forEach((trait, value) -> {
-                        ResourceLocation key = Chickens.TRAIT_REGISTRY.getKey(trait);
+                        Identifier key = Chickens.TRAIT_REGISTRY.getKey(trait);
                         if (key != null) {
                             traits.putDouble(key.toString(), value);
                         }
@@ -42,7 +42,7 @@ public class JadePlugin implements IWailaPlugin
             }
 
             @Override
-            public ResourceLocation getUid()
+            public Identifier getUid()
             {
                 return ENTITY_DATA_ID;
             }
@@ -56,7 +56,7 @@ public class JadePlugin implements IWailaPlugin
             public void appendTooltip(ITooltip tooltip, EntityAccessor accessor, IPluginConfig iPluginConfig) {
                 CompoundTag traits = accessor.getServerData().getCompoundOrEmpty("traits");
                 for (String traitName : traits.keySet()) {
-                    Trait trait = Chickens.TRAIT_REGISTRY.getValue(ResourceLocation.parse(traitName));
+                    Trait trait = Chickens.TRAIT_REGISTRY.getValue(Identifier.parse(traitName));
                     if (trait != null) {
                         tooltip.add(Component.translatable(trait.getDescriptionId()).append(": ").append(Component.literal(String.format("%.3f", traits.getDoubleOr(traitName, 0))).withStyle(ChatFormatting.WHITE)));
                     }
@@ -66,7 +66,7 @@ public class JadePlugin implements IWailaPlugin
             }
 
             @Override
-            public ResourceLocation getUid() {
+            public Identifier getUid() {
                 return ENTITY_DATA_ID;
             }
         }, ChickensChicken.class);

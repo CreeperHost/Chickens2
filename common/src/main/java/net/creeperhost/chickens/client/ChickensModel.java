@@ -7,15 +7,15 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 import java.util.Set;
 
 public class ChickensModel extends EntityModel<RenderChickens.ChickensRenderState> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "chicken"), "main");
-    public static final ModelLayerLocation BABY_LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "baby_chicken"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "chicken"), "main");
+    public static final ModelLayerLocation BABY_LAYER_LOCATION = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "baby_chicken"), "main");
     public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 5.0F, 2.0F, 2.0F, 1.99F, 24.0F, Set.of("head", "beak", "red_thing"));
     private final ModelPart head;
     private final ModelPart wattle;

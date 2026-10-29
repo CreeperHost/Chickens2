@@ -1,8 +1,7 @@
 package net.creeperhost.chickens.init;
 
-import dev.architectury.registry.CreativeTabRegistry;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import net.creeperhost.polylib.registry.PolyRegistry;
+import java.util.function.Supplier;
 import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.data.ChickenDataManager;
@@ -15,34 +14,32 @@ import net.creeperhost.chickens.trait.Trait;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class ModItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Chickens.MOD_ID, Registries.ITEM);
-    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Chickens.MOD_ID, Registries.CREATIVE_MODE_TAB);
+    public static final PolyRegistry<Item> ITEMS = PolyRegistry.create(Registries.ITEM, Chickens.MOD_ID);
+    public static final PolyRegistry<CreativeModeTab> TABS = PolyRegistry.create(Registries.CREATIVE_MODE_TAB, Chickens.MOD_ID);
 
-    public static final RegistrySupplier<Item> CHICKEN_ITEM = ITEMS.register("chicken_item", item("chicken_item", ItemChicken::new, new Item.Properties().stacksTo(16)));
-    public static final RegistrySupplier<Item> CATCHER_ITEM = ITEMS.register("catcher", item("catcher", ItemChickenCatcher::new));
+    public static final Supplier<Item> CHICKEN_ITEM = ITEMS.register("chicken_item", item("chicken_item", ItemChicken::new, new Item.Properties().stacksTo(16)));
+    public static final Supplier<Item> CATCHER_ITEM = ITEMS.register("catcher", item("catcher", ItemChickenCatcher::new));
 
-    public static final RegistrySupplier<Item> CHICKEN_EGG = ITEMS.register("chicken_egg", item("chicken_egg", ItemChickenEgg::new));
+    public static final Supplier<Item> CHICKEN_EGG = ITEMS.register("chicken_egg", item("chicken_egg", ItemChickenEgg::new));
 
     //ItemBlocks
-    public static final RegistrySupplier<Item> BREEDER = ITEMS.register("breeder", item("breeder", props -> new BlockItem(ModBlocks.BREEDER.get(), props)));
-    public static final RegistrySupplier<Item> INCUBATOR = ITEMS.register("incubator", item("incubator", props -> new BlockItem(ModBlocks.INCUBATOR.get(), props)));
-    public static final RegistrySupplier<Item> EGG_CRACKER = ITEMS.register("egg_cracker", item("egg_cracker", props -> new BlockItem(ModBlocks.EGG_CRACKER.get(), props)));
-    public static final RegistrySupplier<Item> SORTER = ITEMS.register("sorter", item("sorter", props -> new BlockItem(ModBlocks.SORTER.get(), props)));
+    public static final Supplier<Item> BREEDER = ITEMS.register("breeder", item("breeder", props -> new BlockItem(ModBlocks.BREEDER.get(), props)));
+    public static final Supplier<Item> INCUBATOR = ITEMS.register("incubator", item("incubator", props -> new BlockItem(ModBlocks.INCUBATOR.get(), props)));
+    public static final Supplier<Item> EGG_CRACKER = ITEMS.register("egg_cracker", item("egg_cracker", props -> new BlockItem(ModBlocks.EGG_CRACKER.get(), props)));
+    public static final Supplier<Item> SORTER = ITEMS.register("sorter", item("sorter", props -> new BlockItem(ModBlocks.SORTER.get(), props)));
 
-    public static final RegistrySupplier<CreativeModeTab> CREATIVE_MODE_TAB = TABS.register("creative_tab", () -> CreativeTabRegistry.create(builder -> builder
-                    .title(Component.translatable("itemGroup.chickens.creative_tab"))
-                    .icon(() -> new ItemStack(ModBlocks.BREEDER.get()))
-                    .displayItems((itemDisplayParameters, output) -> {
+    public static final Supplier<CreativeModeTab> CREATIVE_MODE_TAB = TABS.registerCreativeTab("creative_tab", "Chickens",
+                    () -> new ItemStack(ModBlocks.BREEDER.get()),
+                    (itemDisplayParameters, output) -> {
                         output.accept(BREEDER.get());
                         output.accept(INCUBATOR.get());
                         output.accept(EGG_CRACKER.get());
@@ -60,25 +57,23 @@ public class ModItems {
                             output.accept(hen.toChickenItem());
                             output.accept(rooster.toChickenItem());
                         }
-                    }))
+                    }
     );
-    public static final RegistrySupplier<CreativeModeTab> CREATIVE_MODE_TAB_EGGS = TABS.register("creative_tab_eggs", () -> CreativeTabRegistry.create(builder -> builder
-                    .title(Component.translatable("itemGroup.chickens.creative_tab_eggs"))
-                    .icon(() -> new ItemStack(Items.EGG))
-                    .displayItems((itemDisplayParameters, output) -> {
+    public static final Supplier<CreativeModeTab> CREATIVE_MODE_TAB_EGGS = TABS.registerCreativeTab("creative_tab_eggs", "Chicken Eggs",
+                    () -> new ItemStack(Items.EGG),
+                    (itemDisplayParameters, output) -> {
                         for (ChickenVariant variant : ChickenDataManager.getVariants()) {
                             ChickenData data = new ChickenData(variant.id(), false, Collections.emptyList(), ChickenData.EntityData.create());
                             output.accept(data.toChickenEgg(true));
                         }
-                    })
-            )
+                    }
     );
 
     private static Supplier<Item> item(String name, Function<Item.Properties, Item> item, Item.Properties properties) {
-        return () -> item.apply(properties.setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, name))));
+        return () -> item.apply(properties.setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Chickens.MOD_ID, name))));
     }
 
     private static Supplier<Item> item(String name, Function<Item.Properties, Item> item) {
-        return () -> item.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, name))));
+        return () -> item.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Chickens.MOD_ID, name))));
     }
 }

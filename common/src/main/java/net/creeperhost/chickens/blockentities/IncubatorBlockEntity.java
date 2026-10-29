@@ -1,6 +1,6 @@
 package net.creeperhost.chickens.blockentities;
 
-import dev.architectury.fluid.FluidStack;
+import net.creeperhost.polylib.inventory.fluid.PolyFluidStack;
 import net.creeperhost.chickens.ChickensPlatform;
 import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.containers.IncubatorMenu;
@@ -42,10 +42,10 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
     public static int TEMP_MIN = 35;
     public static int MIN_HUMIDITY = 50;
 
-    public final PolyTank tank = new PolyBlockTank(this, FluidManager.BUCKET * 16L, e -> e.getFluid().isSame(Fluids.WATER));
+    public final PolyFluidStorage tank = new PolyBlockFluidStorage(this, FluidManager.BUCKET * 16L) { public boolean isFluidValid(PolyFluidStack stack) { return stack.getFluid() == Fluids.WATER; } };
     public final BlockInventory inventory = new BlockInventory(this, 11)
             .setMaxStackSize(1)
-            .setSlotValidator(9, stack -> FluidManager.isFluidItem(stack) && FluidManager.getHandler(stack).getFluidInTank(0).getFluid() == Fluids.WATER)
+            .setSlotValidator(9, stack -> FluidManager.isFluidItem(stack) && FluidManager.getHandler(stack).getFluid().getFluid() == Fluids.WATER)
             .setSlotValidator(10, stack -> EnergyManager.isEnergyItem(stack) && EnergyManager.getHandler(stack).canExtract())
             .setStackValidator((slot, stack) -> stack.getItem() instanceof ItemChickenEgg || stack.getItem() instanceof ItemChicken);
 
@@ -82,8 +82,8 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
     private void updateResources() {
         ItemStack bucketStack = inventory.getItem(9);
         if (!bucketStack.isEmpty()) {
-            PolyFluidHandlerItem handler = FluidManager.getHandler(bucketStack);
-            if (FluidManager.transferFluid(handler, tank).getAmount() > 0) {
+            IPolyFluidStorageItem handler = FluidManager.getHandler(bucketStack);
+            if (handler != null && FluidManager.transferFluid(handler, tank) > 0) {
                 inventory.setItem(9, handler.getContainer());
             }
         }
@@ -140,14 +140,14 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
         //That means 1mb of water results in a humidity increase of 2.5%
         //This is loosely based on a psychrometric chart.
 
-        if (humidity.get() >= MIN_HUMIDITY || tank.isEmpty() || !isTileEnabled()) return;
+        if (humidity.get() >= MIN_HUMIDITY || tank.getFluid().isEmpty() || !isTileEnabled()) return;
         float needed = MIN_HUMIDITY - humidity.get();
         float needWater = needed / 2.5F; //Convert that to water
         int minExtract = (int) Math.ceil(needWater); //Round that up to the nearest int value
 
-        FluidStack drained = tank.drain(FluidStack.create(Fluids.WATER, minExtract), false);
+        PolyFluidStack drained = tank.drain(new PolyFluidStack(Fluids.WATER, minExtract * FluidManager.MILLIBUCKET), false);
         if (!drained.isEmpty()) {
-            humidity.add(drained.getAmount() * 2.5F);
+            humidity.add(drained.getAmount() / (float) FluidManager.MILLIBUCKET * 2.5F);
         }
     }
 
@@ -252,7 +252,7 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
     }
 
     @Override
-    public @Nullable PolyFluidHandler getFluidHandler(@Nullable Direction direction) {
+    public @Nullable IPolyFluidStorage getFluidStorage(@Nullable Direction direction) {
         return tank;
     }
 
@@ -273,9 +273,9 @@ public class IncubatorBlockEntity extends PolyBlockEntity implements PolyFluidBl
                         }
                         return false;
                     } else if (slot == 9) {
-                        PolyFluidHandlerItem handler = FluidManager.getHandler(stack);
+                        IPolyFluidStorageItem handler = FluidManager.getHandler(stack);
                         if (handler == null) return true;
-                        return handler.drain(FluidStack.create(Fluids.WATER, FluidManager.BUCKET), true).isEmpty();
+                        return handler.drain(new PolyFluidStack(Fluids.WATER, FluidManager.BUCKET), true).isEmpty();
                     } else if (slot == 10) {
                         IPolyEnergyStorage energy = EnergyManager.getHandler(stack);
                         return energy == null || !energy.canExtract() || energy.getEnergyStored() == 0;

@@ -12,9 +12,9 @@ import net.creeperhost.chickens.entity.ChickensChicken;
 import net.creeperhost.chickens.init.ModEntities;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.commands.arguments.IdentifierArgument;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
@@ -26,26 +26,26 @@ public class Commands {
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, net.minecraft.commands.Commands.CommandSelection selection) {
         dispatcher.register(net.minecraft.commands.Commands.literal("summon_chicken")
-                .requires(stack -> stack.hasPermission(2))
-                .then(net.minecraft.commands.Commands.argument("variant", ResourceLocationArgument.id())
+                .requires(stack -> stack.permissions().hasPermission(net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER))
+                .then(net.minecraft.commands.Commands.argument("variant", IdentifierArgument.id())
                         .suggests((c, builder) -> {
                             ChickenDataManager.getVariantIds().forEach(id -> builder.suggest(id.toString()));
                             return builder.buildFuture();
                         })
-                        .executes(c -> spawnChicken(c, ResourceLocationArgument.getId(c, "variant"), false, -1, 0))
+                        .executes(c -> spawnChicken(c, IdentifierArgument.getId(c, "variant"), false, -1, 0))
                         .then(net.minecraft.commands.Commands.argument("rooster", BoolArgumentType.bool())
-                                .executes(c -> spawnChicken(c, ResourceLocationArgument.getId(c, "variant"), BoolArgumentType.getBool(c, "rooster"), -1, 0))
+                                .executes(c -> spawnChicken(c, IdentifierArgument.getId(c, "variant"), BoolArgumentType.getBool(c, "rooster"), -1, 0))
                                 .then(net.minecraft.commands.Commands.argument("traits", DoubleArgumentType.doubleArg(0, 100))
-                                        .executes(c -> spawnChicken(c, ResourceLocationArgument.getId(c, "variant"), BoolArgumentType.getBool(c, "rooster"), DoubleArgumentType.getDouble(c, "traits"), 0))
+                                        .executes(c -> spawnChicken(c, IdentifierArgument.getId(c, "variant"), BoolArgumentType.getBool(c, "rooster"), DoubleArgumentType.getDouble(c, "traits"), 0))
                                         .then(net.minecraft.commands.Commands.argument("taming", DoubleArgumentType.doubleArg(-Config.INSTANCE.tamingModifierLimit, Config.INSTANCE.tamingModifierLimit))
-                                                .executes(c -> spawnChicken(c, ResourceLocationArgument.getId(c, "variant"), BoolArgumentType.getBool(c, "rooster"), DoubleArgumentType.getDouble(c, "traits"), DoubleArgumentType.getDouble(c, "taming")))
+                                                .executes(c -> spawnChicken(c, IdentifierArgument.getId(c, "variant"), BoolArgumentType.getBool(c, "rooster"), DoubleArgumentType.getDouble(c, "traits"), DoubleArgumentType.getDouble(c, "taming")))
                                         )
                                 )
                         )
                 ));
     }
 
-    private static int spawnChicken(CommandContext<CommandSourceStack> stack, ResourceLocation variantId, boolean rooster, double traits, double tamingMod) throws CommandSyntaxException {
+    private static int spawnChicken(CommandContext<CommandSourceStack> stack, Identifier variantId, boolean rooster, double traits, double tamingMod) throws CommandSyntaxException {
         ChickenVariant variant = ChickenDataManager.getVariant(variantId);
         if (variant == null) {
             stack.getSource().sendFailure(Component.literal("Could not find variant: " + variantId));

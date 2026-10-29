@@ -1,6 +1,6 @@
 package net.creeperhost.chickens.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 
@@ -11,7 +11,7 @@ public class ChickenAPI
 {
     public static final List<ChickenTransformationRecipe> TRANSFORMATION_RECIPES = new ArrayList<>();
 
-    public static void registerVariantRecipe(EntityType<?> entityTypeIn, ItemStack itemStack, ResourceLocation variant)
+    public static void registerVariantRecipe(EntityType<?> entityTypeIn, ItemStack itemStack, Identifier variant)
     {
         ChickenTransformationRecipe recipe = new ChickenTransformationRecipe(entityTypeIn, itemStack, variant);
         if(!TRANSFORMATION_RECIPES.contains(recipe)) {

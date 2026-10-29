@@ -1,57 +1,52 @@
 package net.creeperhost.chickens.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.creeperhost.chickens.data.ChickenData;
+import net.creeperhost.chickens.entity.ChickensChicken;
+import net.creeperhost.chickens.init.ModEntities;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
+import java.util.function.Consumer;
 
-import java.util.Set;
-
-/**
- * Created by brandon3055 on 25/01/2025
- */
-public class ChickenItemRender implements SpecialModelRenderer<ChickenItemRender.Data> {
-
+public class ChickenItemRender implements SpecialModelRenderer<EntityRenderState> {
     @Override
-    public void render(@Nullable ChickenItemRender.Data data, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, boolean b) {
-        if (data != null) {
-            RenderChickenItem.renderByItem(data.stack, transformType, poseStack, bufferSource, light, overlay);
-        }
+    public void submit(EntityRenderState state, PoseStack pose, SubmitNodeCollector collector, int light, int overlay, boolean foil, int outline) {
+        if (state == null) return;
+        pose.pushPose();
+        pose.translate(0.5F, 0.0F, 0.5F);
+        pose.rotateDegrees(Axis.YP, 45);
+        pose.rotateDegrees(Axis.XP, 10);
+        pose.rotateDegrees(Axis.ZP, 10);
+        state.lightCoords = light;
+        Minecraft.getInstance().getEntityRenderDispatcher().submit(state, new CameraRenderState(), 0, 0, 0, pose, collector);
+        pose.popPose();
     }
-
-    @Override
-    public void getExtents(Set<Vector3f> set) {
-        set.add(new Vector3f());
+    @Override public void getExtents(Consumer<Vector3fc> output) { output.accept(new Vector3f()); }
+    @Override public EntityRenderState extractArgument(ItemStack stack) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) return null;
+        ChickenData data = ChickenData.fromItem(stack);
+        if (data == null) return null;
+        ChickensChicken chicken = ModEntities.CHICKEN.get().create(mc.level, EntitySpawnReason.SPAWNER);
+        if (chicken == null) return null;
+        // This preview entity is never added to a level, so it needs its own nonzero ID.
+        chicken.setId(-1);
+        data.apply(chicken);
+        chicken.yHeadRot = 0;
+        return mc.getEntityRenderDispatcher().extractEntity(chicken, 0);
     }
-
-    @Nullable
-    @Override
-    public Data extractArgument(ItemStack stack) {
-        return new Data(stack);
-    }
-
-    public static class Data {
-        public ItemStack stack;
-        public Data(ItemStack stack) {
-            this.stack = stack;
-        }
-    }
-
-    public record Unbaked() implements SpecialModelRenderer.Unbaked {
-        public static final MapCodec<Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.stable(new Unbaked()));
-
-        public MapCodec<Unbaked> type() {
-            return MAP_CODEC;
-        }
-
-        public SpecialModelRenderer<?> bake(EntityModelSet p_387681_) {
-            return new ChickenItemRender();
-        }
+    public record Unbaked() implements SpecialModelRenderer.Unbaked<EntityRenderState> {
+        public static final MapCodec<Unbaked> MAP_CODEC = MapCodec.unit(new Unbaked());
+        public MapCodec<Unbaked> type() { return MAP_CODEC; }
+        public SpecialModelRenderer<EntityRenderState> bake(SpecialModelRenderer.BakingContext context) { return new ChickenItemRender(); }
     }
 }

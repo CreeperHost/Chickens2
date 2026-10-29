@@ -54,7 +54,7 @@ public class ItemChickenEgg extends Item
 //        if(stack.isEmpty()) return null;
 //        if(!stack.has(ModComponentTypes.EGG_CHICKEN_TYPE.get())) return null;
 //
-//        ResourceLocation resourceLocation = ResourceLocation.tryParse(stack.getOrDefault(ModComponentTypes.EGG_CHICKEN_TYPE.get(), null));//ResourceLocation.tryParse(stack.getTag().getString("chickentype"));
+//        Identifier resourceLocation = Identifier.tryParse(stack.getOrDefault(ModComponentTypes.EGG_CHICKEN_TYPE.get(), null));//Identifier.tryParse(stack.getTag().getString("chickentype"));
 //        if(resourceLocation == null || resourceLocation.toString().isEmpty()) return null;
 //        AtomicReference<ChickensRegistryItem> value = new AtomicReference<>(null);
 //        ChickensRegistry.getItems().forEach(chickensRegistryItem1 ->
@@ -110,7 +110,7 @@ public class ItemChickenEgg extends Item
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
         ChickenData data = ChickenData.fromItem(itemStack);
         if (data == null || !isFertilized(itemStack)) return;
-        if (Screen.hasShiftDown()) {
+        if ((com.mojang.blaze3d.platform.InputConstants.isKeyDown(com.mojang.blaze3d.platform.InputConstants.KEY_LSHIFT) || com.mojang.blaze3d.platform.InputConstants.isKeyDown(com.mojang.blaze3d.platform.InputConstants.KEY_RSHIFT))) {
             for (Trait.StateValue state : data.traits()) {
                 state.trait().appendHoverText(consumer, state.value());
             }

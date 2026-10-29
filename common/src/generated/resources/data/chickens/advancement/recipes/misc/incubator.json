@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "chickens:incubator"
+        "recipes": "chickens:incubator"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

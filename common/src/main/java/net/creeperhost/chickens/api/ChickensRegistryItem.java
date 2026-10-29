@@ -2,43 +2,43 @@ package net.creeperhost.chickens.api;
 
 import net.creeperhost.chickens.polylib.CommonTags;
 import net.creeperhost.chickens.polylib.ItemHolder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class ChickensRegistryItem {
-    public ResourceLocation registryName;
+    public Identifier registryName;
     public String entityName;
     public ItemHolder layItem;
     public int bgColor;
-    public ResourceLocation texture;
+    public Identifier texture;
     public ChickensRegistryItem parent1;
     public ChickensRegistryItem parent2;
     public boolean isEnabled = true;
     public float layCoefficient;
     public float breedSpeedMultiplier;
 
-    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor) {
+    public ChickensRegistryItem(Identifier registryName, String entityName, Identifier texture, ItemStack layItem, int bgColor) {
         this(registryName, entityName, texture, layItem, bgColor, 1, 1);
     }
 
-    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, float layCoefficient, float breedSpeedMultiplier) {
+    public ChickensRegistryItem(Identifier registryName, String entityName, Identifier texture, ItemStack layItem, int bgColor, float layCoefficient, float breedSpeedMultiplier) {
         this(registryName, entityName, texture, layItem, bgColor, layCoefficient, breedSpeedMultiplier, null, null);
     }
 
-    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
+    public ChickensRegistryItem(Identifier registryName, String entityName, Identifier texture, ItemStack layItem, int bgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
         this(registryName, entityName, texture, layItem, bgColor, 1, 1, parent1, parent2);
     }
 
-    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, float layCoefficient, float breedSpeedMultiplier, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
+    public ChickensRegistryItem(Identifier registryName, String entityName, Identifier texture, ItemStack layItem, int bgColor, float layCoefficient, float breedSpeedMultiplier, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
         this(registryName, entityName, texture, new ItemHolder(layItem, false), bgColor, layCoefficient, breedSpeedMultiplier, parent1, parent2);
     }
 
-    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemHolder layItem, int bgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
+    public ChickensRegistryItem(Identifier registryName, String entityName, Identifier texture, ItemHolder layItem, int bgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
         this(registryName, entityName, texture, layItem, bgColor, 1, 1, parent1, parent2);
     }
 
-    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemHolder layItem, int bgColor, float layCoefficient, float breedSpeedMultiplier, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
+    public ChickensRegistryItem(Identifier registryName, String entityName, Identifier texture, ItemHolder layItem, int bgColor, float layCoefficient, float breedSpeedMultiplier, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
         this.registryName = registryName;
         this.entityName = entityName;
         this.layItem = layItem;
@@ -83,7 +83,7 @@ public class ChickensRegistryItem {
         return bgColor;
     }
 
-    public ResourceLocation getTexture() {
+    public Identifier getTexture() {
         return texture;
     }
 
@@ -108,7 +108,7 @@ public class ChickensRegistryItem {
         return layItem.getStack().is(CommonTags.DYE);
     }
 
-    public ResourceLocation getRegistryName() {
+    public Identifier getRegistryName() {
         return registryName;
     }
 

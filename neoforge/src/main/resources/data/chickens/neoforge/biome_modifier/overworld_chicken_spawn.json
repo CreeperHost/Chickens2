@@ -3,7 +3,7 @@
   "biomes": "#minecraft:is_overworld",
   "spawners": {
     "type": "chickens:chicken",
-    "maxCount": 6,
+    "count": 6,
     "minCount": 6,
     "weight": 10
   }

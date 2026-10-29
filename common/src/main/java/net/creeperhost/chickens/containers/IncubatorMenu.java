@@ -1,6 +1,6 @@
 package net.creeperhost.chickens.containers;
 
-import dev.architectury.fluid.FluidStack;
+import net.creeperhost.polylib.inventory.fluid.PolyFluidStack;
 import net.creeperhost.chickens.blockentities.IncubatorBlockEntity;
 import net.creeperhost.chickens.config.Config;
 import net.creeperhost.chickens.init.ModContainers;
@@ -21,7 +21,7 @@ public class IncubatorMenu extends PolyBlockContainerMenu<IncubatorBlockEntity>
 {
     public final DataSync<Float> humidity;
     public final DataSync<Integer> temperature;
-    public final DataSync<FluidStack> tank;
+    public final DataSync<PolyFluidStack> tank;
     public final DataSync<Integer> heatSetting;
     public final DataSync<Boolean> fullGrow;
     public final DataSync<Long> energy;

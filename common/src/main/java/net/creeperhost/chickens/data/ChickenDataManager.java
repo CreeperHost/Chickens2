@@ -4,7 +4,7 @@ import net.creeperhost.chickens.Chickens;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.TagKey;
@@ -23,7 +23,7 @@ import java.util.*;
 public class ChickenDataManager extends SimpleJsonResourceReloadListener<ChickenVariant> {
 
     public static final ChickenDataManager INSTANCE = new ChickenDataManager();
-    private final Map<ResourceLocation, ChickenVariant> variants = new HashMap<>();
+    private final Map<Identifier, ChickenVariant> variants = new HashMap<>();
     private final List<SpawnData> spawns = new ArrayList<>();
     private final Set<TagKey<Biome>> biomes = new HashSet<>();
 
@@ -31,7 +31,7 @@ public class ChickenDataManager extends SimpleJsonResourceReloadListener<Chicken
         super(ChickenVariant.CODEC, FileToIdConverter.json("variants"));
     }
 
-    public static Set<ResourceLocation> getVariantIds() {
+    public static Set<Identifier> getVariantIds() {
         return INSTANCE.variants.keySet();
     }
 
@@ -40,11 +40,11 @@ public class ChickenDataManager extends SimpleJsonResourceReloadListener<Chicken
     }
 
     @Nullable
-    public static ChickenVariant getVariant(ResourceLocation variantId) {
+    public static ChickenVariant getVariant(Identifier variantId) {
         return INSTANCE.variants.get(variantId);
     }
 
-    public static ChickenVariant getVariantOrMissing(ResourceLocation variantId) {
+    public static ChickenVariant getVariantOrMissing(Identifier variantId) {
         return INSTANCE.variants.getOrDefault(variantId, ChickenVariant.MISSING);
     }
 
@@ -57,7 +57,7 @@ public class ChickenDataManager extends SimpleJsonResourceReloadListener<Chicken
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, ChickenVariant> variantMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+    protected void apply(Map<Identifier, ChickenVariant> variantMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         variants.clear();
         spawns.clear();
         variantMap.forEach((location, variant) -> {

@@ -1,7 +1,7 @@
 package net.creeperhost.chickens.api;
 
 import net.creeperhost.chickens.Chickens;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -9,12 +9,12 @@ import java.util.*;
 @Deprecated
 public class ChickensRegistry
 {
-    private static final Map<ResourceLocation, ChickensRegistryItem> items = new HashMap<ResourceLocation, ChickensRegistryItem>();
+    private static final Map<Identifier, ChickensRegistryItem> items = new HashMap<Identifier, ChickensRegistryItem>();
     private static final Map<String, ChickensRegistryItem> STRING_TO_ITEM = new HashMap<String, ChickensRegistryItem>();
 
-    public static final ResourceLocation SMART_CHICKEN_ID = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "smart_chicken");
-    public static final ResourceLocation VANILLA_CHICKEN = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "vanilla_chicken");
-    public static final ResourceLocation ROOSTER = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "rooster");
+    public static final Identifier SMART_CHICKEN_ID = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "smart_chicken");
+    public static final Identifier VANILLA_CHICKEN = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "vanilla_chicken");
+    public static final Identifier ROOSTER = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "rooster");
 
     private static final Random rand = new Random();
 
@@ -41,7 +41,7 @@ public class ChickensRegistry
     }
 
     @Nullable
-    public static ChickensRegistryItem getByResourceLocation(ResourceLocation type)
+    public static ChickensRegistryItem getByIdentifier(Identifier type)
     {
         ChickensRegistryItem chicken = items.get(type);
         return chicken != null ? items.get(type) : getByRegistryName(type.toString());

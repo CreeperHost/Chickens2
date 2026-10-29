@@ -13,7 +13,7 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -34,57 +34,57 @@ import java.util.function.Supplier;
  * Created by brandon3055 on 10/11/2025
  */
 public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVariant> {
-    public static final ResourceLocation flint = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "flint");
-    public static final ResourceLocation log = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "log");
-    public static final ResourceLocation sand = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "sand");
-    public static final ResourceLocation quartz = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "quartz");
-    public static final ResourceLocation soulsand = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "soulsand");
+    public static final Identifier flint = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "flint");
+    public static final Identifier log = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "log");
+    public static final Identifier sand = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "sand");
+    public static final Identifier quartz = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "quartz");
+    public static final Identifier soulsand = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "soulsand");
 
-    public static final ResourceLocation black = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "black");
-    public static final ResourceLocation blue = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "blue");
-    public static final ResourceLocation brown = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "brown");
-    public static final ResourceLocation cyan = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "cyan");
-    public static final ResourceLocation gray = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "gray");
-    public static final ResourceLocation green = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "green");
-    public static final ResourceLocation light_blue = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "light_blue");
-    public static final ResourceLocation light_gray = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "light_gray");
-    public static final ResourceLocation lime = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "lime");
-    public static final ResourceLocation magenta = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "magenta");
-    public static final ResourceLocation orange = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "orange");
-    public static final ResourceLocation pink = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "pink");
-    public static final ResourceLocation purple = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "purple");
-    public static final ResourceLocation red = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "red");
-    public static final ResourceLocation white = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "white");
-    public static final ResourceLocation yellow = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "yellow");
+    public static final Identifier black = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "black");
+    public static final Identifier blue = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "blue");
+    public static final Identifier brown = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "brown");
+    public static final Identifier cyan = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "cyan");
+    public static final Identifier gray = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "gray");
+    public static final Identifier green = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "green");
+    public static final Identifier light_blue = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "light_blue");
+    public static final Identifier light_gray = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "light_gray");
+    public static final Identifier lime = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "lime");
+    public static final Identifier magenta = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "magenta");
+    public static final Identifier orange = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "orange");
+    public static final Identifier pink = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "pink");
+    public static final Identifier purple = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "purple");
+    public static final Identifier red = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "red");
+    public static final Identifier white = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "white");
+    public static final Identifier yellow = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "yellow");
 
-    public static final ResourceLocation blaze = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "blaze");
-    public static final ResourceLocation clay = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "clay");
-    public static final ResourceLocation coal = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "coal");
-    public static final ResourceLocation copper = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "copper");
-    public static final ResourceLocation diamond = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "diamond");
-    public static final ResourceLocation emerald = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "emerald");
-    public static final ResourceLocation ender = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "ender");
-    public static final ResourceLocation ghast = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "ghast");
-    public static final ResourceLocation glass = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "glass");
-    public static final ResourceLocation glowstone = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "glowstone");
-    public static final ResourceLocation gold = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "gold");
-    public static final ResourceLocation gunpowder = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "gunpowder");
-    public static final ResourceLocation iron = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "iron");
-    public static final ResourceLocation lapis = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "lapis");
-    public static final ResourceLocation lava = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "lava");
-    public static final ResourceLocation leather = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "leather");
-    public static final ResourceLocation magma = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "magma");
-    public static final ResourceLocation netherite = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "netherite");
-    public static final ResourceLocation netherwart = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "netherwart");
-    public static final ResourceLocation obsidian = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "obsidian");
-    public static final ResourceLocation pcrystal = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "pcrystal");
-    public static final ResourceLocation pshard = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "pshard");
-    public static final ResourceLocation redstone = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "redstone");
-    public static final ResourceLocation slime = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "slime");
-    public static final ResourceLocation smart = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "smart");
-    public static final ResourceLocation snowball = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "snowball");
-    public static final ResourceLocation string = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "string");
-    public static final ResourceLocation water = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "water");
+    public static final Identifier blaze = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "blaze");
+    public static final Identifier clay = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "clay");
+    public static final Identifier coal = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "coal");
+    public static final Identifier copper = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "copper");
+    public static final Identifier diamond = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "diamond");
+    public static final Identifier emerald = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "emerald");
+    public static final Identifier ender = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "ender");
+    public static final Identifier ghast = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "ghast");
+    public static final Identifier glass = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "glass");
+    public static final Identifier glowstone = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "glowstone");
+    public static final Identifier gold = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "gold");
+    public static final Identifier gunpowder = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "gunpowder");
+    public static final Identifier iron = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "iron");
+    public static final Identifier lapis = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "lapis");
+    public static final Identifier lava = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "lava");
+    public static final Identifier leather = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "leather");
+    public static final Identifier magma = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "magma");
+    public static final Identifier netherite = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "netherite");
+    public static final Identifier netherwart = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "netherwart");
+    public static final Identifier obsidian = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "obsidian");
+    public static final Identifier pcrystal = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "pcrystal");
+    public static final Identifier pshard = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "pshard");
+    public static final Identifier redstone = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "redstone");
+    public static final Identifier slime = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "slime");
+    public static final Identifier smart = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "smart");
+    public static final Identifier snowball = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "snowball");
+    public static final Identifier string = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "string");
+    public static final Identifier water = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "water");
 
 
     protected ChickenVariantProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registriesFuture) {
@@ -92,7 +92,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
     }
 
 
-    private void addChickens(BiConsumer<ResourceLocation, ChickenVariant> consumer, HolderLookup.Provider provider) {
+    private void addChickens(BiConsumer<Identifier, ChickenVariant> consumer, HolderLookup.Provider provider) {
 
         // === Natural Spawn Chickens === //
         simple(provider, flint, "Flint", Items.FLINT)
@@ -299,8 +299,8 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
 
 
     @Override
-    protected void configure(BiConsumer<ResourceLocation, ChickenVariant> consumer, HolderLookup.Provider provider) {
-        Map<ResourceLocation, ChickenVariant> variantMap = new HashMap<>();
+    protected void configure(BiConsumer<Identifier, ChickenVariant> consumer, HolderLookup.Provider provider) {
+        Map<Identifier, ChickenVariant> variantMap = new HashMap<>();
         addChickens((location, chickenVariant) -> {
             if (variantMap.containsKey(chickenVariant.id())) {
                 throw new IllegalArgumentException("Duplicate chicken id " + chickenVariant.id());
@@ -325,7 +325,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
 
 
     //TODO this is just a quick helper for the initial data gen. Once we start balancing things, this method will likely go away.
-    private Builder simple(HolderLookup.Provider provider, ResourceLocation id, String name, Item item) {
+    private Builder simple(HolderLookup.Provider provider, Identifier id, String name, Item item) {
         return builder(provider, id, name)
                 .itemProduct(item, 1, 1, 6000, 12000)
                 .trait(ChickenTraits.SPEED, 0.25, 1, 0.1, 10, 1)
@@ -334,7 +334,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
                 .trait(ChickenTraits.LIFESPAN, 0.25, 1, 0.1, 10, 1);
     }
 
-    private Builder simple(HolderLookup.Provider provider, ResourceLocation id, String name, Fluid fluid) {
+    private Builder simple(HolderLookup.Provider provider, Identifier id, String name, Fluid fluid) {
         return builder(provider, id, name)
                 .fluidProduct(fluid, 1000, 1000, 6000, 12000)//TODO, this is not going to work with fabric... Maybe I should use mb for this even on fabric?
                 .trait(ChickenTraits.SPEED, 0.25, 1, 0.1, 10, 1)
@@ -348,7 +348,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
         return "chickens:chicken-variants";
     }
 
-    private static Builder builder(HolderLookup.Provider provider, ResourceLocation id, String name) {
+    private static Builder builder(HolderLookup.Provider provider, Identifier id, String name) {
         return new Builder(provider, id, name);
     }
 
@@ -359,32 +359,32 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
 
     private static class Builder {
         private final HolderLookup.Provider provider;
-        private final ResourceLocation id;
+        private final Identifier id;
         private final String name;
-        private ResourceLocation texture;
+        private Identifier texture;
         private ChickenProduct product = ChickenProduct.EMPTY;
         private int colour = 0xFFFFFFFF;
         private final List<TraitConfig> traits = new ArrayList<>();
-        private ResourceLocation parent1 = null;
-        private ResourceLocation parent2 = null;
+        private Identifier parent1 = null;
+        private Identifier parent2 = null;
         private ChickenSpawn spawn = null;
         private double inheritChance = 1;
         private double singleInheritChance = 0.25;
 
-        public Builder(HolderLookup.Provider provider, ResourceLocation id, String name) {
+        public Builder(HolderLookup.Provider provider, Identifier id, String name) {
             this.provider = provider;
             this.id = id;
             this.name = name;
-            this.texture = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/entity/" + id.getPath() + "_chicken.png");
+            this.texture = Identifier.fromNamespaceAndPath(id.getNamespace(), "textures/entity/" + id.getPath() + "_chicken.png");
         }
 
-        public Builder parents(ResourceLocation parent1, ResourceLocation parent2) {
+        public Builder parents(Identifier parent1, Identifier parent2) {
             this.parent1 = parent1;
             this.parent2 = parent2;
             return this;
         }
 
-        public Builder texture(ResourceLocation texture) {
+        public Builder texture(Identifier texture) {
             this.texture = texture;
             return this;
         }
@@ -432,7 +432,7 @@ public class ChickenVariantProvider extends FabricCodecDataProvider<ChickenVaria
             return this;
         }
 
-        public void build(BiConsumer<ResourceLocation, ChickenVariant> consumer) {
+        public void build(BiConsumer<Identifier, ChickenVariant> consumer) {
             consumer.accept(id, new ChickenVariant(id, name, texture, product, colour, traits, Optional.ofNullable(parent1), Optional.ofNullable(parent2), Optional.ofNullable(spawn)));
         }
     }

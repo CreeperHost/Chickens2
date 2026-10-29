@@ -13,7 +13,7 @@
 //import net.creeperhost.chickens.Chickens;
 //import net.minecraft.client.gui.GuiGraphics;
 //import net.minecraft.network.chat.Component;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.world.item.ItemStack;
 //import net.minecraft.world.item.crafting.Ingredient;
 //import org.jetbrains.annotations.NotNull;
@@ -43,19 +43,19 @@
 //    @Override
 //    public @NotNull IDrawable getBackground()
 //    {
-//        return guiHelper.drawableBuilder(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "textures/gui/laying.png"), 0, 0, 82, 54).addPadding(0, 20, 0, 0).build();
+//        return guiHelper.drawableBuilder(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "textures/gui/laying.png"), 0, 0, 82, 54).addPadding(0, 20, 0, 0).build();
 //    }
 //
 //    @Override
 //    public IDrawable getIcon()
 //    {
-//        return guiHelper.createDrawable(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "textures/gui/laying_icon.png"), 0, 0, 16, 16);
+//        return guiHelper.createDrawable(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "textures/gui/laying_icon.png"), 0, 0, 16, 16);
 //    }
 //
 //    @Override
 //    public void draw(Recipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY)
 //    {
-//        IDrawableStatic arrowDrawable = guiHelper.createDrawable(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "textures/gui/breeding.png"), 82, 0, 7, 7);
+//        IDrawableStatic arrowDrawable = guiHelper.createDrawable(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "textures/gui/breeding.png"), 82, 0, 7, 7);
 //        guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.BOTTOM, false);
 //    }
 //

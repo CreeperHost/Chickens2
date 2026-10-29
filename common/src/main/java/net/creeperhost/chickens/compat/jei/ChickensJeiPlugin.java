@@ -14,7 +14,7 @@
 //import net.creeperhost.chickens.init.ModItems;
 //import net.creeperhost.chickens.item.ItemChicken;
 //import net.creeperhost.chickens.item.ItemChickenEgg;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.world.item.ItemStack;
 //import org.jetbrains.annotations.NotNull;
 //
@@ -24,7 +24,7 @@
 //@JeiPlugin
 //public class ChickensJeiPlugin implements IModPlugin
 //{
-//    private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, "jei_plugin");
+//    private static final Identifier ID = Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "jei_plugin");
 //
 //    @Override
 //    public void registerCategories(IRecipeCategoryRegistration registry)
@@ -122,7 +122,7 @@
 //    }
 //
 //    @Override
-//    public @NotNull ResourceLocation getPluginUid()
+//    public @NotNull Identifier getPluginUid()
 //    {
 //        return ID;
 //    }

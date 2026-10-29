@@ -2,11 +2,10 @@ package net.creeperhost.chickens.neoforge;
 
 import net.creeperhost.chickens.ChickensPlatform;
 import net.creeperhost.chickens.trait.Trait;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.Holder;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -16,12 +15,12 @@ import net.neoforged.neoforge.common.Tags;
 import java.nio.file.Path;
 import java.util.Map;
 
-public class ChickensPlatformImpl
+public class ChickensPlatformImpl implements ChickensPlatform.Provider
 {
     /**
      * This is our actual method to {@link ChickensPlatform#getConfigDirectory()}.
      */
-    public static Path getConfigDirectory() {
+    public Path getConfigDirectory() {
         return FMLPaths.CONFIGDIR.get();
     }
 
@@ -30,7 +29,7 @@ public class ChickensPlatformImpl
 //        return new ItemChickenNeoForge(properties);
 //    }
 
-    public static int getBiomeTemperature(Holder<Biome> biome) {
+    public int getBiomeTemperature(Holder<Biome> biome) {
         if (biome.is(Tags.Biomes.IS_SNOWY)) {
             return  -10;
         } else if (biome.is(Tags.Biomes.IS_COLD)) {
@@ -41,7 +40,7 @@ public class ChickensPlatformImpl
         return 20;
     }
 
-    public static int getBiomeHumidity(Holder<Biome> biome) {
+    public int getBiomeHumidity(Holder<Biome> biome) {
         if (biome.is(Tags.Biomes.IS_WET)) {
             return 50;
         }else if (biome.is(Tags.Biomes.IS_DRY)) {
@@ -50,15 +49,12 @@ public class ChickensPlatformImpl
         return 30;
     }
 
-    public static void registerBlockRenderType(Block block, ChunkSectionLayer layer) {
-        ItemBlockRenderTypes.setRenderLayer(block, layer);
-    }
 
-    public static EntityDataSerializer<Map<Trait, Double>> getTraitSerializer() {
+    public EntityDataSerializer<Map<Trait, Double>> getTraitSerializer() {
         return ChickensModNeoForge.TRAIT_SERIALIZER.get();
     }
 
-    public static EntityDataSerializer<ResourceLocation> getResourceSerializer() {
+    public EntityDataSerializer<Identifier> getResourceSerializer() {
         return ChickensModNeoForge.RESOURCE_SERIALIZER.get();
     }
 }

@@ -70,7 +70,7 @@ public class BreederBlockEntity extends PolyBlockEntity implements PolyInventory
 
         ChickenProduct product = chicken.variant().product();
         if (targetProgress.get() < 0) {
-            targetProgress.set(product.minLayTime() + level.random.nextInt(Math.max(product.maxLayTime() - product.minLayTime(), 1)));
+            targetProgress.set(product.minLayTime() + level.getRandom().nextInt(Math.max(product.maxLayTime() - product.minLayTime(), 1)));
             chicken.traits().forEach(state -> targetProgress.set((int) (targetProgress.get() * state.trait().getLaySpeedModifier(state.value()))));
         }
 
@@ -82,7 +82,7 @@ public class BreederBlockEntity extends PolyBlockEntity implements PolyInventory
 
         ItemStack resultEgg;
         if (rooster != null) {
-            ChickenData child = ChickenData.fromParents(chicken, rooster, level.random);
+            ChickenData child = ChickenData.fromParents(chicken, rooster, level.getRandom());
             resultEgg = child.toChickenEgg(true);
         } else {
             resultEgg = chicken.toChickenEgg(false);
@@ -99,7 +99,7 @@ public class BreederBlockEntity extends PolyBlockEntity implements PolyInventory
             damageChicken(2);
             level.playSound(null, getBlockPos(), SoundEvents.CHICKEN_EGG, SoundSource.NEUTRAL, 0.5F, 0.8F);
             serverLevel.sendParticles(ParticleTypes.HEART, getBlockPos().getX() + 0.5, getBlockPos().getY() + 1, getBlockPos().getZ() + 0.5, 8, 0.45, 0.45, 0.45, 0.0125);
-            if (level.random.nextDouble() < Config.INSTANCE.breederFoodConsumptionChance) {
+            if (level.getRandom().nextDouble() < Config.INSTANCE.breederFoodConsumptionChance) {
                 seeds.shrink(1);
             }
             progress.set(0);

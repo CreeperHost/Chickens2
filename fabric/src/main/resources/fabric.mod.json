@@ -20,9 +20,6 @@
     ],
     "jei_mod_plugin": [
       "net.creeperhost.chickens.compat.jei.ChickensJeiPlugin"
-    ],
-    "fabric-datagen": [
-      "net.creeperhost.chickens.fabric.datagen.DataGen"
     ]
   },
   "mixins": [
@@ -30,10 +27,10 @@
     "chickens-common.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.17.2",
-    "fabric": "*",
-    "minecraft": "~1.21.6",
-    "architectury": ">=17.0.6",
-    "polylib": ">=2105.0.4-build.163"
+    "fabricloader": ">=0.19.5",
+    "fabric-api": "*",
+    "minecraft": "~26.3",
+
+    "polylib": ">=2.0.17"
   }
 }

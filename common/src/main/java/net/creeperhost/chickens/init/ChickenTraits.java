@@ -1,7 +1,7 @@
 package net.creeperhost.chickens.init;
 
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import net.creeperhost.polylib.registry.PolyRegistry;
+import java.util.function.Supplier;
 import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.trait.SpeedTrait;
 import net.creeperhost.chickens.trait.Trait;
@@ -12,14 +12,14 @@ import net.creeperhost.chickens.trait.Trait;
 public class ChickenTraits {
 
     //TODO, would like to switch this over to a custom registry if I can figure out how to do that with architectury.
-//    private static final Map<ResourceLocation, Trait> TRAITS = new HashMap<>();
+//    private static final Map<Identifier, Trait> TRAITS = new HashMap<>();
 
-    public static final DeferredRegister<Trait> TRAITS = DeferredRegister.create(Chickens.MOD_ID, Chickens.TRAIT_KEY);
+    public static final PolyRegistry<Trait> TRAITS = PolyRegistry.create(Chickens.TRAIT_KEY, Chickens.MOD_ID);
 
-    public static final RegistrySupplier<Trait> SPEED       = TRAITS.register("speed", SpeedTrait::new);
-//    public static final RegistrySupplier<Trait> PRODUCTION  = TRAITS.register("production", Trait::new);
-    public static final RegistrySupplier<Trait> MATURATION = TRAITS.register("maturation", Trait::new);
-    public static final RegistrySupplier<Trait> LIFESPAN    = TRAITS.register("lifespan", Trait::new);
+    public static final Supplier<Trait> SPEED       = TRAITS.register("speed", SpeedTrait::new);
+//    public static final Supplier<Trait> PRODUCTION  = TRAITS.register("production", Trait::new);
+    public static final Supplier<Trait> MATURATION = TRAITS.register("maturation", Trait::new);
+    public static final Supplier<Trait> LIFESPAN    = TRAITS.register("lifespan", Trait::new);
 
 
 //    public static final Trait SPEED         = register("speed", SpeedTrait::new);
@@ -28,19 +28,19 @@ public class ChickenTraits {
 //    public static final Trait LIFESPAN      = register("lifespan", SimpleTrait::new);
 
 
-//    public static Trait register(ResourceLocation name, Function<ResourceLocation, Trait> traitFunc) {
+//    public static Trait register(Identifier name, Function<Identifier, Trait> traitFunc) {
 //        if (TRAITS.containsKey(name)) throw new RuntimeException("Duplicate holder id: " + name);
 //        Trait holder = traitFunc.apply(name);
 //        TRAITS.put(name, holder);
 //        return holder;
 //    }
 //
-//    private static Trait register(String name, Function<ResourceLocation, Trait> traitFunc) {
-//        return register(ResourceLocation.fromNamespaceAndPath(Chickens.MOD_ID, name), traitFunc);
+//    private static Trait register(String name, Function<Identifier, Trait> traitFunc) {
+//        return register(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, name), traitFunc);
 //    }
 //
 //    @Nullable
-//    public static Trait getTrait(ResourceLocation name) {
+//    public static Trait getTrait(Identifier name) {
 //        return TRAITS.getOrDefault(name, null);
 //    }
 }

@@ -1,6 +1,6 @@
 package net.creeperhost.chickens.block;
 
-import dev.architectury.registry.menu.MenuRegistry;
+import net.creeperhost.polylib.platform.Services;
 import net.creeperhost.chickens.init.ModBlocks;
 import net.creeperhost.polylib.blocks.PolyEntityBlock;
 import net.minecraft.core.BlockPos;
@@ -42,9 +42,9 @@ public class EggCrackerBlock extends PolyEntityBlock {
 
     @Override
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            MenuRegistry.openExtendedMenu((ServerPlayer) player, (MenuProvider) blockEntity, packetBuffer -> packetBuffer.writeBlockPos(blockEntity.getBlockPos()));
+            Services.REGISTER_HELPER.openMenu((ServerPlayer) player, (MenuProvider) blockEntity, packetBuffer -> packetBuffer.writeBlockPos(blockEntity.getBlockPos()));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.SUCCESS;

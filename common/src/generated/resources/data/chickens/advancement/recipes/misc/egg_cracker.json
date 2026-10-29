@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "chickens:egg_cracker"
+        "recipes": "chickens:egg_cracker"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

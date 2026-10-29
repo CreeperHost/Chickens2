@@ -1,8 +1,7 @@
 package net.creeperhost.chickens.init;
 
-import dev.architectury.registry.menu.MenuRegistry;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import net.creeperhost.polylib.registry.PolyRegistry;
+import java.util.function.Supplier;
 import net.creeperhost.chickens.Chickens;
 import net.creeperhost.chickens.containers.BreederMenu;
 import net.creeperhost.chickens.containers.EggCrackerMenu;
@@ -13,9 +12,9 @@ import net.minecraft.world.inventory.MenuType;
 
 
 public class ModContainers {
-    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(Chickens.MOD_ID, Registries.MENU);
-    public static final RegistrySupplier<MenuType<BreederMenu>> BREEDER_CONTAINER = CONTAINERS.register("container_breeder", () -> MenuRegistry.ofExtended(BreederMenu::new));
-    public static final RegistrySupplier<MenuType<IncubatorMenu>> INCUBATOR = CONTAINERS.register("incubator", () -> MenuRegistry.ofExtended(IncubatorMenu::new));
-    public static final RegistrySupplier<MenuType<EggCrackerMenu>> EGG_CRACKER = CONTAINERS.register("egg_cracker", () -> MenuRegistry.ofExtended(EggCrackerMenu::new));
-    public static final RegistrySupplier<MenuType<SorterMenu>> SORTER = CONTAINERS.register("sorter", () -> MenuRegistry.ofExtended(SorterMenu::new));
+    public static final PolyRegistry<MenuType<?>> CONTAINERS = PolyRegistry.create(Registries.MENU, Chickens.MOD_ID);
+    public static final Supplier<MenuType<BreederMenu>> BREEDER_CONTAINER = CONTAINERS.registerMenu("container_breeder", BreederMenu::new);
+    public static final Supplier<MenuType<IncubatorMenu>> INCUBATOR = CONTAINERS.registerMenu("incubator", IncubatorMenu::new);
+    public static final Supplier<MenuType<EggCrackerMenu>> EGG_CRACKER = CONTAINERS.registerMenu("egg_cracker", EggCrackerMenu::new);
+    public static final Supplier<MenuType<SorterMenu>> SORTER = CONTAINERS.registerMenu("sorter", SorterMenu::new);
 }

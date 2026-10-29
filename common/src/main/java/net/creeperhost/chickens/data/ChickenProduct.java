@@ -2,14 +2,14 @@ package net.creeperhost.chickens.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.architectury.fluid.FluidStack;
+import net.creeperhost.polylib.inventory.fluid.PolyFluidStack;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
@@ -32,12 +32,12 @@ import java.util.function.IntFunction;
  * @param minLayTime The minimum lay time before traits are applied.
  * @param maxLayTime The maximum lay time before traits are applied.
  */
-public record ChickenProduct(ResourceLocation id, Type type, int min, int max, int minLayTime, int maxLayTime) {
+public record ChickenProduct(Identifier id, Type type, int min, int max, int minLayTime, int maxLayTime) {
 
-    public static final ChickenProduct EMPTY = new ChickenProduct(ResourceLocation.withDefaultNamespace("air"), Type.ITEM, 0, 0, 0, 0);
+    public static final ChickenProduct EMPTY = new ChickenProduct(Identifier.withDefaultNamespace("air"), Type.ITEM, 0, 0, 0, 0);
 
     public static final Codec<ChickenProduct> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            ResourceLocation.CODEC.fieldOf("id").forGetter(ChickenProduct::id),
+            Identifier.CODEC.fieldOf("id").forGetter(ChickenProduct::id),
             Type.CODEC.fieldOf("type").forGetter(ChickenProduct::type),
             Codec.INT.fieldOf("min").forGetter(ChickenProduct::min),
             Codec.INT.fieldOf("max").forGetter(ChickenProduct::max),
@@ -46,7 +46,7 @@ public record ChickenProduct(ResourceLocation id, Type type, int min, int max, i
     ).apply(builder, ChickenProduct::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChickenProduct> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC, ChickenProduct::id,
+            Identifier.STREAM_CODEC, ChickenProduct::id,
             Type.STREAM_CODEC, ChickenProduct::type,
             ByteBufCodecs.INT, ChickenProduct::min,
             ByteBufCodecs.INT, ChickenProduct::max,
@@ -63,21 +63,13 @@ public record ChickenProduct(ResourceLocation id, Type type, int min, int max, i
         return new ItemStack(item, level.getRandom().nextInt(min, max + 1));
     }
 
-    public FluidStack getAsFluid(Level level) {
+    public PolyFluidStack getAsFluid(Level level) {
         Fluid fluid = level.registryAccess().lookupOrThrow(Registries.FLUID).getValue(id);
         if (fluid == null) {
-            return FluidStack.empty();
+            return PolyFluidStack.EMPTY;
         }
         long amount = level.getRandom().nextInt(min, max + 1);
-        //Forge to Fabric fluid value conversion
-        if (FluidStack.bucketAmount() != 1000) {
-            if (amount == 1000) {
-                amount = FluidStack.bucketAmount();
-            } else {
-                amount = (long) ((amount / 1000D) * FluidStack.bucketAmount());
-            }
-        }
-        return FluidStack.create(fluid, amount);
+        return new PolyFluidStack(fluid, amount * net.creeperhost.polylib.inventory.fluid.FluidManager.MILLIBUCKET);
     }
 
     public enum Type implements StringRepresentable {

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "chickens:catcher"
+        "recipes": "chickens:catcher"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

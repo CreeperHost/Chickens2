@@ -3,7 +3,7 @@
   "biomes": "#minecraft:is_nether",
   "spawners": {
     "type": "chickens:chicken",
-    "maxCount": 10,
+    "count": 10,
     "minCount": 10,
     "weight": 60
   }

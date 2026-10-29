@@ -20,7 +20,7 @@ import net.creeperhost.polylib.inventory.items.PolyInventoryBlock;
 import net.creeperhost.polylib.inventory.power.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.TriState;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -46,7 +46,7 @@ public class SorterBlockEntity extends PolyBlockEntity implements PolyInventoryB
     public byte scanCount = 0;
     public final IntData progress = register("progress", new IntData(10), SAVE_BOTH);
     public final ListData<TraitFilter> traitFilter = register("traitFilter", new ListData<>(TraitFilter.CODEC, TraitFilter.STREAM_CODEC), SAVE_BOTH, CLIENT_CONTROL);
-    public final ListData<ResourceLocation> variantFilter = register("variantFilter", new ListData<>(ResourceLocation.CODEC, ResourceLocation.STREAM_CODEC.cast()), SAVE_BOTH, CLIENT_CONTROL);
+    public final ListData<Identifier> variantFilter = register("variantFilter", new ListData<>(Identifier.CODEC, Identifier.STREAM_CODEC.cast()), SAVE_BOTH, CLIENT_CONTROL);
     public final TryStateData fertilizedFilter = register("fertilizedFilter", new TryStateData(), SAVE_BOTH, CLIENT_CONTROL);
     public final TryStateData viableFilter = register("viableFilter", new TryStateData(), SAVE_BOTH, CLIENT_CONTROL);
     public final TryStateData eggFilter = register("eggFilter", new TryStateData(), SAVE_BOTH, CLIENT_CONTROL);
@@ -150,7 +150,7 @@ public class SorterBlockEntity extends PolyBlockEntity implements PolyInventoryB
             }
         }
 
-        List<ResourceLocation> variants = variantFilter.get();
+        List<Identifier> variants = variantFilter.get();
         if (!variants.isEmpty()) {
             return variants.contains(data.variantId());
         }

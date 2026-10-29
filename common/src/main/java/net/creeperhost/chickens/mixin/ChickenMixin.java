@@ -1,7 +1,7 @@
 package net.creeperhost.chickens.mixin;
 
 import net.creeperhost.chickens.entity.ChickensChicken;
-import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.chicken.Chicken;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,10 +20,10 @@ public class ChickenMixin {
     }
 
     @Inject (
-            method = "Lnet/minecraft/world/entity/animal/Chicken;aiStep()V",
+            method = "aiStep()V",
             at = @At (
-                    value = "INVOKE_ASSIGN",
-                    target = "Lnet/minecraft/world/entity/animal/Chicken;isAlive()Z",
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/animal/chicken/Chicken;isAlive()Z",
                     shift = At.Shift.BEFORE
             ),
             cancellable = true

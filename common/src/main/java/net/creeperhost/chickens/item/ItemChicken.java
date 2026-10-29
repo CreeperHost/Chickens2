@@ -11,7 +11,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -42,7 +42,7 @@ public class ItemChicken extends Item {
     @Override
     public InteractionResult useOn(UseOnContext useOnContext) {
         Level level = useOnContext.getLevel();
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             InteractionHand hand = useOnContext.getHand();
             ItemStack stack = useOnContext.getPlayer().getItemInHand(hand);
             BlockPos blockPos = correctPosition(useOnContext.getClickedPos(), useOnContext.getClickedFace());
@@ -81,7 +81,7 @@ public class ItemChicken extends Item {
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
         ChickenData data = ChickenData.fromItem(itemStack);
         if (data == null) return;
-        if (Screen.hasShiftDown()) {
+        if ((com.mojang.blaze3d.platform.InputConstants.isKeyDown(com.mojang.blaze3d.platform.InputConstants.KEY_LSHIFT) || com.mojang.blaze3d.platform.InputConstants.isKeyDown(com.mojang.blaze3d.platform.InputConstants.KEY_RSHIFT))) {
             consumer.accept(Component.literal("== Traits =="));
             for (Trait.StateValue state : data.traits()) {
                 state.trait().appendHoverText(c -> consumer.accept(Component.literal("- ").append(c)), state.value());
@@ -97,29 +97,29 @@ public class ItemChicken extends Item {
         }
     }
 
-    private float getDamage(ItemStack itemStack) {
+    private float getChickenDamage(ItemStack itemStack) {
         ChickenData data = ChickenData.fromItem(itemStack);
-        return data == null ? getMaxDamage(itemStack) : getMaxDamage(itemStack) - data.entityData().lifespan();
+        return data == null ? getChickenMaxDamage(itemStack) : getChickenMaxDamage(itemStack) - data.entityData().lifespan();
     }
 
-    private float getMaxDamage(ItemStack itemStack) {
+    private float getChickenMaxDamage(ItemStack itemStack) {
         return (float) Config.INSTANCE.chickenLifeSpan;
     }
 
     @Override
     public boolean isBarVisible(ItemStack itemStack) {
-        return getDamage(itemStack) > 0;
+        return getChickenDamage(itemStack) > 0;
     }
 
     @Override
     public int getBarWidth(ItemStack itemStack) {
-        return Mth.clamp(Math.round(13.0F - getDamage(itemStack) * 13.0F / getMaxDamage(itemStack)), 0, 13);
+        return Mth.clamp(Math.round(13.0F - getChickenDamage(itemStack) * 13.0F / getChickenMaxDamage(itemStack)), 0, 13);
     }
 
     @Override
     public int getBarColor(ItemStack itemStack) {
-        float maxDamage = getMaxDamage(itemStack);
-        float f = Math.max(0.0F, (maxDamage - getDamage(itemStack)) / maxDamage);
+        float maxDamage = getChickenMaxDamage(itemStack);
+        float f = Math.max(0.0F, (maxDamage - getChickenDamage(itemStack)) / maxDamage);
         return Mth.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
     }
 
@@ -133,7 +133,7 @@ public class ItemChicken extends Item {
     }
 
     @Deprecated
-    public static void applyEntityIdToItemStack(ItemStack stack, ResourceLocation entityId) {
+    public static void applyEntityIdToItemStack(ItemStack stack, Identifier entityId) {
         stack.set(ModComponentTypes.CHICKEN_TYPE.get(), entityId.toString());
     }
 
