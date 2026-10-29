@@ -2,7 +2,32 @@ plugins { id 'multiloader-loader'; id 'net.neoforged.moddev' }
 neoForge {
     version = neoforge_version
     accessTransformers.from(project(':common').file('src/main/resources/META-INF/accesstransformer.cfg'))
-    runs { client { client(); jvmArgument '-XX:StackShadowPages=32' }; server { server() } }
+    runs {
+        client {
+            client()
+            jvmArgument '-XX:StackShadowPages=32'
+            if (project.hasProperty('testServer')) {
+                gameDirectory = project.layout.buildDirectory.dir('test-client-run').get().asFile
+                programArguments.addAll '--quickPlayMultiplayer', project.property('testServer')
+            }
+        }
+        server {
+            server()
+            if (project.hasProperty('isolatedServer')) {
+                gameDirectory = project.layout.buildDirectory.dir('test-server-run').get().asFile
+            }
+        }
+    }
     mods { chickens { sourceSet sourceSets.main } }
 }
-dependencies { compileOnly 'maven.modrinth:jade:26.3.5+neoforge'; implementation "net.creeperhost.polylib:polylib-neoforge:${polylib_version}" }
+dependencies {
+    compileOnly 'maven.modrinth:jade:26.3.5+neoforge'
+    compileOnly 'mezz.jei:jei-26.3-common-api:31.4.0.22'
+    if (project.hasProperty('testJeiJar')) {
+        runtimeOnly files(project.property('testJeiJar'))
+        runtimeOnly 'net.mezzdev.config:mezz_config-26.3-neoforge:0.6.3'
+    } else if (project.hasProperty('testJei')) {
+        runtimeOnly 'mezz.jei:jei-26.3-neoforge:31.4.0.22'
+    }
+    implementation "net.creeperhost.polylib:polylib-neoforge:${polylib_version}"
+}

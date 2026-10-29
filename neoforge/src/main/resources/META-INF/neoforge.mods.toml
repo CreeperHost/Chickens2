@@ -10,7 +10,7 @@ displayName = "Chickens"
 authors = "CreeperHost"
 description = '''
 '''
-logoFile = "logo.png"
+iconFile = "logo.png"
 
 [[dependencies.chickens]]
 modId = "neoforge"

@@ -23,6 +23,7 @@ public class ChickensModNeoForge {
     public ChickensModNeoForge(IEventBus iEventBus) {
         iEventBus.addListener(ChickensModNeoForge::createRegistries);
         iEventBus.addListener(ChickensModNeoForge::modifyRegistries);
+        iEventBus.addListener(ChickenVariantNetworking::register);
         ENTITY_DATA_SERIALIZER.register(iEventBus);
 
         Chickens.init();

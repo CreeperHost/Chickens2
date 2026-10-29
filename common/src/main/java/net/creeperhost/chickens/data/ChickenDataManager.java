@@ -23,7 +23,7 @@ import java.util.*;
 public class ChickenDataManager extends SimpleJsonResourceReloadListener<ChickenVariant> {
 
     public static final ChickenDataManager INSTANCE = new ChickenDataManager();
-    private final Map<Identifier, ChickenVariant> variants = new HashMap<>();
+    private volatile Map<Identifier, ChickenVariant> variants = Map.of();
     private final List<SpawnData> spawns = new ArrayList<>();
     private final Set<TagKey<Biome>> biomes = new HashSet<>();
 
@@ -37,6 +37,15 @@ public class ChickenDataManager extends SimpleJsonResourceReloadListener<Chicken
 
     public static Collection<ChickenVariant> getVariants() {
         return INSTANCE.variants.values();
+    }
+
+    /** Replace the client-side view with the server's current datapack contents. */
+    public static void setClientVariants(Collection<ChickenVariant> variants) {
+        Map<Identifier, ChickenVariant> updated = new HashMap<>();
+        for (ChickenVariant variant : variants) {
+            updated.put(variant.id(), variant);
+        }
+        INSTANCE.variants = Map.copyOf(updated);
     }
 
     @Nullable
@@ -58,15 +67,17 @@ public class ChickenDataManager extends SimpleJsonResourceReloadListener<Chicken
 
     @Override
     protected void apply(Map<Identifier, ChickenVariant> variantMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
-        variants.clear();
+        Map<Identifier, ChickenVariant> updated = new HashMap<>();
         spawns.clear();
+        biomes.clear();
         variantMap.forEach((location, variant) -> {
-            variants.put(variant.id(), variant);
+            updated.put(variant.id(), variant);
             variant.spawn().ifPresent(e -> spawns.add(new SpawnData(variant, e)));
         });
         for (SpawnData data : spawns) {
             biomes.addAll(data.spawn().biomes());
         }
+        variants = Map.copyOf(updated);
 
         Chickens.LOGGER.info("Loaded {} entity chicken variants", variants.size());
     }

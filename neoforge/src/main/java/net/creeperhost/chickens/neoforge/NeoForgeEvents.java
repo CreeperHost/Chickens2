@@ -15,6 +15,7 @@ import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraft.world.entity.animal.chicken.Chicken;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 
 @EventBusSubscriber(modid = Chickens.MOD_ID)
 public class NeoForgeEvents
@@ -37,5 +38,17 @@ public class NeoForgeEvents
     @SubscribeEvent
     public static void registerServerReloadListeners(AddServerReloadListenersEvent event) {
         event.addListener(Identifier.fromNamespaceAndPath(Chickens.MOD_ID, "chicken_variants"), ChickenDataManager.INSTANCE);
+    }
+
+    @SubscribeEvent
+    public static void syncChickenVariants(OnDatapackSyncEvent event) {
+        var payload = new ChickenVariantNetworking.VariantsPayload(java.util.List.copyOf(ChickenDataManager.getVariants()));
+        if (event.getPlayer() != null) {
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(event.getPlayer(), payload);
+        } else {
+            for (var player : event.getPlayerList().getPlayers()) {
+                net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(player, payload);
+            }
+        }
     }
 }
