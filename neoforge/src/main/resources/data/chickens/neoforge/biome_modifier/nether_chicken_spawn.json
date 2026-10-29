@@ -4,7 +4,6 @@
   "spawners": {
     "type": "chickens:chicken",
     "count": 10,
-    "minCount": 10,
     "weight": 60
   }
 }
