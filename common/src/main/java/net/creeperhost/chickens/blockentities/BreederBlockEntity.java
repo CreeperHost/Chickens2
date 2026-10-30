@@ -7,6 +7,7 @@ import net.creeperhost.chickens.data.ChickenData;
 import net.creeperhost.chickens.data.ChickenProduct;
 import net.creeperhost.chickens.init.ChickenTraits;
 import net.creeperhost.chickens.init.ModBlocks;
+import net.creeperhost.chickens.item.ItemChicken;
 import net.creeperhost.chickens.polylib.CommonTags;
 import net.creeperhost.polylib.blocks.PolyBlockEntity;
 import net.creeperhost.polylib.data.serializable.IntData;
@@ -45,7 +46,7 @@ public class BreederBlockEntity extends PolyBlockEntity implements PolyInventory
             });
 
     public final IntData progress = register("progress", new IntData(0), SAVE_BOTH);
-    public final IntData targetProgress = register("cycle_target", new IntData(0), SAVE_BOTH);
+    public final IntData targetProgress = register("cycle_target", new IntData(-1), SAVE_BOTH);
 
     public BreederBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.BREEDER_TILE.get(), pos, state);
@@ -109,21 +110,19 @@ public class BreederBlockEntity extends PolyBlockEntity implements PolyInventory
 
     @Override
     public Container getContainer(@Nullable Direction side) {
-        if (side != Direction.DOWN) {
-            //Allows extraction from any slot from sides or top
-            return new ContainerAccessControl(inventory, 0, 6)
-                    .slotInsertCheck(1, stack -> stack.getCount() == 1 && inventory.getItem(1).isEmpty()) //TODO This limiting slot to 1 item can be done better with a custom SidedInvWrapper, though not sure about fabric...
-                    .slotInsertCheck(2, stack -> stack.getCount() == 1 && inventory.getItem(2).isEmpty()) //TODO This limiting slot to 1 item can be done better with a custom SidedInvWrapper, though not sure about fabric...
-//                    .slotInsertCheck(3, stack -> stack.getCount() == 1 && inventory.getItem(3).isEmpty()) //TODO This limiting slot to 1 item can be done better with a custom SidedInvWrapper, though not sure about fabric...
-                    .containerInsertCheck((slot, stack) -> slot <= 2);
+        ContainerAccessControl access = new ContainerAccessControl(inventory, 0, 6) {
+            @Override
+            public int getMaxStackSize(ItemStack stack) {
+                return stack.getItem() instanceof ItemChicken ? 1 : super.getMaxStackSize(stack);
+            }
+        };
+        access.slotInsertCheck(1, stack -> stack.getCount() == 1 && inventory.getItem(1).isEmpty())
+                .slotInsertCheck(2, stack -> stack.getCount() == 1 && inventory.getItem(2).isEmpty())
+                .containerInsertCheck((slot, stack) -> slot <= 2);
+        if (side == Direction.DOWN) {
+            access.containerRemoveCheck((slot, stack) -> slot > 2);
         }
-        //Only allow extraction of outputs from bottom (basic hopper compatibility)
-        return new ContainerAccessControl(inventory, 0, 6)
-                .slotInsertCheck(1, stack -> stack.getCount() == 1 && inventory.getItem(1).isEmpty()) //TODO This limiting slot to 1 item can be done better with a custom SidedInvWrapper, though not sure about fabric...
-                .slotInsertCheck(2, stack -> stack.getCount() == 1 && inventory.getItem(2).isEmpty()) //TODO This limiting slot to 1 item can be done better with a custom SidedInvWrapper, though not sure about fabric...
-//                .slotInsertCheck(3, stack -> stack.getCount() == 1 && inventory.getItem(3).isEmpty()) //TODO This limiting slot to 1 item can be done better with a custom SidedInvWrapper, though not sure about fabric...
-                .containerInsertCheck((slot, stack) -> slot <= 2)
-                .containerRemoveCheck((slot, stack) -> slot > 2);
+        return access;
     }
 
     @Nullable

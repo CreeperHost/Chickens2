@@ -125,8 +125,8 @@ public class IncubatorGui extends ContainerGuiProvider<IncubatorMenu> {
                 .setTextSupplier(() -> List.of(Component.translatable("gui.chickens.incubator.heat"), Component.literal(String.valueOf(menu.heatSetting.get()))))
                 .setTextColour(0xFF404040)
                 .setShadow(false)
-                .constrain(LEFT, relative(eggsBorder.get(RIGHT), 2))
-                .constrain(RIGHT, relative(tank.container.get(LEFT), -2))
+                .constrain(LEFT, relative(eggsBorder.get(RIGHT), -2))
+                .constrain(RIGHT, relative(tank.container.get(LEFT), -1))
                 .autoHeight();
         heatLabel.constrain(TOP, midPoint(eggsBorder.get(TOP), eggsBorder.get(BOTTOM), (heatLabel.ySize() / -2) - 4));
 

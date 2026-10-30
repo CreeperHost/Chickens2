@@ -221,8 +221,8 @@ public class DataGen implements DataGeneratorEntrypoint
             provider.add("gui.chickens.sorter.egg_false", "Chickens Only", ModuleType.COMMON);
             provider.add("gui.chickens.sorter.egg_default", "Eggs or Chickens", ModuleType.COMMON);
 
-            provider.add("gui.chickens.sorter.varient_filter", "Varient Filter", ModuleType.COMMON);
-            provider.add("gui.chickens.sorter.varient_select", "Select Varient", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.varient_filter", "Variant Filter", ModuleType.COMMON);
+            provider.add("gui.chickens.sorter.varient_select", "Select Variant", ModuleType.COMMON);
             provider.add("gui.chickens.sorter.add", "Add", ModuleType.COMMON);
             provider.add("gui.chickens.sorter.delete", "Delete", ModuleType.COMMON);
 

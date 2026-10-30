@@ -147,8 +147,9 @@ public class SorterGui extends ContainerGuiProvider<SorterMenu> {
 
     public void createFilterList(ModularGui gui, GuiElement<?> root, SorterMenu menu) {
         GuiRectangle listBg = GuiRectangle.vanillaSlot(root);
-        Constraints.placeInside(listBg, root, Constraints.LayoutPos.TOP_CENTER, -4, 14);
-        Constraints.size(listBg, (18 * 9) - 8, 98);
+        boolean energyEnabled = Config.INSTANCE.enableEnergy;
+        Constraints.placeInside(listBg, root, Constraints.LayoutPos.TOP_CENTER, energyEnabled ? 6 : -4, 14);
+        Constraints.size(listBg, (18 * 9) - (energyEnabled ? 28 : 8), 98);
 
         GuiScrolling scroll = new GuiScrolling(listBg);
         Constraints.bind(scroll, listBg, 1);

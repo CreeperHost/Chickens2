@@ -116,7 +116,7 @@ public record ChickenData(Identifier variantId, boolean isRooster, List<Trait.St
             childVariant = potentials.get(random.nextInt(potentials.size()));
         }
 
-        Map<Trait, TraitConfig> childConfigs = chickenVariant.traitMap();
+        Map<Trait, TraitConfig> childConfigs = childVariant.traitMap();
 
         Set<Trait> chickenTraits = new HashSet<>();
         chicken.traits().forEach(e -> chickenTraits.add(e.trait()));
@@ -211,6 +211,7 @@ public record ChickenData(Identifier variantId, boolean isRooster, List<Trait.St
             chicken.setInLoveTime(inLoveTime());
             chicken.setAge(age());
             chicken.setTamingModifier(tamingModifier());
+            chicken.setLifeSpan(lifespan());
         }
 
         public static EntityData create() {

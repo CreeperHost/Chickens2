@@ -326,8 +326,13 @@ public class ChickensChicken extends Chicken {
     public void finalizeSpawnChildFromBreeding(ServerLevel serverLevel, Animal animal, @Nullable AgeableMob child) {
         super.finalizeSpawnChildFromBreeding(serverLevel, animal, child);
         if (child != null && animal instanceof ChickensChicken partner) {
+            if (child instanceof ChickensChicken chick) {
+                double growthA = ChickenData.fromEntity(this).getTraitValue(ChickenTraits.MATURATION.get(), 1);
+                double growthB = ChickenData.fromEntity(partner).getTraitValue(ChickenTraits.MATURATION.get(), 1);
+                chick.setAge((int) (-24000D / Math.max(0.1, (growthA + growthB) * 0.5)));
+            }
             double mod = ChickenData.fromEntity(partner).getTraitValue(ChickenTraits.LIFESPAN.get(), 1);
-            partner.setLifeSpan(getLifeSpan() - (float) (Config.INSTANCE.lifespanReductionOnLay / mod));
+            partner.setLifeSpan(partner.getLifeSpan() - (float) (Config.INSTANCE.lifespanReductionOnLay / mod));
 
             mod = ChickenData.fromEntity(this).getTraitValue(ChickenTraits.LIFESPAN.get(), 1);
             setLifeSpan(getLifeSpan() - (float) (Config.INSTANCE.lifespanReductionOnLay / mod));
